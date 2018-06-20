@@ -1,94 +1,99 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: zhangmm
+ * Date: 2017/11/8
+ * Time: 18:00
+ */
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
-{
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+use app\base_models\User as Fa_User;
+use yii\helpers\ArrayHelper;
+use yii\web\IdentityInterface;
+use yii\base\NotSupportedException;
+use Yii;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+class User extends Fa_User implements IdentityInterface
+{
+    // 用户可用
+    const STATUS_ENABLE = 1;
+    // 用户不可用
+    const STATUS_DISABLE = 2;
+
+    public $_isAdmin;
+
+    public $admin_ids = [1];
 
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne(['id'=>$id]);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
+        /*foreach (self::$users as $user) {
             if ($user['accessToken'] === $token) {
                 return new static($user);
             }
         }
 
-        return null;
+        return null;*/
+
+        // 数据库中去掉了accessToken 字段
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
+
     /**
-     * Finds user by username
+     * Finds user by name
      *
-     * @param string $username
-     * @return static|null
+     * @param  string      $name
+     * @return mixed  User Model|null
      */
-    public static function findByUsername($username)
+    public static function findByUsername($name)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
+            ':email' => $name,
+            ':name' => $name,
+            ':status' => self::STATUS_ENABLE,
+        ])->one();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
+    public function getUserName()
     {
-        return $this->authKey;
+        return $this->user_name;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @inheritdoc
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->auth_key === $authKey;
     }
 
     /**
@@ -99,6 +104,28 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
+
+    public function setPassword($password)
+    {
+        $this->password = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString();
+    }
+
+    public static function getUserList()
+    {
+        $data = self::find()->asArray()->all();
+        return ArrayHelper::map($data, 'id', 'user_name');
+    }
+
+    public function getIsAdmin()
+    {
+        return $this->_isAdmin = in_array($this->id, $this->admin_ids);
+    }
+
 }
