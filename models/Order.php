@@ -43,7 +43,7 @@ class Order extends FaOrder
     {
         return [
             [
-                'class' => TimestampBehavior::className(),
+                'class' => TimestampBehavior::class,
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => ['present_time'], //自动添加‘发起时间’
                 ],
@@ -82,12 +82,12 @@ class Order extends FaOrder
 
     public function getPresenter()
     {
-        return $this->hasOne(User::className(), ['id' => 'present_user']);
+        return $this->hasOne(User::class, ['id' => 'present_user']);
     }
 
     public function getSolver()
     {
-        return $this->hasOne(User::className(), ['id' => 'solve_user']);
+        return $this->hasOne(User::class, ['id' => 'solve_user']);
     }
 
     public static function statusList()

@@ -20,7 +20,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'actions' => ['login', 'register'],
@@ -35,7 +35,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -144,6 +144,6 @@ class SiteController extends Controller
 
     public function actionTest()
     {
-        var_dump(Yii::$app->params);
+        var_dump(Yii::getVersion());
     }
 }
