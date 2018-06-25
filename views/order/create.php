@@ -2,9 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\redactor\widgets\Redactor;
 use app\models\User;
-use app\models\DictData;
 
 
 /* @var $this yii\web\View */
@@ -21,13 +19,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php else: ?>
         <?= $form->field($model, 'present_user')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
     <?php endif; ?>
-    <?= $form->field($model, 'system')->dropDownList(DictData::getDickDataListByType('systems'), ['prompt' => '请选择系统', 'style' => 'width:20%']) ?>
+    <?= $form->field($model, 'system')->dropDownList(Yii::$app->params['order_systems'], ['prompt' => '请选择系统', 'style' => 'width:20%']) ?>
 
-    <?= $form->field($model, 'level')->dropDownList(DictData::getDickDataListByType('order_level'), ['style' => 'width:20%']) ?>
+    <?= $form->field($model, 'level')->dropDownList(Yii::$app->params['order_level'], ['style' => 'width:20%']) ?>
 
     <?= $form->field($model, 'title')->input('text', ['placeholder' => '一句话描述，简明扼要。不超过50字', 'style' => 'width:50%']); ?>
 
-    <?= $form->field($model, 'content')->widget(Redactor::className()) ?>
+    <?= $form->field($model, 'content')->textarea() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'system',
                 'label' => '所属系统',
                 'value' => function($data){
-                    $systemes = \app\models\DictData::getDickDataListByType('systems');
+                    $systemes = Yii::$app->params['order_systems'];
                     return $systemes[$data->system];
                 }
             ],
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'level',
                 'label' => '级别',
                 'value' => function($data){
-                    $level_arr = \app\models\DictData::getDickDataListByType('order_level');
+                    $level_arr = Yii::$app->params['order_level'];
                     return $level_arr[$data->level];
                 }
             ],
@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($data->status !== 1){
                         return '待解决';
                     }else{
-                        $arr = \app\models\DictData::getDickDataListByType('order_classify');
+                        $arr = Yii::$app->params['order_classify'];
                         return $arr[$data->classify];
                     }
                 }

@@ -50,6 +50,16 @@ $config = [
             ],
         ],
     ],
+
+    'modules' => [
+        'redactor' => [
+            'class' => 'yii\redactor\RedactorModule',
+            'uploadDir' => '@webroot/uploads/redactor',
+            'uploadUrl' => '@web/uploads/redactor',
+            /*'imageAllowExtensions'=>['jpg','png','gif']*/
+        ],
+    ],
+
     'params' => $params,
 ];
 
