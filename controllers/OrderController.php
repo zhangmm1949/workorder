@@ -40,6 +40,15 @@ class OrderController extends Controller
         ];
     }
 
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class' => 'kucha\ueditor\UEditorAction',
+            ]
+        ];
+    }
+
     /**
      * Lists all Order models.
      * @return mixed

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\User;
+use kucha\ueditor\UEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
@@ -25,7 +26,7 @@ use app\models\User;
 
     <?= $form->field($model, 'title')->input('text', ['placeholder'=>'一句话描述，简明扼要。不超过50字', 'style'=>'width:50%']); ?>
 
-    <?= $form->field($model, 'content')->textarea() ?>
+    <?= $form->field($model, 'content')->widget(UEditor::class,['clientOptions' => Yii::$app->params['UEditor_clientOptions']]) ?>
 
     <?php if (Yii::$app->user->identity->isAdmin && $model->status == 1): ?>
 

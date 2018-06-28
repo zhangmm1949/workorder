@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\User;
-
+use kucha\ueditor\UEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'title')->input('text', ['placeholder' => '一句话描述，简明扼要。不超过50字', 'style' => 'width:50%']); ?>
 
-    <?= $form->field($model, 'content')->textarea() ?>
+    <?= $form->field($model, 'content')->widget(UEditor::class) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
