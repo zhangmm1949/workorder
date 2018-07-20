@@ -5,26 +5,27 @@ namespace app\base_models;
 use Yii;
 
 /**
- * This is the model class for table "order".
+ * This is the model class for table "xm_order".
  *
- * @property integer $id
- * @property string $order_sn
- * @property integer $present_user
- * @property integer $present_time
- * @property integer $system
- * @property integer $level
- * @property string $title
- * @property string $content
- * @property integer $status
- * @property integer $solve_user
- * @property integer $solve_time
- * @property integer $classify
- * @property string $remark
+ * @property int $id
+ * @property string $order_sn 工单编号
+ * @property int $present_user 发起人
+ * @property int $present_time 发起时间
+ * @property int $system 所属系统
+ * @property int $level 级别
+ * @property string $title 标题
+ * @property string $content 内容
+ * @property int $status 状态
+ * @property int $solve_user 解决人
+ * @property int $solve_time 解决时间
+ * @property int $classify 问题归类（操作问题，系统bug，需求等）
+ * @property string $tags 标签
+ * @property string $remark 备注
  */
 class Order extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -32,7 +33,7 @@ class Order extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
@@ -42,12 +43,14 @@ class Order extends \yii\db\ActiveRecord
             [['content'], 'string'],
             [['order_sn'], 'string', 'max' => 30],
             [['title'], 'string', 'max' => 255],
+            [['tags'], 'string', 'max' => 50],
             [['remark'], 'string', 'max' => 2000],
+            [['order_sn'], 'unique'],
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -58,12 +61,13 @@ class Order extends \yii\db\ActiveRecord
             'present_time' => '发起时间',
             'system' => '所属系统',
             'level' => '级别',
-            'title' => '概述',
+            'title' => '标题',
             'content' => '内容',
             'status' => '状态',
             'solve_user' => '解决人',
             'solve_time' => '解决时间',
-            'classify' => '问题归类',
+            'classify' => '问题归类（操作问题，系统bug，需求等）',
+            'tags' => '标签',
             'remark' => '备注',
         ];
     }

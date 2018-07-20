@@ -8,9 +8,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\User;
-use yii\redactor\widgets\Redactor;
 use yii\widgets\DetailView;
-use app\models\DictData;
 
     /* @var $this yii\web\View */
 /* @var $model app\models\Order */
@@ -32,7 +30,7 @@ $this->params['breadcrumbs'][] = '处理工单';
                 'attribute' => 'system',
                 'label' => '所属系统',
                 'value' => function($data){
-                    $systemes = \app\models\DictData::getDickDataListByType('systems');
+                    $systemes = Yii::$app->params['order_systems'];
                     return $systemes[$data->system];
                 }
             ],
@@ -40,7 +38,7 @@ $this->params['breadcrumbs'][] = '处理工单';
                 'attribute' => 'level',
                 'label' => '级别',
                 'value' => function($data){
-                    $level_arr = \app\models\DictData::getDickDataListByType('order_level');
+                    $level_arr = Yii::$app->params['order_level'];
                     return $level_arr[$data->level];
                 }
             ],
@@ -48,6 +46,7 @@ $this->params['breadcrumbs'][] = '处理工单';
                 'attribute' => 'content',
                 'format' => 'html'
             ],
+            ['attribute' =>'tags'],
             ['attribute' => 'status','value'=> function($data){
                 return $data->status == 1 ? '已完成' : '未完成';
             }],
@@ -60,7 +59,7 @@ $this->params['breadcrumbs'][] = '处理工单';
 
         <?= $form->field($model, 'solve_user')->dropDownList(User::getUserList(), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
 
-        <?= $form->field($model, 'classify')->dropDownList(DictData::getDickDataListByType('order_classify'),['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
+        <?= $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'],['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
 
         <?= $form->field($model, 'remark')->textarea() ?>
 

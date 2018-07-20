@@ -25,7 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'title')->input('text', ['placeholder' => '一句话描述，简明扼要。不超过50字', 'style' => 'width:50%']); ?>
 
-    <?= $form->field($model, 'content')->widget(UEditor::class) ?>
+    <?= $form->field($model, 'content')->widget(UEditor::class,['clientOptions' => Yii::$app->params['UEditor_clientOptions']]) ?>
+
+    <?= $form->field($model, 'tags')->input('text', ['style' => 'width:50%']); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

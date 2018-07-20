@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'content',
                 'format' => 'html'
             ],
+            ['attribute' => 'tags'],
             ['attribute' => 'status','value'=> function($data){
                 return $data->status == 1 ? '已完成' : '未完成';
             }],

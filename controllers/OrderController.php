@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Tag;
 use Yii;
 use app\models\Order;
 use app\models\OrderSearch;
@@ -118,6 +119,8 @@ class OrderController extends Controller
      */
     public function actionReply()
     {
+        $tag = new Tag();
+        $tag->setOrderTag('order', 1, 'php|mysql|nginx','insert');
 
     }
 

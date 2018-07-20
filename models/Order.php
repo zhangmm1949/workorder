@@ -21,14 +21,16 @@ class Order extends FaOrder
     {
         parent::init();
         $this->on(self::EVENT_AFTER_SOLVE,[$this, 'afterSolve']);
-//        $this->on(self::EVENT_AFTER_SOLVE,[$this, 'afterSolve2']);
-//        $this->on(self::EVENT_AFTER_SOLVE,[$this, 'afterSolve3']); (可绑定多个方法)
+
+        $this->on(self::EVENT_AFTER_INSERT,[$this, 'updateOrderTag'], 'insert');
+        $this->on(self::EVENT_AFTER_UPDATE,[$this, 'updateOrderTag'], 'update');
+        $this->on(self::EVENT_AFTER_DELETE,[$this, 'updateOrderTag'], 'delete');
     }
 
     public function rules()
     {
         return [
-            [['present_user', 'system', 'level', 'title', 'content' ], 'required'],
+            [['present_user', 'system', 'level', 'title', 'content'], 'required', 'message'=>'不能为空'],
             [['solve_user', 'classify'], 'required', 'on'=>'solve'], //只在solve场景下验证
             [['present_user', 'present_time', 'system', 'level', 'status', 'solve_user', 'solve_time', 'classify'], 'integer'],
             [['content'], 'string'],
@@ -36,6 +38,7 @@ class Order extends FaOrder
             [['order_sn'], 'string', 'max' => 30],
             [['order_sn'], 'unique', 'message' => '不要重复提交'],
             [['remark'], 'string', 'max' => 2000],
+            [['tags'], 'string', 'max' => 50]
         ];
     }
 
@@ -56,6 +59,7 @@ class Order extends FaOrder
         if (parent::beforeSave($insert)){
             if ($this->isNewRecord){
                 $this->order_sn = $this->generateOrderSn();
+                $this->tags = $this->setTags($this->tags);
             }
             return true;
         }else{
@@ -63,11 +67,34 @@ class Order extends FaOrder
         }
     }
 
+    /**
+     * 事件方法, “处理工单”(actionSolve) 操作后的处理。
+     */
     public function afterSolve()
     {
         $this->solve_time = time();
         $this->status = 1;
         $this->save();
+    }
+
+    public function updateOrderTag($data)
+    {
+        $tag = new Tag();
+        $action = $data->data; //操作类型 update/insert/delete 在事件绑定中传递的参数
+
+        if (!empty($this->tags)){
+            $tag->setOrderTag('order', $this->id, $this->tags, $action);
+        }
+
+    }
+
+    public function setTags($tags)
+    {
+        $find = ['，',',','"',' ',' '];
+        $replace = '|';
+        // 可能提交的分隔符 全部替换为‘|’ ，然后打撒为数组去重，去空，重新拼接为字符串
+        $tags_array = array_filter(array_unique(explode('|',str_replace($find,$replace,trim($tags)))));
+        return $this->tags = implode('|',$tags_array);
     }
 
     /**
