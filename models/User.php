@@ -117,9 +117,10 @@ class User extends Fa_User implements IdentityInterface
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
-    public static function getUserList()
+    public static function getUserList($dept_id=0)
     {
-        $data = self::find()->asArray()->all();
+        $dept_id = $dept_id ? intval($dept_id) : 0;
+        $data = self::find()->asArray()->where(['department_id'=>$dept_id, 'status'=>1])->all();
         return ArrayHelper::map($data, 'id', 'user_name');
     }
 

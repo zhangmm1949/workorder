@@ -15,7 +15,7 @@ use kucha\ueditor\UEditor;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php if (Yii::$app->user->identity->isAdmin ): ?>
-        <?= $form->field($model, 'present_user')->dropDownList(User::getUserList(), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
+        <?= $form->field($model, 'present_user')->dropDownList(User::getUserList(1), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
     <?php else: ?>
         <?= $form->field($model, 'present_user')->hiddenInput(['value'=>Yii::$app->user->id])->label(false) ?>
     <?php endif; ?>
