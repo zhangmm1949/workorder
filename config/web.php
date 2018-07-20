@@ -49,15 +49,18 @@ $config = [
             'rules' => [
             ],
         ],
+
+        // admin-lte的配置
+        'assetManager' => [
+            'bundles' => [
+                'dmstr\web\AdminLteAsset' => [
+                    'skin' => 'skin-blue',
+                ],
+            ],
+        ],
     ],
 
     'modules' => [
-        'redactor' => [
-            'class' => 'yii\redactor\RedactorModule',
-            'uploadDir' => '@webroot/uploads/redactor',
-            'uploadUrl' => '@web/uploads/redactor',
-            /*'imageAllowExtensions'=>['jpg','png','gif']*/
-        ],
     ],
 
     'params' => $params,
