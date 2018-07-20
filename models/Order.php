@@ -83,7 +83,7 @@ class Order extends FaOrder
         $action = $data->data; //操作类型 update/insert/delete 在事件绑定中传递的参数
 
         if (!empty($this->tags)){
-            $tag->setOrderTag('order', $this->id, $this->tags, $action);
+            $tag->updateTag('order', $this->id, $this->tags, $action);
         }
 
     }

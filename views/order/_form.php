@@ -34,7 +34,7 @@ use kucha\ueditor\UEditor;
 
     <?= $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'],['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
 
-    <?= $form->field($model, 'tag')->input('text', ['placeholder'=>'', 'style'=>'width:50%']); ?>
+    <?= $form->field($model, 'tags')->input('text', ['placeholder'=>'', 'style'=>'width:50%']); ?>
 
     <?= $form->field($model, 'remark')->textarea() ?>
 

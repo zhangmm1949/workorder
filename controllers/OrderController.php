@@ -120,7 +120,7 @@ class OrderController extends Controller
     public function actionReply()
     {
         $tag = new Tag();
-        $tag->setOrderTag('order', 1, 'php|mysql|nginx','insert');
+        $tag->updateTag('order', 1, 'php|mysql|nginx','delete');
 
     }
 

@@ -24,34 +24,64 @@ class Tag extends FaTag
         ];
     }
 
-    public function setOrderTag($type, $id, $tags, $action)
+    public function updateTag($type, $id, $tags, $action)
     {
+        $func_name = 'set' . ucfirst(trim($type)) . 'Tag';
+        $this->$func_name($id, $tags, $action);
+    }
+
+    private function setOrderTag($order_id, $tags, $action){
         $tag_arr = explode('|', $tags);
         $order_tag = new OrderTag();
-        foreach ($tag_arr as $item){
-            $ret = static::findOne(['name'=>$item]);
-            if (!$ret){
-                $this->name = $item;
-                $this->type = $type=='order' ? 0 : 1;
-                $this->count = 1;
-                $this->save();
-                /*$order_tag->order_id = $id;
-                $order_tag->tag_id = $this->id;
-                $order_tag->save();*/
-            }else{
-                var_dump($ret);
-                switch ($action){
-                    case 'insert':
+
+        switch ($action){
+            case 'insert':
+                foreach ($tag_arr as $item){
+                    $ret = static::findOne(['name'=>$item]);
+                    if (!$ret){
+                        $this->name = $item;
+                        $this->type = 0;
+                        $this->count = 1;
+                        $this->save();
+                        $order_tag->tag_id = $this->id;
+                    }else{
                         $ret->count += 1;
                         $ret->save();
-                        break;
-                    case 'update':
-                        $ret->save();
-                        break;
-                    case 'delete':
+                        $order_tag->tag_id = $ret->id;
+                    }
+
+                    $order_tag->order_id = $order_id;
+                    $order_tag->save();
                 }
-            }
+                break;
+
+            case 'delete':
+                OrderTag::deleteAll(['order_id'=>$order_id]);
+                foreach ($tag_arr as $item){
+                    $ret = static::findOne(['name'=>$item]);
+                    $ret->count -=1;
+                    $ret->save();
+                }
+                break;
+
+            case 'update':
+                break;
         }
+    }
+
+    private function setBlogTag()
+    {
+
+    }
+
+    public static function getSortTag($type)
+    {
+        $type = $type=='order' ? 0 : 1;
+        return static::find()->asArray()
+            ->where(['xm_tag.type' => $type])
+            ->orderBy('count DESC')
+            ->limit(10)
+            ->all();
     }
 
 }

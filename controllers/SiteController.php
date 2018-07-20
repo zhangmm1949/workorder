@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\RegisterForm;
+use app\models\Tag;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -66,7 +67,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $tags = Tag::getSortTag('order');
+        return $this->render('index',[
+            'tags' => $tags,
+        ]);
     }
 
     /**
