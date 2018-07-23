@@ -76,8 +76,8 @@ class OrderSearch extends Order
             'present_user' => $this->present_user,
             'solve_user' => $this->solve_user,
             'system' => $this->system,
-            'order.status' => $this->status,
-            'order.classify' => $this->classify,
+            'xm_order.status' => $this->status,
+            'xm_order.classify' => $this->classify,
         ]);
 
         if ($this->start_at){
