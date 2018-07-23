@@ -20,7 +20,7 @@ use app\models\Order;
 
     <div class="row">
         <div class="col-lg-2">
-            <?= $form->field($model, 'title')->input('text', ['placeholder'=>'概述关键字'])->label(false); ?>
+            <?= $form->field($model, 'title')->input('text', ['placeholder'=>'标题关键字搜索'])->label(false); ?>
         </div>
 
         <div class="col-lg-4">

@@ -90,9 +90,7 @@ class OrderSearch extends Order
             $query->andFilterWhere(['<=', 'present_time', $this->end_at]);
         }
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'presenter.user_name', $this->user_name])
-            ->andFilterWhere(['like', 'solver.user_name', $this->user_name]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }
