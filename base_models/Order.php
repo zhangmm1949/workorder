@@ -61,7 +61,7 @@ class Order extends \yii\db\ActiveRecord
             'present_time' => '发起时间',
             'system' => '所属系统',
             'level' => '级别',
-            'title' => '标题',
+            'title' => '简述',
             'content' => '内容',
             'status' => '状态',
             'solve_user' => '解决人',

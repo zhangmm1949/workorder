@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label'=>'发起时间',
                 'attribute' => 'present_time',
-                'format' => ['date', 'php:Y-m-d H:i:s'],
+                'format' => ['date', 'php:Y-m-d'],
             ],
             'title',
             [
@@ -63,7 +63,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'=>'解决时间',
                 'attribute' => 'solve_time',
                 'value' => function($data){
-                    return $data->status == 1 ? date('Y-m-d H:i:s', $data->solve_time) : '--';
+                    return $data->status == 1 ? date('Y-m-d', $data->solve_time) : '--';
                 },
             ],
             [
