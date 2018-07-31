@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
         'columns' => [
-            'order_sn',
+//            'order_sn',
             [
                 'label' => '发起人',
                 'attribute' => 'present_user',
@@ -29,7 +29,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'present_time',
                 'format' => ['date', 'php:Y-m-d'],
             ],
-            'title',
+            [
+                'attribute' => 'title',
+                'options' => [
+                    'width' => '20%'
+                ],
+            ],
             [
                 'attribute' => 'system',
                 'label' => '所属系统',
@@ -38,20 +43,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $systemes[$data->system];
                 }
             ],
-            [
+            /*[
                 'attribute' => 'level',
                 'label' => '级别',
                 'value' => function($data){
                     $level_arr = Yii::$app->params['order_level'];
                     return $level_arr[$data->level];
                 }
-            ],
+            ],*/
             [
                 'label' => '是否完成',
                 'attribute' => 'status',
                 'value' => function($data){
-                    return $data->status == 1 ? '完成' : '未完成';
+                    return $data->status == 1 ? '完成' : Html::decode('<p style="color: red">未完成</p>');
                 },
+                'format' => 'raw'
             ],
             [
                 'attribute' => 'solve_user',
@@ -76,10 +82,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             $arr = Yii::$app->params['order_classify'];
                             return $arr[$data->classify];
                         }
-                 }
+                 },
+                'format' => 'raw',
             ],
-            // 'remark',
-
+            [
+                    'attribute' => 'remark_view',
+                    'label' => '备注',
+                    'options' => [
+                        'width' => '25%',
+                    ],
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',

@@ -36,9 +36,9 @@ use kucha\ueditor\UEditor;
 
     <?= $form->field($model, 'tags')->input('text', ['placeholder'=>'', 'style'=>'width:50%']); ?>
 
-    <?= $form->field($model, 'remark')->textarea() ?>
-
     <?php endif; ?>
+
+    <?= $form->field($model, 'remark')->textarea() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
