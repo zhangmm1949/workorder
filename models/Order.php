@@ -129,7 +129,7 @@ class Order extends FaOrder
 
     public function getRemark_view()
     {
-        return $this->remark_view = strlen($this->remark) > 100 ? substr($this->remark, 0, 100) . '…' : $this->remark;
+        return $this->remark_view = strlen($this->remark) > 100 ? mb_substr($this->remark, 0, 100) . '…' : $this->remark;
     }
 
 
