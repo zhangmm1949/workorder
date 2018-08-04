@@ -56,12 +56,17 @@ class Order extends FaOrder
         ];
     }
 
+    /**
+     * 数据存入数据库之前的一些操作
+     * @param bool $insert
+     * @return bool
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)){
             if ($this->isNewRecord){
-                $this->order_sn = $this->generateOrderSn();
-                $this->tags = $this->setTags($this->tags);
+                $this->order_sn = $this->generateOrderSn(); //生成订单sn
+                $this->tags = $this->setTags($this->tags); //将表单提交来的tags格式化
             }
             return true;
         }else{
@@ -79,6 +84,9 @@ class Order extends FaOrder
         $this->save();
     }
 
+    /**
+     * @param $data object 事件绑定中传递的参数
+     */
     public function updateOrderTag($data)
     {
         $tag = new Tag();
@@ -90,6 +98,10 @@ class Order extends FaOrder
 
     }
 
+    /**
+     * @param $tags string 表单提交的tags
+     * @return string
+     */
     public function setTags($tags)
     {
         $find = ['，',',','"',' ',' '];
@@ -109,11 +121,19 @@ class Order extends FaOrder
         return $sn;
     }
 
+    /**
+     * 获取提出人的信息
+     * @return \yii\db\ActiveQuery
+     */
     public function getPresenter()
     {
         return $this->hasOne(User::class, ['id' => 'present_user']);
     }
 
+    /**
+     * 获取解决人的信息
+     * @return \yii\db\ActiveQuery
+     */
     public function getSolver()
     {
         return $this->hasOne(User::class, ['id' => 'solve_user']);
@@ -127,6 +147,10 @@ class Order extends FaOrder
         ];
     }
 
+    /**
+     * 首页显示的备注 截取100字符（太长会影响页面结构
+     * @return string
+     */
     public function getRemark_view()
     {
         return $this->remark_view = strlen($this->remark) > 100 ? mb_substr($this->remark, 0, 100) . '…' : $this->remark;
