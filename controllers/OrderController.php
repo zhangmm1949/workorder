@@ -119,8 +119,10 @@ class OrderController extends Controller
      */
     public function actionReply()
     {
+        $order = Order::findOne(8);
+
         $tag = new Tag();
-        $tag->updateTag('order', 1, 'php|mysql|nginx','delete');
+        $tag->updateTags($order, 'insert');
 
     }
 

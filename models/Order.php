@@ -93,7 +93,8 @@ class Order extends FaOrder
         $action = $data->data; //操作类型 update/insert/delete 在事件绑定中传递的参数
 
         if (!empty($this->tags)){
-            $tag->updateTag('order', $this->id, $this->tags, $action);
+//            $tag->updateTag('order', $this->id, $this->tags, $action);
+            $tag->updateTags($this, $action);
         }
 
     }
@@ -104,7 +105,7 @@ class Order extends FaOrder
      */
     public function setTags($tags)
     {
-        $find = ['，',',','"',' ',' '];
+        $find = ['，',',','"',' ',' ','/','\\'];
         $replace = '|';
         // 可能提交的分隔符 全部替换为‘|’ ，然后打撒为数组去重，去空，重新拼接为字符串
         $tags_array = array_filter(array_unique(explode('|',str_replace($find,$replace,trim($tags)))));
