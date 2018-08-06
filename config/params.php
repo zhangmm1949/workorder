@@ -64,7 +64,9 @@ return [
                 'lineheight', '|',
                 'indent', '|', 'insertcode', '|', 'simpleupload', 'insertimage','attachment'
             ],
-        ]
+        ],
+        //鼠标右键菜单功能
+        'enableContextMenu' => false,
     ]
 
     /*
