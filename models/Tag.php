@@ -92,7 +92,7 @@ class Tag extends FaTag
         $params2['tags'] = $old_tags;
 
         $this->tagDelete($params2); // 删除旧tag
-        if (!empty($params['tags'])){
+        if (!empty($params['tags'])){ // 更新时会传空值
             $this->tagInsert($params);  // 写入新tag
         }
 
