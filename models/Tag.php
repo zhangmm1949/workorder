@@ -59,7 +59,6 @@ class Tag extends FaTag
 
     private function tagInsert($params)
     {
-
         foreach ($params['tags'] as $tag){
             $sql = "INSERT INTO `xm_tag` (`name`, `type`, `count`) VALUES ('$tag', $params[type], '1') ON DUPLICATE KEY UPDATE `count`=`count`+1;";
             Yii::$app->db->createCommand($sql)->execute();
@@ -74,66 +73,26 @@ class Tag extends FaTag
         foreach ($params['tags'] as $tag){
             $sql = "UPDATE `xm_tag` SET `count`=`count`-1 WHERE `name`='$tag' AND `type`=$params[type];";
             Yii::$app->db->createCommand($sql)->execute();
-            $sql = "DELETE FROM `$params[join_table]` WHERE `$params[join_column]` = $params[join_column_value];";
-            Yii::$app->db->createCommand($sql)->execute();
         }
+        $sql = "DELETE FROM `$params[join_table]` WHERE `$params[join_column]` = $params[join_column_value];";
+        Yii::$app->db->createCommand($sql)->execute();
     }
 
     private function tagUpdate($params)
     {
-        $this->tagDelete($params);
-        $this->tagInsert($params);
-    }
+        //查询原有tag
+        $sql = "SELECT t.`name` FROM `$params[join_table]` j INNER JOIN `xm_tag` t ON t.`id` = j.`tag_id` WHERE j.`$params[join_column]` = $params[join_column_value];";
+        $ret = Yii::$app->db->createCommand($sql)->queryAll();
+        $old_tags = array_column($ret, 'name');
 
+        // 比较新提交的tag 跟 原有tag 如果没有区别直接返回不进行处理
+        if (empty(array_diff($old_tags, $params['tags']))) return true;
 
-    public function updateTag($type, $id, $tags, $action)
-    {
-        $func_name = 'set' . ucfirst(trim($type)) . 'Tag';
-        $this->$func_name($id, $tags, $action);
-    }
+        $params2 = $params;
+        $params2['tags'] = $old_tags;
 
-    private function setOrderTag($order_id, $tags, $action){
-        $tag_arr = explode('|', $tags);
-        $order_tag = new OrderTag();
-
-        switch ($action){
-            case 'insert':
-                foreach ($tag_arr as $item){
-                    $ret = static::findOne(['name'=>$item]);
-                    if (!$ret){
-                        $this->name = $item;
-                        $this->type = 0;
-                        $this->count = 1;
-                        $this->save();
-                        $order_tag->tag_id = $this->id;
-                    }else{
-                        $ret->count += 1;
-                        $ret->save();
-                        $order_tag->tag_id = $ret->id;
-                    }
-
-                    $order_tag->order_id = $order_id;
-                    $order_tag->save();
-                }
-                break;
-
-            case 'delete':
-                OrderTag::deleteAll(['order_id'=>$order_id]);
-                foreach ($tag_arr as $item){
-                    $ret = static::findOne(['name'=>$item]);
-                    $ret->count -=1;
-                    $ret->save();
-                }
-                break;
-
-            case 'update':
-                break;
-        }
-    }
-
-    private function setBlogTag()
-    {
-
+        $this->tagDelete($params2); // 删除旧tag
+        $this->tagInsert($params);  // 写入新tag
     }
 
     public static function getSortTag($type)
