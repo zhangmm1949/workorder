@@ -37,7 +37,7 @@ class Tag extends FaTag
     {
         $params = [];
         $tags = explode('|', $obj->tags);
-        if (empty($tags)) return true;
+        if (empty($tags) && $action <> 'update') return true;
 
         $params['tags'] = $tags;
 
@@ -92,7 +92,10 @@ class Tag extends FaTag
         $params2['tags'] = $old_tags;
 
         $this->tagDelete($params2); // 删除旧tag
-        $this->tagInsert($params);  // 写入新tag
+        if (!empty($params['tags'])){
+            $this->tagInsert($params);  // 写入新tag
+        }
+
     }
 
     public static function getSortTag($type)

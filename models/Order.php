@@ -63,10 +63,10 @@ class Order extends FaOrder
      */
     public function beforeSave($insert)
     {
+        $this->tags = $this->setTags($this->tags); //将表单提交来的tags格式化
         if (parent::beforeSave($insert)){
             if ($this->isNewRecord){
                 $this->order_sn = $this->generateOrderSn(); //生成订单sn
-                $this->tags = $this->setTags($this->tags); //将表单提交来的tags格式化
             }
             return true;
         }else{
@@ -92,9 +92,7 @@ class Order extends FaOrder
         $tag = new Tag();
         $action = $data->data; //操作类型 update/insert/delete 在事件绑定中传递的参数
 
-        if (!empty($this->tags)){
-            $tag->updateTags($this, $action);
-        }
+        $tag->updateTags($this, $action);
 
     }
 
