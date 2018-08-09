@@ -30,8 +30,9 @@ class Tag extends FaTag
     }
 
     /**
-     * @param $obj object 数据对象
-     * @param $action string 操作类型， update/insert/delete
+     * @param $obj object 传递过来的对象
+     * @param $action string 操作类型 insert/update/delete
+     * @return bool 实际处理的方法的结果
      */
     public function updateTags($obj, $action)
     {
@@ -57,6 +58,11 @@ class Tag extends FaTag
         return $this->$func_name($params);
     }
 
+    /**
+     * 新建文档（博客/工单等）对象时对标签的操作
+     * @param $params
+     * @throws \yii\db\Exception
+     */
     private function tagInsert($params)
     {
         foreach ($params['tags'] as $tag){
@@ -68,6 +74,11 @@ class Tag extends FaTag
         }
     }
 
+    /**
+     * 删除文档（博客/工单等）对象时对标签的操作
+     * @param $params
+     * @throws \yii\db\Exception
+     */
     private function tagDelete($params)
     {
         foreach ($params['tags'] as $tag){
@@ -78,6 +89,12 @@ class Tag extends FaTag
         Yii::$app->db->createCommand($sql)->execute();
     }
 
+    /**
+     * 编辑文档（博客/工单等）对象时对标签的操作
+     * @param $params
+     * @return bool
+     * @throws \yii\db\Exception
+     */
     private function tagUpdate($params)
     {
         //查询原有tag
@@ -98,12 +115,17 @@ class Tag extends FaTag
 
     }
 
+    /**
+     * 返回按数量倒序排列的标签
+     * @param $type
+     * @return array|\yii\db\ActiveRecord[]
+     */
     public static function getSortTag($type)
     {
         $type = $type=='order' ? 0 : 1;
         return static::find()->asArray()
             ->where(['xm_tag.type' => $type])
-            ->orderBy('count DESC')
+            ->orderBy('`count` DESC')
             ->limit(10)
             ->all();
     }

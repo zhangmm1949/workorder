@@ -60,12 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw'
             ],
             [
-                'attribute' => 'solve_user',
-                'value' => function($data){
-                    return $data->status == 1 ? $data->solver->user_name : '--';
-                }
-            ],
-            [
                 'label'=>'解决时间',
                 'attribute' => 'solve_time',
                 'value' => function($data){
@@ -91,6 +85,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => [
                         'width' => '25%',
                     ],
+            ],
+            [
+                'attribute' => 'solve_user',
+                'value' => function($data){
+                    return $data->status == 1 ? $data->solver->user_name : '--';
+                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
