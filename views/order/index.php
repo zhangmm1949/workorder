@@ -52,6 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],*/
             [
+                'attribute' => 'remark_view',
+                'label' => '备注',
+                'options' => [
+                    'width' => '25%',
+                ],
+            ],
+            [
                 'label' => '是否完成',
                 'attribute' => 'status',
                 'value' => function($data){
@@ -60,32 +67,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw'
             ],
             [
+                'attribute' => 'classify',
+                'label' => '问题类型',
+                'value' => function($data){
+                    if ($data->status !== 1){
+                        return '待解决';
+                    }else{
+                        $arr = Yii::$app->params['order_classify'];
+                        return $arr[$data->classify];
+                    }
+                },
+                'format' => 'raw',
+            ],
+            [
                 'label'=>'解决时间',
                 'attribute' => 'solve_time',
                 'value' => function($data){
                     return $data->status == 1 ? date('Y-m-d', $data->solve_time) : '--';
                 },
             ],
-            [
-                 'attribute' => 'classify',
-                 'label' => '问题类型',
-                 'value' => function($data){
-                        if ($data->status !== 1){
-                            return '待解决';
-                        }else{
-                            $arr = Yii::$app->params['order_classify'];
-                            return $arr[$data->classify];
-                        }
-                 },
-                'format' => 'raw',
-            ],
-            [
-                    'attribute' => 'remark_view',
-                    'label' => '备注',
-                    'options' => [
-                        'width' => '25%',
-                    ],
-            ],
+
             [
                 'attribute' => 'solve_user',
                 'value' => function($data){
