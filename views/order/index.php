@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	    [
                 'attribute' => 'solve_user',
                 'value' => function($data){
-                    return $data->status == 1 ? $data->solver->user_name : '--';
+                    return $data->status == 1 ? Html::decode('<p style="color: #a94442"><b>$data->solver->user_name</b></p>') : '--';
                 }
             ],
             /*[
