@@ -43,6 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $systemes[$data->system];
                 }
             ],
+	    [
+                'attribute' => 'solve_user',
+                'value' => function($data){
+                    return $data->status == 1 ? $data->solver->user_name : '--';
+                }
+            ],
             /*[
                 'attribute' => 'level',
                 'label' => '级别',
@@ -85,13 +91,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($data){
                     return $data->status == 1 ? date('Y-m-d', $data->solve_time) : '--';
                 },
-            ],
-
-            [
-                'attribute' => 'solve_user',
-                'value' => function($data){
-                    return $data->status == 1 ? $data->solver->user_name : '--';
-                }
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
