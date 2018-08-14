@@ -43,11 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $systemes[$data->system];
                 }
             ],
-	    [
+	        [
                 'attribute' => 'solve_user',
+                'label' => '跟进人',
                 'value' => function($data){
-                    return $data->status == 1 ? Html::decode('<p style="color: #a94442"><b>$data->solver->user_name</b></p>') : '--';
-                }
+                    return $data->status == 1 ? Html::tag('b', $data->solver->user_name, ['style'=>"color: black"]) : '--';
+                },
+                'format' => 'raw'
             ],
             /*[
                 'attribute' => 'level',
@@ -68,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '是否完成',
                 'attribute' => 'status',
                 'value' => function($data){
-                    return $data->status == 1 ? '完成' : Html::decode('<p style="color: red">未完成</p>');
+                    return $data->status == 1 ? '完成' : Html::decode('<b style="color: red">未完成</b>');
                 },
                 'format' => 'raw'
             ],
