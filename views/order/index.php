@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'solve_user',
                 'label' => '跟进人',
                 'value' => function($data){
-                    return $data->status == 1 ? Html::tag('b', $data->solver->user_name, ['style'=>"color: black"]) : '--';
+                    return isset($data->solver->user_name) ? Html::tag('b', $data->solver->user_name, ['style'=>"color: black"]) : '--';
                 },
                 'format' => 'raw'
             ],
