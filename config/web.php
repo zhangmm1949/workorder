@@ -1,10 +1,12 @@
 <?php
 
+include __DIR__ . '/local_params.php';
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id' => 'basic',
+    'id' => 'WorkOrder',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -79,7 +81,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '10.236.134.*'],
+        'allowedIPs' => $local_config['gii.allowedIPs'],
     ];
 }
 

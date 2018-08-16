@@ -26,9 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'presenter.user_name',
             ],
             [
-                'label'=>'发起时间',
+                'label'=>'记录时间',
                 'attribute' => 'present_time',
-                'format' => ['date', 'php:Y-m-d'],
+                'format' => ['date', 'php:Y-m-d H:i'],
             ],
             [
                 'attribute' => 'title',
@@ -61,19 +61,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],*/
             [
-                'attribute' => 'remark_view',
-                'label' => '备注',
-                'options' => [
-                    'width' => '25%',
-                ],
-            ],
-            [
                 'label' => '是否完成',
                 'attribute' => 'status',
                 'value' => function($data){
                     return $data->status == 1 ? '完成' : Html::decode('<b style="color: red">未完成</b>');
                 },
                 'format' => 'raw'
+            ],
+            [
+                'attribute' => 'remark_view',
+                'label' => '备注',
+                'options' => [
+                    'width' => '25%',
+                ],
             ],
             [
                 'attribute' => 'classify',

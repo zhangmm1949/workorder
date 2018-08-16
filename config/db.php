@@ -2,9 +2,9 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=10.236.134.245;dbname=myblog',
-    'username' => 'imor',
-    'password' => 'imor',
+    'dsn' => $local_config['db.dsn'],
+    'username' => $local_config['db.username'],
+    'password' => $local_config['db.password'],
     'charset' => 'utf8',
 
     // Schema cache options (for production environment)
