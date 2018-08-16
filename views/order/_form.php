@@ -30,6 +30,8 @@ use kucha\ueditor\UEditor;
 
     <?= $form->field($model, 'solve_user')->dropDownList(User::getUserList(), ['prompt'=>'请选择', 'style'=>'width:20%'])->label('跟进人') ?>
 
+    <?= $form->field($model, 'status')->dropDownList(Yii::$app->params['order_status'], ['style'=>'width:20%'])?>
+
     <?php if (Yii::$app->user->identity->isAdmin && $model->status == 1): ?>
 
     <?= $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'],['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
