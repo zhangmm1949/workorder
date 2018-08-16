@@ -46,7 +46,7 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find()->orderBy('present_time DESC');
+        $query = Order::find()->orderBy('status ASC, present_time DESC');
 
         if (!Yii::$app->user->identity->isAdmin){
             $query -> andFilterWhere(['=', 'present_user', Yii::$app->user->id]);

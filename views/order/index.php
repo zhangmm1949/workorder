@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 	        [
                 'attribute' => 'solve_user',
-                'label' => '跟进人',
+                'label' => '负责人',
                 'value' => function($data){
                     return isset($data->solver->user_name) ? Html::tag('b', $data->solver->user_name, ['style'=>"color: black"]) : '--';
                 },
@@ -61,10 +61,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],*/
             [
-                'label' => '是否完成',
+                'label' => '进度',
                 'attribute' => 'status',
                 'value' => function($data){
-                    return $data->status == 1 ? '完成' : Html::decode('<b style="color: red">未完成</b>');
+                    switch ($data->status){
+                        case 0:
+                            return Html::decode('<b style="color: red">未处理</b>');
+                            break;
+                        case 10:
+                            return Html::decode('<b style="color: green">处理中</b>');
+                            break;
+                        case 20:
+                            return Html::decode('<b style="color: black">已完成</b>');
+                    }
                 },
                 'format' => 'raw'
             ],
@@ -79,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'classify',
                 'label' => '问题类型',
                 'value' => function($data){
-                    if ($data->status !== 1){
+                    if (!$data->is_solved){
                         return '待解决';
                     }else{
                         $arr = Yii::$app->params['order_classify'];
@@ -92,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'=>'解决时间',
                 'attribute' => 'solve_time',
                 'value' => function($data){
-                    return $data->status == 1 ? date('Y-m-d', $data->solve_time) : '--';
+                    return $data->is_solved ? date('Y-m-d', $data->solve_time) : '--';
                 },
             ],
             [
@@ -101,7 +110,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{view} {update} {delete} {solve}',
                 'buttons' => [
                     'solve' => function($url, $model, $key){
-                        return $model->status == 1 ? '' : Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, ['title' => '处理']);
+                        return $model->is_solved ? '' : Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, ['title' => '处理']);
                     }
                 ],
                 'headerOptions' => ['width' => '10%'],

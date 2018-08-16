@@ -52,7 +52,7 @@ use app\models\Order;
         </div>
 
         <div class="col-lg-2">
-            <?php  echo $form->field($model, 'status')->dropDownList(Order::statusList(), ['prompt'=>'是否解决'])->label(false) ?>
+            <?php  echo $form->field($model, 'status')->dropDownList(Yii::$app->params['order_status'], ['prompt'=>'是否完成'])->label(false) ?>
         </div>
         <div class="col-lg-2">
             <?php  echo $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'], ['prompt'=>'问题归类'])->label(false) ?>

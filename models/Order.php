@@ -18,6 +18,7 @@ class Order extends FaOrder
     const EVENT_AFTER_SOLVE = 'event_after_solve';
 
     private $remark_view;
+    private $is_solved;
 
     public function init()
     {
@@ -80,7 +81,7 @@ class Order extends FaOrder
     public function afterSolve()
     {
         $this->solve_time = time();
-        $this->status = 1;
+        $this->status = 20;
         $this->save();
     }
 
@@ -137,14 +138,6 @@ class Order extends FaOrder
         return $this->hasOne(User::class, ['id' => 'solve_user']);
     }
 
-    public static function statusList()
-    {
-        return [
-            0 => '未解决',
-            1 => '已解决',
-        ];
-    }
-
     /**
      * 首页显示的备注 截取100字符（太长会影响页面结构
      * @return string
@@ -152,6 +145,11 @@ class Order extends FaOrder
     public function getRemark_view()
     {
         return $this->remark_view = mb_strlen($this->remark) > 100 ? mb_substr($this->remark, 0, 100) . '…' : $this->remark;
+    }
+
+    public function getIs_solved()
+    {
+        return $this->is_solved = $this->status == 20 ? true : false;
     }
 
 

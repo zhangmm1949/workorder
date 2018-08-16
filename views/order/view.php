@@ -50,17 +50,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             ['attribute' => 'tags'],
             ['attribute' => 'status','value'=> function($data){
-                return $data->status == 1 ? '已完成' : '未完成';
+                $status = Yii::$app->params['order_status'];
+                return $status[$data->status];
             }],
             ['attribute' => 'solver.user_name','label'=>'解决人'],
             ['attribute'=>'solve_time', 'value'=>function($data){
-                return $data->status == 1 ? date('Y-m-d H:i:s') : '--';
+                return $data->is_solved ? date('Y-m-d H:i:s') : '--';
             }],
             [
                 'attribute' => 'classify',
                 'label' => '问题类型',
                 'value' => function($data){
-                    if ($data->status !== 1){
+                    if (!$data->is_solved){
                         return '待解决';
                     }else{
                         $arr = Yii::$app->params['order_classify'];
