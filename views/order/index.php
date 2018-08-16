@@ -19,6 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //        'filterModel' => $searchModel,
         'columns' => [
 //            'order_sn',
+            'id',
             [
                 'label' => '发起人',
                 'attribute' => 'present_user',
