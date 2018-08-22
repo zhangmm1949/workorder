@@ -35,6 +35,7 @@ class Order extends FaOrder
         return [
             [['present_user', 'system', 'level', 'title', 'content'], 'required', 'message'=>'不能为空'],
             [['solve_user', 'classify'], 'required', 'on'=>'solve'], //只在solve场景下验证
+            [['solve_user'], 'default', 'value'=>0],
             [['present_user', 'present_time', 'system', 'level', 'status', 'solve_user', 'solve_time', 'classify'], 'integer'],
             [['content'], 'string'],
             [['title'], 'string', 'max' => 200],
