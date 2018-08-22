@@ -33,3 +33,6 @@ tests/_support/_generated
 /.vagrant
 
 ../web/upload/
+
+# 本地配置
+/config/local_params.php
