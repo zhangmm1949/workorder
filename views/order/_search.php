@@ -3,7 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
-use app\models\DictData;
 use app\models\Order;
 
 /* @var $this yii\web\View */
@@ -28,10 +27,10 @@ use app\models\Order;
                 <?php
                 echo DatePicker::widget([
                     'name' => 'OrderSearch[start_at]',
-                    'value' => '',
+                    'value' => empty($model->start_at) ? '' : $model->start_at,
                     'type' => DatePicker::TYPE_RANGE,
                     'name2' => 'OrderSearch[end_at]',
-                    'value2' => '',
+                    'value2' => empty($model->end_at) ? '' : $model->end_at,
                     'options' => ['placeholder' => '发起时间-开始日期'],
                     'options2' => ['placeholder' => '发起时间-截止日期'],
                     'pluginOptions' => [

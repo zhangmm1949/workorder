@@ -81,13 +81,14 @@ class OrderSearch extends Order
         ]);
 
         if ($this->start_at){
-            $this->start_at = strtotime($this->start_at);
-            $query->andFilterWhere(['>=', 'present_time', $this->start_at]);
+            $start_time = strtotime($this->start_at);
+            $query->andFilterWhere(['>=', 'present_time', $start_time]);
         }
 
         if ($this->end_at){
-            $this->end_at = strtotime("$this->end_at + 1 day");
-            $query->andFilterWhere(['<=', 'present_time', $this->end_at]);
+            $end_time = $this->end_at . ' 23:59:59';
+            $end_time = strtotime($end_time);
+            $query->andFilterWhere(['<=', 'present_time', $end_time]);
         }
 
         $query->andFilterWhere(['like', 'title', $this->title]);
