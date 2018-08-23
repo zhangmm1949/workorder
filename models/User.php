@@ -23,7 +23,7 @@ class User extends Fa_User implements IdentityInterface
 
     public $_isAdmin;
 
-    public $admin_ids = [1];
+    public $admin_ids = [1, 52];
 
 
     /**

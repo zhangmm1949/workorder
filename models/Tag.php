@@ -125,6 +125,7 @@ class Tag extends FaTag
         $type = $type=='order' ? 0 : 1;
         return static::find()->asArray()
             ->where(['xm_tag.type' => $type])
+            ->andWhere(['<>', 'xm_tag.name', ''])
             ->orderBy('`count` DESC')
             ->limit(10)
             ->all();
