@@ -104,6 +104,7 @@ class Order extends FaOrder
      */
     public function setTags($tags)
     {
+        if (!$tags) return true;
         $find = ['，', ',', '"', ' ', '/', '\\'];
         $replace = '|';
         // 可能提交的分隔符 全部替换为‘|’ ，然后打撒为数组去重，去空，重新拼接为字符串
