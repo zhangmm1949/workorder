@@ -52,14 +52,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw'
             ],
-            /*[
+            [
                 'attribute' => 'level',
                 'label' => '级别',
                 'value' => function($data){
                     $level_arr = Yii::$app->params['order_level'];
                     return $level_arr[$data->level];
                 }
-            ],*/
+            ],
             [
                 'label' => '进度',
                 'attribute' => 'status',
