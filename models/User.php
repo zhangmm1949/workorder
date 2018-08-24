@@ -19,11 +19,11 @@ class User extends Fa_User implements IdentityInterface
     // 用户可用
     const STATUS_ENABLE = 1;
     // 用户不可用
-    const STATUS_DISABLE = 2;
+    const STATUS_DISABLE = 0;
 
     public $_isAdmin;
 
-    public $admin_ids = [1, 52];
+    public $admin_ids = [1, 49, 52];// 张萌萌 彭太升 管东岳
 
 
     /**
@@ -63,6 +63,20 @@ class User extends Fa_User implements IdentityInterface
         return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
             ':email' => $name,
             ':name' => $name,
+            ':status' => self::STATUS_ENABLE,
+        ])->one();
+    }
+
+    /**
+     * Finds user by email prefix
+     *
+     * @param $email_pre string email prefix
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function findByEmailPre($email_pre)
+    {
+        return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
+            ':email' => $email_pre . 'xiaomi.com',
             ':status' => self::STATUS_ENABLE,
         ])->one();
     }
