@@ -6,9 +6,9 @@
  * Time: 下午2:20
  */
 $local_config = [
-    'db.dsn'        =>  'mysql:host=127.0.0.1;dbname=myblog',
-    'db.username'   =>  '',
-    'db.password'   =>  '',
+    'db.dsn'        =>  'mysql:host=10.236.134.245;dbname=myblog',
+    'db.username'   =>  'imor',
+    'db.password'   =>  'imor',
 
-    'gii.allowedIPs' => ['127.0.0.1', '::1'],
+    'gii.allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '10.236.134.*'],
 ];
