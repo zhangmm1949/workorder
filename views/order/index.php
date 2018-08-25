@@ -32,9 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'title',
+                'value' => function($data){
+                    return Html::a($data->title,'/order/view/?id='.$data->id);
+                },
                 'options' => [
                     'width' => '20%'
                 ],
+                'format' => 'raw',
             ],
             [
                 'attribute' => 'system',
