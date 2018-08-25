@@ -32,9 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'title',
+                'value' => function($data){
+                    return Html::a($data->title,'/order/view/?id='.$data->id);
+                },
                 'options' => [
                     'width' => '20%'
                 ],
+                'format' => 'raw',
             ],
             [
                 'attribute' => 'system',
@@ -57,8 +61,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '级别',
                 'value' => function($data){
                     $level_arr = Yii::$app->params['order_level'];
-                    return $level_arr[$data->level];
-                }
+                    if ($data->level == 1){
+                        return Html::decode('<b style="color: red">P0</b>');
+                    }else{
+                        return $level_arr[$data->level];
+                    }
+                },
+                'format' => 'raw',
             ],
             [
                 'label' => '进度',
