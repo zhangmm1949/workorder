@@ -120,11 +120,9 @@ class OrderController extends Controller
      */
     public function actionReply()
     {
-        $order = Order::findOne(8);
-
-        $tag = new Tag();
-        $tag->updateTags($order, 'insert');
-
+        $cache = Yii::$app->cache;
+//        $cache->set('a', 'Aa',30);
+        var_dump($cache->get('a'));
     }
 
     /**
@@ -178,7 +176,7 @@ class OrderController extends Controller
         $this->layout = false;
         $model = $this->findModel($id);
 
-        $html = $this->render('pdf', ['model' => $model]);
+        $html = $this->render('view', ['model' => $model]);
 
         $cssInline = <<<EOF
     html,body{
