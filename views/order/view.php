@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             }],
             ['attribute' => 'solver.user_name','label'=>'解决人'],
             ['attribute'=>'solve_time', 'value'=>function($data){
-                return $data->is_solved ? date('Y-m-d H:i:s') : '--';
+                return $data->is_solved ? date('Y-m-d H:i:s', $data->solve_time) : '--';
             }],
             [
                 'attribute' => 'classify',
