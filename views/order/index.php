@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '级别',
                 'value' => function($data){
                     $level_arr = Yii::$app->params['order_level'];
-                    if ($data->level == 1){
+                    if ($data->level == 1 && !$data->is_solved){
                         return Html::decode('<b style="color: red">P0</b>');
                     }else{
                         return $level_arr[$data->level];
