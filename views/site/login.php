@@ -55,9 +55,16 @@ $fieldOptions2 = [
         <?php ActiveForm::end(); ?>
         <!-- /.social-auth-links -->
 
-        <a href="#" id="forget" onclick="return alert('那可咋整？');">忘记密码</a><br>
+        <a href="#" id="forget">忘记密码</a><br>
         <a href="<?php echo Url::to(['site/register']);?>" class="text-center">注册新用户</a>
 
     </div>
     <!-- /.login-box-body -->
 </div><!-- /.login-box -->
+<script>
+    $("#forget").click(function() {
+        var admin_email = '<?= Yii::$app->params['adminEmail']; ?>';
+        var str = '请联系管理员（' + admin_email + '）重置密码';
+        alert(str);
+    })
+</script>
