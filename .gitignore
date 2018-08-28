@@ -35,4 +35,4 @@ tests/_support/_generated
 ../web/upload/
 
 # 本地配置
-config/local_config.php
+/config/local_config.php
