@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => $local_config['adminEmail'],
 
     // 工单模块配置：
     # 所属系统
