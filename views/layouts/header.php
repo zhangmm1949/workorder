@@ -38,7 +38,7 @@ use yii\helpers\Html;
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="<?= Yii::$app->urlManager->createUrl(['/user/revise-password', 'id'=>Yii::$app->user->id])?>" class="btn btn-default btn-flat">修改密码</a>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(

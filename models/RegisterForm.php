@@ -64,7 +64,7 @@ class RegisterForm extends Model
         // 生成 "remember me" 认证key
         $user->generateAuthKey();
 
-        // save(false)，不调用UserBackend的rules再做校验
+        // save(false)，不调用User的rules再做校验
         return $user->save(false);
     }
 

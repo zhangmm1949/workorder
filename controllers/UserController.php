@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\PasswordForm;
 use app\models\RegisterForm;
 use Yii;
 use app\models\User;
@@ -108,8 +109,12 @@ class UserController extends Controller
     /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * @param $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -132,5 +137,24 @@ class UserController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\web\Response
+     */
+    public function actionRevisePassword($id)
+    {
+        $model = new PasswordForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->revise()) {
+            return $this->redirect(['view', 'id' => $id]);
+        } else {
+            return $this->render('password', [
+                'model' => $model,
+                'id' => $id,
+            ]);
+        }
+
     }
 }
