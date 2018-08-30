@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/local_config.php';
+$local_config = require __DIR__ . '/local_config.php';
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -12,6 +12,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@mdm/admin' => '@vendor/mdmsoft/yii2-admin',
     ],
     'components' => [
         'request' => [
@@ -60,10 +61,30 @@ $config = [
                 ],
             ],
         ],
+
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', //权限控制类
+            'defaultRoles' => ['guest'],
+        ],
     ],
 
     'modules' => [
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'layout' => 'left-menu' //页面布局
+        ],
     ],
+
+
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            //这里是允许访问的action，不受权限控制 格式： controller/action
+            '*',
+        ]
+    ],
+
+
 
     'params' => $params,
 ];
