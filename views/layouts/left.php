@@ -1,3 +1,6 @@
+<?php
+use yii\helpers\Url;
+?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -42,7 +45,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-                            ['label' => '数据字典', 'icon' => 'dashboard', 'url' => ['/dict-data'],],
+                            ['label' => '用户权限管理', 'icon' => 'dashboard', 'url' =>'/admin',],
                             /*[
                                 'label' => 'Level One',
                                 'icon' => 'circle-o',
