@@ -50,6 +50,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="row">
+        <div class="col-lg-3">
+            <?= $form
+                ->field($model, 'user_systems')
+                ->label('关联系统')
+                ->checkboxList(Yii::$app->params['order_systems']) ?>
+        </div>
+    </div>
+
+    <div class="row">
         <!-- /.col -->
         <div class="col-xs-4">
             <?= Html::submitButton('提交', ['class' => 'btn btn-success', 'name' => 'login-button']) ?>

@@ -18,6 +18,7 @@ class RegisterForm extends Model
     public $password;
     public $re_password;
     public $created_at;
+    public $user_systems;
 
     public function rules()
     {
@@ -40,6 +41,8 @@ class RegisterForm extends Model
             ['re_password', 'compare', 'compareAttribute'=>'password','message'=>'两次密码不一致'],
 
             ['created_at', 'default', 'value' => time()],
+
+            [['user_systems'], 'required', 'message'=>'关联系统不能为空', 'on'=>'user_create'], //on 表示只有在user_create场景下验证
         ];
     }
 

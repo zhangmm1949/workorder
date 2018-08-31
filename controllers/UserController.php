@@ -77,6 +77,7 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new RegisterForm();
+        $model->setScenario('user_create'); // 验证场景
 
         if ($model->load(Yii::$app->request->post()) && $model->register()) {
             return $this->redirect(['index']);
