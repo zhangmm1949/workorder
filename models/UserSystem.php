@@ -14,8 +14,10 @@ use yii\base\Event;
 
 class UserSystem extends Fa_Class
 {
+
     /**
-     * @param $event Event 绑定的事件
+     * @param $event
+     * @return bool
      * @throws \yii\db\Exception
      */
     public static function updateUserSystems($event)
@@ -46,7 +48,10 @@ class UserSystem extends Fa_Class
             case 'delete' :
                 self::deleteAll(['user_id'=>$user->id]);
                 break;
+            default :
+                return true;
         }
+        return true;
     }
 
     /**
