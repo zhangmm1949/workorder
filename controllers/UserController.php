@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\PasswordForm;
 use app\models\RegisterForm;
+use app\models\UserSystem;
 use Yii;
 use app\models\User;
 use app\models\UserSearch;
@@ -157,5 +158,14 @@ class UserController extends Controller
             ]);
         }
 
+    }
+
+    public function actionTest(){
+        $rows = [
+            0 =>['user_id' => 75,'system_id' => 1],
+            1 =>['user_id' => 75,'system_id' => 3],
+            2 =>['user_id' => 75,'system_id' => 7],
+        ];
+        return Yii::$app->db->createCommand()->batchInsert(UserSystem::tableName(),['user_id', 'system_id'], $rows)->getRawSql();
     }
 }

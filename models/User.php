@@ -21,9 +21,22 @@ class User extends Fa_User implements IdentityInterface
     // 用户不可用
     const STATUS_DISABLE = 0;
 
+    private $userSystems;
+
+    public $systems;
+
     public $_isAdmin;
 
     public $admin_ids = [1, 47, 49, 52];// 张萌萌 杨恩 彭太升 管东岳
+
+
+    public function init()
+    {
+        parent::init();
+        $this->on(self::EVENT_AFTER_INSERT,[UserSystem::class, 'updateUserSystems'],'insert');
+        $this->on(self::EVENT_AFTER_UPDATE,[UserSystem::class, 'updateUserSystems'],'update');
+        $this->on(self::EVENT_AFTER_DELETE,[UserSystem::class, 'updateUserSystems'],'delete');
+    }
 
 
     /**
@@ -141,6 +154,11 @@ class User extends Fa_User implements IdentityInterface
     public function getIsAdmin()
     {
         return $this->_isAdmin = in_array($this->id, $this->admin_ids);
+    }
+
+    public function getUserSystems()
+    {
+        return ;
     }
 
 }

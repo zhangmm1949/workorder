@@ -62,6 +62,9 @@ class RegisterForm extends Model
         $user->user_name = $this->user_name;
         $user->email = $this->email;
         $user->created_at = $this->created_at;
+        if ($this->user_systems){
+            $user->systems = $this->user_systems;
+        }
 
         $user->setPassword($this->password);
         // 生成 "remember me" 认证key
