@@ -18,7 +18,7 @@ class UserSystem extends Fa_Class
      * @param $event Event 绑定的事件
      * @throws \yii\db\Exception
      */
-    public function updateUserSystems($event)
+    public static function updateUserSystems($event)
     {
         $user = $event->sender;
         $action = $event->data;
@@ -29,11 +29,14 @@ class UserSystem extends Fa_Class
                  * 这样写，foreach 中操作的其实是同一个对象，所以只会保存最新一条记录。
                  * 可以每次循环都 new Class , 也可以按下面批量写入方式（insertUserSystems()）
                  */
-                /*foreach ($user->systems as $item){
-                    $user_system->user_id = $user->id;
-                    $user_system->system_id = $item;
-                    $user_system->save();
-                }*/
+                /*
+                    $user_system = new UserSystem();
+                    foreach ($user->systems as $item){
+                        $user_system->user_id = $user->id;
+                        $user_system->system_id = $item;
+                        $user_system->save();
+                    }
+                */
                 self::insertUserSystems($user->id, $user->systems);
                 break;
             case 'update' :
