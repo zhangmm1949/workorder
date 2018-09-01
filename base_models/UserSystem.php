@@ -27,8 +27,8 @@ class UserSystem extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'system_id'], 'required'],
             [['user_id', 'system_id'], 'integer'],
+            [['user_id', 'system_id'], 'unique', 'targetAttribute' => ['user_id', 'system_id']],
         ];
     }
 
