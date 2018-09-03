@@ -25,9 +25,13 @@ class User extends Fa_User implements IdentityInterface
 
     public $systems;
 
-    public $_isAdmin;
+    private $isAdmin;
 
     public $admin_ids = [1, 47, 49, 52];// 张萌萌 杨恩 彭太升 管东岳
+
+    private $isSuperAdmin;
+
+    public $superAdmin = [1];
 
 
     public function init()
@@ -153,12 +157,17 @@ class User extends Fa_User implements IdentityInterface
 
     public function getIsAdmin()
     {
-        return $this->_isAdmin = in_array($this->id, $this->admin_ids);
+        return $this->isAdmin = in_array($this->id, $this->admin_ids);
     }
 
     public function getUserSystems()
     {
         return ;
+    }
+
+    public function getIsSuperAdmin()
+    {
+        return $this->isSuperAdmin = in_array($this->id, $this->superAdmin);
     }
 
 }
