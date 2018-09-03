@@ -25,7 +25,7 @@
             </div>
         </form>-->
         <!-- /.search form -->
-        <?php if (Yii::$app->user->identity->user_name == 'admin') : ?>
+        <?php if (Yii::$app->user->identity->isSuperAdmin) : ?>
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
