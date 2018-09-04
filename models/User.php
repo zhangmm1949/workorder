@@ -22,15 +22,10 @@ class User extends Fa_User implements IdentityInterface
     const STATUS_DISABLE = 0;
 
     private $userSystems;
-
     public $systems;
-
     private $isAdmin;
-
     public $admin_ids = [1, 47, 49, 52];// 张萌萌 杨恩 彭太升 管东岳
-
     private $isSuperAdmin;
-
     public $superAdmin = [1];
 
 
@@ -162,7 +157,7 @@ class User extends Fa_User implements IdentityInterface
 
     public function getUserSystems()
     {
-        return ;
+        return $this->userSystems = [];
     }
 
     public function getIsSuperAdmin()
