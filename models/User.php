@@ -19,11 +19,11 @@ class User extends Fa_User implements IdentityInterface
     // 用户可用
     const STATUS_ENABLE = 1;
 
-    public $systems;
+    public  $systems;
     private $isAdmin;
-    public $admin_ids = [1, 47, 49, 52];// 张萌萌 杨恩 彭太升 管东岳
+    public  $admin_ids = [1, 47, 49, 52];// 张萌萌 杨恩 彭太升 管东岳
     private $isSuperAdmin;
-    public $superAdmin = [1];
+    public  $superAdmin = [1];
 
 
     public function init()
@@ -151,12 +151,27 @@ class User extends Fa_User implements IdentityInterface
         return ArrayHelper::map($data, 'id', 'user_name');
     }
 
+    /**
+     * 获取可以解决当前系统问题的用户列表
+     * @param $sys_id int 系统ID
+     * @return array
+     */
+    public static function getSolverList($sys_id)
+    {
+        $user_ids = array_column(UserSystem::find()->asArray()->where(['system_id'=>intval($sys_id)])->all(), 'user_id');
+        $users = self::find()->asArray()
+            ->where(['IN', 'id', $user_ids])
+            ->all();
+
+        return ArrayHelper::map($users, 'id', 'user_name');
+    }
+
     public function getIsAdmin()
     {
         return $this->isAdmin = in_array($this->id, $this->admin_ids);
     }
 
-    public function getUserSystems()
+    public function getUserSystemIds()
     {
         $data = array_column(UserSystem::find()->asArray()->select('system_id')->where(['user_id'=>$this->id])->all(), 'system_id');
         return $data;
