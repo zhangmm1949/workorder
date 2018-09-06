@@ -120,6 +120,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'buttons' => [
                     'solve' => function($url, $model, $key){
                         return $model->is_solved ? '' : Html::a('<span class="glyphicon glyphicon-ok"></span>', $url, ['title' => '处理']);
+                    },
+                    'delete' => function($url, $model, $key){
+                        return Yii::$app->user->identity->isAdmin ? Html::a('<span class="glyphicon glyphicon-trash"></span>',$url, ['title' => '删除', 'data-method' => 'post', 'data-confirm' => Yii::t('yii', '确定要删除这条记录吗？')]) : '';
                     }
                 ],
                 'headerOptions' => ['width' => '10%'],
