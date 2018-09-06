@@ -5,22 +5,22 @@ namespace app\base_models;
 use Yii;
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "xm_user".
  *
- * @property integer $id
- * @property string $user_name
+ * @property int $id ID
+ * @property string $user_name 用户名
  * @property string $auth_key
- * @property string $password
- * @property string $email
- * @property string $tel
- * @property integer $department_id
- * @property integer $status
- * @property integer $created_at
+ * @property string $password 密码
+ * @property string $email 邮箱
+ * @property string $tel 手机
+ * @property int $department_id 所属部门
+ * @property int $status 状态
+ * @property int $created_at 创建时间
  */
 class User extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -28,13 +28,13 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['auth_key', 'department_id', 'created_at'], 'required'],
             [['department_id', 'status', 'created_at'], 'integer'],
+            [['created_at'], 'required'],
             [['user_name'], 'string', 'max' => 30],
             [['auth_key'], 'string', 'max' => 32],
             [['password'], 'string', 'max' => 255],
@@ -46,7 +46,7 @@ class User extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
@@ -58,7 +58,7 @@ class User extends \yii\db\ActiveRecord
             'email' => '邮箱',
             'tel' => '手机',
             'department_id' => '所属部门',
-            'status' => '状态（1可用，2不可用）',
+            'status' => '状态',
             'created_at' => '创建时间',
         ];
     }
