@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = '处理工单';
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'solve_user')->dropDownList(User::getUserList(), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
+        <?= $form->field($model, 'solve_user')->dropDownList(User::getSolverList($model->system), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
 
         <?= $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'],['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
 
