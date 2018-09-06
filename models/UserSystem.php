@@ -10,7 +10,6 @@ namespace app\models;
 
 use app\base_models\UserSystem as Fa_Class;
 use Yii;
-use yii\base\Event;
 
 class UserSystem extends Fa_Class
 {
@@ -39,6 +38,7 @@ class UserSystem extends Fa_Class
                         $user_system->save();
                     }
                 */
+                if (!$user->systems) return true; //注册时systems为空
                 self::insertUserSystems($user->id, $user->systems);
                 break;
             case 'update' :
