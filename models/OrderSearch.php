@@ -14,7 +14,6 @@ class OrderSearch extends Order
     public $start_at;
     public $end_at;
 
-    public $user_name;
     /**
      * @inheritdoc
      */

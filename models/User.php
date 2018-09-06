@@ -18,10 +18,7 @@ class User extends Fa_User implements IdentityInterface
 {
     // 用户可用
     const STATUS_ENABLE = 1;
-    // 用户不可用
-    const STATUS_DISABLE = 0;
 
-    private $userSystems;
     public $systems;
     private $isAdmin;
     public $admin_ids = [1, 47, 49, 52];// 张萌萌 杨恩 彭太升 管东岳
@@ -35,6 +32,22 @@ class User extends Fa_User implements IdentityInterface
         $this->on(self::EVENT_AFTER_INSERT,[UserSystem::class, 'updateUserSystems'],'insert');
         $this->on(self::EVENT_AFTER_UPDATE,[UserSystem::class, 'updateUserSystems'],'update');
         $this->on(self::EVENT_AFTER_DELETE,[UserSystem::class, 'updateUserSystems'],'delete');
+    }
+
+    public function rules()
+    {
+        return [
+            [['department_id', 'status', 'created_at'], 'integer'],
+            [['created_at'], 'required'],
+            [['user_name'], 'string', 'max' => 30],
+            [['auth_key'], 'string', 'max' => 32],
+            [['password'], 'string', 'max' => 255],
+            [['email'], 'string', 'max' => 60],
+            [['tel'], 'string', 'max' => 20],
+            [['user_name'], 'unique'],
+            [['email'], 'unique'],
+            [['systems'], 'required', 'message'=>'关联系统不能为空'],
+        ];
     }
 
 
@@ -65,7 +78,8 @@ class User extends Fa_User implements IdentityInterface
 
 
     /**
-     * Finds user by name
+     * Finds user by name OR Email prefix
+     * Email prefix 登录方式仅限小米公司邮箱用户使用
      *
      * @param  string      $name
      * @return mixed  User Model|null
@@ -73,25 +87,12 @@ class User extends Fa_User implements IdentityInterface
     public static function findByUsername($name)
     {
         return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
-            ':email' => $name,
+            ':email' => $name . '@xiaomi.com',
             ':name' => $name,
             ':status' => self::STATUS_ENABLE,
         ])->one();
     }
 
-    /**
-     * Finds user by email prefix
-     *
-     * @param $email_pre string email prefix
-     * @return array|null|\yii\db\ActiveRecord
-     */
-    public static function findByEmailPre($email_pre)
-    {
-        return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
-            ':email' => $email_pre . 'xiaomi.com',
-            ':status' => self::STATUS_ENABLE,
-        ])->one();
-    }
 
     /**
      * @inheritdoc
@@ -157,7 +158,8 @@ class User extends Fa_User implements IdentityInterface
 
     public function getUserSystems()
     {
-        return $this->userSystems = [];
+        $data = array_column(UserSystem::find()->asArray()->select('system_id')->where(['user_id'=>$this->id])->all(), 'system_id');
+        return $data;
     }
 
     public function getIsSuperAdmin()
