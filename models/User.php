@@ -18,8 +18,6 @@ class User extends Fa_User implements IdentityInterface
 {
     // 用户可用
     const STATUS_ENABLE = 1;
-    // 用户不可用
-    const STATUS_DISABLE = 0;
 
     private $userSystems;
     public $systems;
@@ -65,7 +63,8 @@ class User extends Fa_User implements IdentityInterface
 
 
     /**
-     * Finds user by name
+     * Finds user by name OR Email prefix
+     * Email prefix 登录方式仅限小米公司邮箱用户使用
      *
      * @param  string      $name
      * @return mixed  User Model|null
@@ -73,25 +72,12 @@ class User extends Fa_User implements IdentityInterface
     public static function findByUsername($name)
     {
         return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
-            ':email' => $name,
+            ':email' => $name . '@xiaomi.com',
             ':name' => $name,
             ':status' => self::STATUS_ENABLE,
         ])->one();
     }
 
-    /**
-     * Finds user by email prefix
-     *
-     * @param $email_pre string email prefix
-     * @return array|null|\yii\db\ActiveRecord
-     */
-    public static function findByEmailPre($email_pre)
-    {
-        return static::find()->where('(email=:email OR user_name=:name) AND status=:status', [
-            ':email' => $email_pre . 'xiaomi.com',
-            ':status' => self::STATUS_ENABLE,
-        ])->one();
-    }
 
     /**
      * @inheritdoc
