@@ -28,7 +28,7 @@ use kucha\ueditor\UEditor;
 
     <?= $form->field($model, 'content')->widget(UEditor::class,['clientOptions' => Yii::$app->params['UEditor_clientOptions']]) ?>
 
-    <?= $form->field($model, 'solve_user')->dropDownList(User::getUserList(), ['prompt'=>'请选择', 'style'=>'width:20%'])->label('跟进人') ?>
+    <?= $form->field($model, 'solve_user')->dropDownList(\app\models\Order::getSolverList($model->system), ['prompt'=>'请选择', 'style'=>'width:20%'])->label('跟进人') ?>
 
     <?= $form->field($model, 'status')->dropDownList($model->is_solved  ? Yii::$app->params['order_status'] : array_diff(Yii::$app->params['order_status'],['已完成']), ['style'=>'width:20%'])?>
 
