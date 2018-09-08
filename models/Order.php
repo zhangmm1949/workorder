@@ -12,6 +12,7 @@ use app\base_models\Order as FaOrder;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class Order extends FaOrder
 {
@@ -84,6 +85,22 @@ class Order extends FaOrder
         $this->solve_time = time();
         $this->status = 20;
         $this->save();
+    }
+
+    /**
+     * 获取可以解决当前系统问题的用户列表
+     * @param $sys_id int 系统ID
+     * @return array
+     */
+    public static function getSolverList($sys_id)
+    {
+        $user_ids = array_column(UserSystem::find()->asArray()->where(['system_id'=>intval($sys_id)])->all(), 'user_id');
+        $users = User::find()->asArray()
+            ->where(['IN', 'id', $user_ids])
+            ->andWhere(['department_id'=>0])
+            ->all();
+
+        return ArrayHelper::map($users, 'id', 'user_name');
     }
 
     /**
