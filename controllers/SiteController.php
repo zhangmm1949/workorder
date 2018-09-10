@@ -148,6 +148,21 @@ class SiteController extends Controller
 
     public function actionTest()
     {
-        var_dump(Yii::getVersion());
+        $insert = 'test';
+        $file = 'sql.php';
+
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header('Content-Description: File Transfer');
+        header('Content-Encoding: UTF-8');
+        header("Content-Type: application/txt; charset=UTF-8");
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header("Content-Disposition: attachment;filename={$file}");
+        header("Content-Transfer-Encoding: binary ");
+
+        echo $insert;
     }
 }
