@@ -156,12 +156,6 @@ class User extends Fa_User implements IdentityInterface
         return $this->isAdmin = in_array($this->id, $this->admin_ids);
     }
 
-    public function getUserSystemIds()
-    {
-        $data = array_column(UserSystem::find()->asArray()->select('system_id')->where(['user_id'=>$this->id])->all(), 'system_id');
-        return $data;
-    }
-
     public function getIsSuperAdmin()
     {
         return $this->isSuperAdmin = in_array($this->id, $this->superAdmin);

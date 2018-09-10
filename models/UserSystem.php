@@ -69,4 +69,11 @@ class UserSystem extends Fa_Class
         }
         return Yii::$app->db->createCommand()->batchInsert(UserSystem::tableName(),['user_id', 'system_id'], $rows)->execute();
     }
+
+    public static function getSystemIdsByUserId($user_id)
+    {
+        $user_id = intval($user_id);
+        $data = array_column(self::find()->asArray()->select('system_id')->where(['user_id'=>$user_id])->all(), 'system_id');
+        return $data;
+    }
 }
