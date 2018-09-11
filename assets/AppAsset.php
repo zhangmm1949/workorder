@@ -25,7 +25,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
     ];
-    public $jsOptions = ['position' => View::POS_HEAD];
+    public $jsOptions = ['position' => View::POS_HEAD]; //在头部加载js文件
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',

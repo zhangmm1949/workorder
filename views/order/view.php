@@ -53,7 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 $status = Yii::$app->params['order_status'];
                 return $status[$data->status];
             }],
-            ['attribute' => 'solver.user_name','label'=>'解决人'],
+            ['attribute' => 'solver.user_name','label'=>'解决人','value'=>function($data){
+                return isset($data->solver->user_name) ? $data->solver->user_name : '--';
+            }],
             ['attribute'=>'solve_time', 'value'=>function($data){
                 return $data->is_solved ? date('Y-m-d H:i:s', $data->solve_time) : '--';
             }],
