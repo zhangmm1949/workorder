@@ -10,7 +10,6 @@ namespace app\models;
 
 use app\base_models\Tag as FaTag;
 use Yii;
-use app\base_models\OrderTag;
 
 
 class Tag extends FaTag

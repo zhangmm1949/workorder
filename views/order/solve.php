@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = '处理工单';
                 'attribute' => 'content',
                 'format' => 'html'
             ],
-            ['attribute' =>'tags'],
+//            ['attribute' =>'tags'],
             ['attribute' => 'status','value'=> function($data){
                 return $data->status == 1 ? '已完成' : '未完成';
             }],

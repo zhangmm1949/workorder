@@ -38,7 +38,7 @@ use kucha\ueditor\UEditor;
 
     <?php endif; ?>
 
-    <?= $form->field($model, 'tags')->input('text') ?>
+<!--    --><?//= $form->field($model, 'tags')->input('text') ?>
 
     <?= $form->field($model, 'remark')->textarea() ?>
 

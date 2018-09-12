@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'content',
                 'format' => 'html'
             ],
-            ['attribute' => 'tags'],
+//            ['attribute' => 'tags'],
             ['attribute' => 'status','value'=> function($data){
                 $status = Yii::$app->params['order_status'];
                 return $status[$data->status];
