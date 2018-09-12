@@ -25,10 +25,6 @@ class Order extends FaOrder
     {
         parent::init();
         $this->on(self::EVENT_AFTER_SOLVE,[$this, 'afterSolve']);
-
-        $this->on(self::EVENT_AFTER_INSERT,[$this, 'updateOrderTag'], 'insert');
-        $this->on(self::EVENT_AFTER_UPDATE,[$this, 'updateOrderTag'], 'update');
-        $this->on(self::EVENT_AFTER_DELETE,[$this, 'updateOrderTag'], 'delete');
     }
 
     public function rules()
@@ -101,18 +97,6 @@ class Order extends FaOrder
             ->all();
 
         return ArrayHelper::map($users, 'id', 'user_name');
-    }
-
-    /**
-     * @param $data object 事件绑定中传递的参数
-     */
-    public function updateOrderTag($data)
-    {
-        $tag = new Tag();
-        $action = $data->data; //操作类型 update/insert/delete 在事件绑定中传递的参数
-
-        $tag->updateTags($this, $action);
-
     }
 
     /**
