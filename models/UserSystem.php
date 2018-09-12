@@ -38,7 +38,6 @@ class UserSystem extends Fa_Class
                         $user_system->save();
                     }
                 */
-                if (!$user->systems) return true; //注册时systems为空
                 self::insertUserSystems($user->id, $user->systems);
                 break;
             case 'update' :
@@ -62,6 +61,7 @@ class UserSystem extends Fa_Class
      * @throws \yii\db\Exception
      */
     private static function insertUserSystems($user_id, $systems){
+        if (!$systems) return true; //注册时systems为空
         $rows = [];
         foreach ($systems as $key => $value){
             $rows[$key]['user_id'] = $user_id;
