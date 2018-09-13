@@ -25,6 +25,9 @@ class Order extends FaOrder
     {
         parent::init();
         $this->on(self::EVENT_AFTER_SOLVE,[$this, 'afterSolve']);
+        $this->on(self::EVENT_AFTER_INSERT,[OrderTag::class, 'UpdateOrderTag'],'insert');
+        $this->on(self::EVENT_AFTER_UPDATE,[OrderTag::class, 'UpdateOrderTag'],'update');
+        $this->on(self::EVENT_AFTER_DELETE,[OrderTag::class, 'UpdateOrderTag'],'delete');
     }
 
     public function rules()

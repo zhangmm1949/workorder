@@ -67,7 +67,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $tags = Tag::getSortTag('order');
+//        $tags = Tag::getSortTag('order');
+        $tags = [];
         return $this->render('index',[
             'tags' => $tags,
         ]);
