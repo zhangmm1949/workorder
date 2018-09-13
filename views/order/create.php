@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $form->field($model, 'content')->widget(UEditor::class,['clientOptions' => Yii::$app->params['UEditor_clientOptions']]) ?>
 
-<!--    --><?//= $form->field($model, 'tags')->input('text', ['style' => 'width:50%']); ?>
+    <?= $form->field($model, 'tags')->input('text', ['style' => 'width:50%']); ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '提交' : '提交', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
