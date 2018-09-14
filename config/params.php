@@ -3,6 +3,9 @@ $local_config = require __DIR__ . '/local_config.php';
 
 return [
     'adminEmail' => $local_config['adminEmail'],
+    'adminEmail_password' => $local_config['adminEmail_password'],
+
+    'gii.allowedIPs' => $local_config['gii.allowedIPs'],
 
     // 工单模块配置：
     # 所属系统
