@@ -120,9 +120,12 @@ class OrderController extends Controller
      */
     public function actionReply()
     {
-        $cache = Yii::$app->cache;
-//        $cache->set('a', 'Aa',30);
-        var_dump($cache->get('a'));
+        $mail= Yii::$app->mailer->compose();
+        $mail->setTo('704369798@qq.com'); //要发送给那个人的邮箱
+        $mail->setSubject("DooTest"); //邮件主题
+//        $mail->setTextBody('测试text'); //发布纯文字文本 //无法发送
+        $mail->setHtmlBody("测试html"); //发送的消息内容
+        var_dump($mail->send());
     }
 
     /**

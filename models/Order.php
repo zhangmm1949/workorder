@@ -158,5 +158,10 @@ class Order extends FaOrder
         return $this->is_solved = $this->status == 20 ? true : false;
     }
 
+    public function Sleep()
+    {
+        sleep(5);
+    }
+
 
 }

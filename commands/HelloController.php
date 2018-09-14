@@ -31,4 +31,27 @@ class HelloController extends Controller
 
         return ExitCode::OK;
     }
+
+    public function actionSendMail()
+    {
+        $mail= \Yii::$app->mailer->compose();
+        $mail->setTo('704369798@qq.com'); //要发送给那个人的邮箱
+        $mail->setSubject("异步发送邮件"); //邮件主题
+//        $mail->setTextBody('测试text'); //发布纯文字文本 //无法发送
+        $mail->setHtmlBody("测试html 异步"); //发送的消息内容
+        var_dump($mail->send());
+    }
+
+    public function actionSendMails()
+    {
+        $users = ['704369798@qq.com','704369798@qq.com','704369798@qq.com'];
+        $messages = [];
+        foreach ($users as $k => $user) {
+            $messages[] = \Yii::$app->mailer->compose()
+                ->setTo($user)
+                ->setSubject('测试主题' . $k)
+                ->setHtmlBody('测试内容' . $k);
+        }
+        \Yii::$app->mailer->sendMultiple($messages);
+    }
 }
