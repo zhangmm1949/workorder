@@ -41,4 +41,17 @@ class HelloController extends Controller
         $mail->setHtmlBody("测试html 异步"); //发送的消息内容
         var_dump($mail->send());
     }
+
+    public function actionSendMails()
+    {
+        $users = ['704369798@qq.com','704369798@qq.com','704369798@qq.com'];
+        $messages = [];
+        foreach ($users as $k => $user) {
+            $messages[] = \Yii::$app->mailer->compose()
+                ->setTo($user)
+                ->setSubject('测试主题' . $k)
+                ->setHtmlBody('测试内容' . $k);
+        }
+        \Yii::$app->mailer->sendMultiple($messages);
+    }
 }

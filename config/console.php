@@ -48,7 +48,7 @@ $config = [
             ],
             'messageConfig'=>[
                 'charset'=>'UTF-8',
-                'from'=>['zhangmm1949@163.com'=>'Admin']
+                'from'=>['zhangmm1949@163.com'=>'zhangmm']
             ],
         ],
 
