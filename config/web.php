@@ -1,7 +1,5 @@
 <?php
 
-include __DIR__ . '/local_config.php';
-
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -40,10 +38,10 @@ $config = [
 //                'host' => 'smtp.qq.com',
                 'host' => 'smtp.163.com',
                 // 邮箱登录帐号
-                'username' => $local_config['adminEmail'],
+                'username' => $params['adminEmail'],
                 // 如果是qq邮箱，这里要填写第三方授权码，而不是你的qq登录密码，参考qq邮箱的帮助文档
                 //http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=28&&no=1001256
-                'password' => $local_config['adminEmail_password'],// 网易邮箱授权码，并非真实邮箱密码
+                'password' => $params['adminEmail_password'],// 网易邮箱授权码，并非真实邮箱密码
                 'port' => '465',
                 'encryption' => 'ssl',
             ],
@@ -98,7 +96,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        'allowedIPs' => $local_config['gii.allowedIPs'],
+        'allowedIPs' => $params['gii.allowedIPs'],
     ];
 }
 
