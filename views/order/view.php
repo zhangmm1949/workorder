@@ -17,7 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <hr/>
     <p>
         <?= Html::a('更新', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('处理', ['solve', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
+        <?php if (!$model->is_solved){
+            echo Html::a('处理', ['solve', 'id' => $model->id], ['class' => 'btn btn-danger']);
+        } ?>
         <?= Html::a('PDF', ['pdf', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
     </p>
 
