@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'WorkOrder',
+    'language'=>'zh-CN', //Ubuntu虚拟机系统语言为英语 为了使应用中显示为中文，设置应用的语言为中文
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -94,11 +95,13 @@ $config = [
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-            //这里是允许访问的action，不受权限控制 格式： controller/action
             '*',
+            //此处的action列表，允许任何人（包括游客）访问
+            //所以如果是正式环境（线上环境），不应该在这里配置任何东西，为空即可
+            //但是为了在开发环境更简单的使用，可以在此处配置你所需要的任何权限
+            //在开发完成之后，需要清空这里的配置，转而在系统里面通过RBAC配置权限
         ]
     ],
-
 
 
     'params' => $params,
