@@ -11,6 +11,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@mdm/admin' => '@vendor/mdmsoft/yii2-admin',
     ],
     'components' => [
         'request' => [
@@ -68,10 +69,6 @@ $config = [
             ],
         ],
 
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-        ],
-
         // admin-lte的配置
         'assetManager' => [
             'bundles' => [
@@ -80,14 +77,20 @@ $config = [
                 ],
             ],
         ],
+
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', //权限控制类
+            'defaultRoles' => ['guest'],
+        ],
     ],
 
     'modules' => [
         'admin' => [
             'class' => 'mdm\admin\Module',
-//            'layout' => 'left-menu', //yii2-admin的导航菜单
-        ]
+            'layout' => 'left-menu' //页面布局
+        ],
     ],
+
 
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
@@ -99,7 +102,6 @@ $config = [
             //在开发完成之后，需要清空这里的配置，转而在系统里面通过RBAC配置权限
         ]
     ],
-
 
 
     'params' => $params,
