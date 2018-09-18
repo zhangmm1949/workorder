@@ -75,5 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'remark',
         ],
+        // 'template' 属性调整表格每一行的样式
+        'template' => '<tr><th style="width:100px;">{label}</th><td style="max-width: 1500px">{value}</td></tr>',
     ]) ?>
 </div>
