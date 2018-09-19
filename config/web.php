@@ -87,7 +87,7 @@ $config = [
     'modules' => [
         'admin' => [
             'class' => 'mdm\admin\Module',
-            'layout' => 'left-menu' //页面布局
+//            'layout' => 'left-menu' //页面布局
         ],
     ],
 
