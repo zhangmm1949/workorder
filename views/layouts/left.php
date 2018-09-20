@@ -1,3 +1,6 @@
+<?php
+use yii\helpers\Url;
+?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -26,58 +29,53 @@
         </form>-->
         <!-- /.search form -->
         <?php if (Yii::$app->user->identity->isSuperAdmin) : ?>
-        <?= dmstr\widgets\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-                'items' => [
-                    ['label' => '导航菜单', 'options' => ['class' => 'header']],
-                    ['label' => '首页', 'icon' => 'menu-icon fa fa-home', 'url' => ['/site/index']],
-                    ['label' => '用户管理', 'icon' => 'menu-icon fa fa-user', 'url' => ['/user/index']],
-                    ['label' => '工单管理', 'icon' => 'dashboard', 'url' => ['/order/index']],
-                    //['label' => '投标管理', 'icon' => 'dashboard', 'url' => ['/bid/index']],
-                    ['label' => '测试模块', 'url' => ['/test/index']],
-                    [
-                        'label' => '系统管理',
-                        'icon' => 'share',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-                            ['label' => '数据字典', 'icon' => 'dashboard', 'url' => ['/dict-data'],],
-                            /*[
-                                'label' => 'Level One',
-                                'icon' => 'circle-o',
-                                'url' => '#',
-                                'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
+            <?= dmstr\widgets\Menu::widget(
+                [
+                    'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                    'items' => [
+                        ['label' => '导航菜单', 'options' => ['class' => 'header']],
+                        ['label' => '首页', 'icon' => 'menu-icon fa fa-home', 'url' => ['/site/index']],
+                        ['label' => '用户管理', 'icon' => 'menu-icon fa fa-user', 'url' => ['/user/index']],
+                        ['label' => '工单管理', 'icon' => 'dashboard', 'url' => ['/order/index']],
+                        //['label' => '投标管理', 'icon' => 'dashboard', 'url' => ['/bid/index']],
+                        ['label' => '测试模块', 'url' => ['/test/index']],
+                        [
+                            'label' => '系统管理',
+                            'icon' => 'share',
+                            'url' => '#',
+                            'items' => [
+                                ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
+                                [
+                                    'label' => '用户权限管理',
+                                    'icon' => 'circle-o',
+                                    'url' => '#',
+                                    'items' => [
+                                        ['label' => '分配', 'icon' => 'dashboard', 'url' =>['/admin/assignment'],],
+                                        ['label' => '角色列表', 'icon' => 'dashboard', 'url' =>['/admin/role'],],
+                                        ['label' => '权限列表', 'icon' => 'dashboard', 'url' =>['/admin/permission'],],
+                                        ['label' => '路由列表', 'icon' => 'dashboard', 'url' =>['/admin/route'],],
+//                                    ['label' => '规则列表', 'icon' => 'dashboard', 'url' =>['/admin/rule'],],
+                                        ['label' => '菜单列表', 'icon' => 'dashboard', 'url' =>['/admin/menu'],],
                                     ],
                                 ],
-                            ],*/
+                            ],
                         ],
                     ],
-                ],
-            ]
-        ) ?>
+                ]
+            ) ?>
         <?php else: ?>
-        <?= dmstr\widgets\Menu::widget(
-            [
-                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-                'items' => [
-                    ['label' => '导航菜单', 'options' => ['class' => 'header']],
-                    ['label' => '首页', 'icon' => 'menu-icon fa fa-home', 'url' => ['/site/index']],
-                    ['label' => '工单管理', 'icon' => 'dashboard', 'url' => ['/order/index']],
-                    //['label' => '投标管理', 'icon' => 'dashboard', 'url' => ['/bid/index']],
-                    ['label' => '测试模块', 'url' => ['/test/index']],
-                ],
-            ]
-        ) ?>
+            <?= dmstr\widgets\Menu::widget(
+                [
+                    'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                    'items' => [
+                        ['label' => '导航菜单', 'options' => ['class' => 'header']],
+                        ['label' => '首页', 'icon' => 'menu-icon fa fa-home', 'url' => ['/site/index']],
+                        ['label' => '工单管理', 'icon' => 'dashboard', 'url' => ['/order/index']],
+                        //['label' => '投标管理', 'icon' => 'dashboard', 'url' => ['/bid/index']],
+                        ['label' => '测试模块', 'url' => ['/test/index']],
+                    ],
+                ]
+            ) ?>
         <?php endif; ?>
     </section>
 
