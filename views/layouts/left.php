@@ -45,24 +45,19 @@ use yii\helpers\Url;
                         'url' => '#',
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-                            ['label' => '用户权限管理', 'icon' => 'dashboard', 'url' =>'/admin',],
-                            /*[
-                                'label' => 'Level One',
+                            [
+                                'label' => '用户权限管理',
                                 'icon' => 'circle-o',
                                 'url' => '#',
                                 'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
-                                    ],
+                                    ['label' => '分配', 'icon' => 'dashboard', 'url' =>['/admin/assignment'],],
+                                    ['label' => '角色列表', 'icon' => 'dashboard', 'url' =>['/admin/role'],],
+                                    ['label' => '权限列表', 'icon' => 'dashboard', 'url' =>['/admin/permission'],],
+                                    ['label' => '路由列表', 'icon' => 'dashboard', 'url' =>['/admin/route'],],
+//                                    ['label' => '规则列表', 'icon' => 'dashboard', 'url' =>['/admin/rule'],],
+                                    ['label' => '菜单列表', 'icon' => 'dashboard', 'url' =>['/admin/menu'],],
                                 ],
-                            ],*/
+                            ],
                         ],
                     ],
                 ],
