@@ -1,6 +1,3 @@
-<?php
-use yii\helpers\Url;
-?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
