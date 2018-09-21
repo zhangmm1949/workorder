@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\common\PdfHelper;
-use app\models\Tag;
 use Yii;
 use app\models\Order;
 use app\models\OrderSearch;
