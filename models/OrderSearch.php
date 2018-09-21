@@ -89,6 +89,13 @@ class OrderSearch extends Order
             $query->andFilterWhere(['<=', 'present_time', $end_time]);
         }
 
+        if ($this->start_at && $this->end_at){
+            $start_time = strtotime($this->start_at);
+            $end_time = $this->end_at . ' 23:59:59';
+            $end_time = strtotime($end_time);
+            $query->where("((present_time > $start_time AND present_time < $end_time) OR (solve_time > $start_time AND solve_time < $end_time))");
+        }
+
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
