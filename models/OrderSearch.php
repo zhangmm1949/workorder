@@ -69,15 +69,6 @@ class OrderSearch extends Order
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'present_user' => $this->present_user,
-            'solve_user' => $this->solve_user,
-            'system' => $this->system,
-            'xm_order.status' => $this->status,
-            'xm_order.classify' => $this->classify,
-        ]);
-
         if ($this->start_at){
             $start_time = strtotime($this->start_at);
             $query->andFilterWhere(['>=', 'present_time', $start_time]);
@@ -95,6 +86,15 @@ class OrderSearch extends Order
             $end_time = strtotime($end_time);
             $query->where("((present_time > $start_time AND present_time < $end_time) OR (solve_time > $start_time AND solve_time < $end_time))");
         }
+
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'present_user' => $this->present_user,
+            'solve_user' => $this->solve_user,
+            'system' => $this->system,
+            'xm_order.status' => $this->status,
+            'xm_order.classify' => $this->classify,
+        ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);
 
