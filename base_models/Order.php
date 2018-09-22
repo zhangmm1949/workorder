@@ -20,7 +20,9 @@ use Yii;
  * @property int $solve_time 解决时间
  * @property int $classify 问题归类（操作问题，系统bug，需求等）
  * @property string $tags 标签
+ * @property int $update_time 最后更新时间
  * @property string $remark 备注
+ * @property int $is_mail 是否已发送邮件
  */
 class Order extends \yii\db\ActiveRecord
 {
@@ -38,8 +40,8 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['present_user', 'content'], 'required'],
-            [['present_user', 'present_time', 'system', 'level', 'status', 'solve_user', 'solve_time', 'classify'], 'integer'],
+            [['present_user', 'present_time', 'system', 'level', 'status', 'solve_user', 'solve_time', 'classify', 'update_time', 'is_mail'], 'integer'],
+            [['content'], 'required'],
             [['content'], 'string'],
             [['order_sn'], 'string', 'max' => 30],
             [['title'], 'string', 'max' => 255],
@@ -61,14 +63,16 @@ class Order extends \yii\db\ActiveRecord
             'present_time' => '发起时间',
             'system' => '所属系统',
             'level' => '级别',
-            'title' => '简述',
+            'title' => '标题',
             'content' => '内容',
             'status' => '状态',
             'solve_user' => '解决人',
             'solve_time' => '解决时间',
             'classify' => '问题归类（操作问题，系统bug，需求等）',
             'tags' => '标签',
+            'update_time' => '最后更新时间',
             'remark' => '备注',
+            'is_mail' => '是否已发送邮件',
         ];
     }
 }

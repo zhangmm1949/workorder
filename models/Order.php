@@ -28,6 +28,7 @@ class Order extends FaOrder
         $this->on(self::EVENT_AFTER_INSERT,[OrderTag::class, 'UpdateOrderTag'],'insert');
         $this->on(self::EVENT_AFTER_UPDATE,[OrderTag::class, 'UpdateOrderTag'],'update');
         $this->on(self::EVENT_AFTER_DELETE,[OrderTag::class, 'UpdateOrderTag'],'delete');
+//        $this->on(self::EVENT_AFTER_UPDATE,[$this, 'afterUpdate']);
     }
 
     public function rules()
@@ -52,7 +53,11 @@ class Order extends FaOrder
             [
                 'class' => TimestampBehavior::class,
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['present_time'], //自动添加‘发起时间’
+                    //自动添加‘发起时间’ 多个字段则 ['present_time','update_time']
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['present_time'],
+
+                    //自动更新‘更新时间’ EVENT_AFTER_UPDATE 为什么不生效?
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['update_time'],
                 ],
             ],
         ];
