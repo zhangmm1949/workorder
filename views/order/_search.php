@@ -45,7 +45,7 @@ use app\models\Order;
             </div>
         </div>
         <div class="col-lg-2">
-            <p style="color: orangered"><b>如果开始/结束时间均不为空，则搜索结果为:时间范围内新增及处理的工单汇总</b></p>
+            <p style="color: orangered"><b>如果开始、结束时间均不为空，则搜索结果为:时间范围内新增、更新、解决的工单合集</b></p>
         </div>
     </div>
     <div class="row">
