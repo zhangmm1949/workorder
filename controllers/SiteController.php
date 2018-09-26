@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\OrderTag;
 use app\models\RegisterForm;
 use app\models\Tag;
 use Yii;
@@ -67,8 +68,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-//        $tags = Tag::getSortTag('order');
-        $tags = [];
+        $tags = OrderTag::getTenTags();
+
         return $this->render('index',[
             'tags' => $tags,
         ]);

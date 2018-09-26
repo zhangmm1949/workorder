@@ -47,4 +47,10 @@ class OrderTag extends FaOrderTag
         }
         return Yii::$app->db->createCommand()->batchInsert(OrderTag::tableName(), ['order_id', 'tag'], $rows)->execute();
     }
+
+    public static function getTenTags()
+    {
+        $data = self::findBySql("SELECT `tag`, COUNT(1) AS `num` FROM `xm_order_tag` GROUP BY `tag` ORDER BY `num` LIMIT 10;")->asArray()->all();
+        return $data;
+    }
 }
