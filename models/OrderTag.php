@@ -14,6 +14,12 @@ use Yii;
 class OrderTag extends FaOrderTag
 {
 
+    /**
+     * 工单标签的增删改
+     * @param $event object Event事件
+     * @return bool
+     * @throws \yii\db\Exception
+     */
     public static function UpdateOrderTag($event)
     {
         $order = $event->sender;
@@ -35,6 +41,12 @@ class OrderTag extends FaOrderTag
         return true;
     }
 
+    /**
+     * @param $order_id int 工单ID
+     * @param $tags string 格式化后的标签
+     * @return bool|int
+     * @throws \yii\db\Exception
+     */
     private static function insertOrderTags($order_id, $tags)
     {
         if (!$tags) return true; //为空直接返回 不向数据库写入
@@ -48,9 +60,12 @@ class OrderTag extends FaOrderTag
         return Yii::$app->db->createCommand()->batchInsert(OrderTag::tableName(), ['order_id', 'tag'], $rows)->execute();
     }
 
+    /**
+     * 数量最多的前十个标签
+     * @return array|\yii\db\ActiveRecord[]
+     */
     public static function getTenTags()
     {
-        $data = self::findBySql("SELECT `tag`, COUNT(1) AS `num` FROM `xm_order_tag` GROUP BY `tag` ORDER BY `num` LIMIT 10;")->asArray()->all();
-        return $data;
+        return self::findBySql("SELECT `tag`, COUNT(1) AS `num` FROM `xm_order_tag` GROUP BY `tag` ORDER BY `num` LIMIT 10;")->asArray()->all();
     }
 }
