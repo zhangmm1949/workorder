@@ -36,3 +36,6 @@ tests/_support/_generated
 
 # 本地配置
 /config/local_config.php
+
+#入口文件
+../web/index.php
