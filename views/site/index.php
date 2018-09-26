@@ -20,7 +20,7 @@ $this->title = 'My Yii Application';
             <div class="col-lg-4">
                 <?php
                     foreach ($tags as $item){
-                        echo "<p>$item[name] -- $item[count]</p>";
+                        echo "<p>$item[tag] -- $item[num]</p>";
                     }
                 ?>
             </div>
