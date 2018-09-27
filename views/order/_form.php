@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\User;
 use kucha\ueditor\UEditor;
+use app\models\System;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
@@ -20,7 +21,7 @@ use kucha\ueditor\UEditor;
         <?= $form->field($model, 'present_user')->hiddenInput(['value'=>Yii::$app->user->id])->label(false) ?>
     <?php endif; ?>
 
-    <?= $form->field($model, 'system')->dropDownList(Yii::$app->params['order_systems'],['prompt'=>'请选择系统', 'style'=>'width:20%']) ?>
+    <?= $form->field($model, 'system')->dropDownList(System::getAllSystems(),['prompt'=>'请选择系统', 'style'=>'width:20%']) ?>
 
     <?= $form->field($model, 'level')->dropDownList(Yii::$app->params['order_level'],['style'=>'width:20%']) ?>
 
