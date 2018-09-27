@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use app\models\OrderTag;
 use app\models\RegisterForm;
-use app\models\Tag;
+use app\models\System;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -166,5 +166,11 @@ class SiteController extends Controller
         header("Content-Transfer-Encoding: binary ");
 
         echo $insert;
+    }
+
+    public function actionDoo()
+    {
+        $sys = System::getAllSystems();
+        var_dump($sys);
     }
 }

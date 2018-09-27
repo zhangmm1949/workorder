@@ -15,7 +15,7 @@ class UserSystem extends Fa_Class
 {
 
     /**
-     * @param $event Event 绑定的事件
+     * @param $event object Event绑定的事件
      * @return bool
      * @throws \yii\db\Exception
      */
