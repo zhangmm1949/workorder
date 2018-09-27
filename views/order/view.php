@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\System;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Order */
@@ -34,8 +35,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'system',
                 'label' => '所属系统',
                 'value' => function($data){
-                    $systemes = Yii::$app->params['order_systems'];
-                    return $systemes[$data->system];
+                    $systems = System::getAllSystems();
+                    return $systems[$data->system];
                 }
             ],
             [
