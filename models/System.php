@@ -10,6 +10,7 @@ namespace app\models;
 
 use app\base_models\System as Fa_System;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class System extends Fa_System
 {
@@ -32,6 +33,7 @@ class System extends Fa_System
             return $cache->get('all_systems');
         }
         $data = self::find()->asArray()->all();
+        $data = ArrayHelper::map($data, 'id', 'name');
         $cache->set('all_systems', $data, 86400);
         return $data;
     }
@@ -47,7 +49,8 @@ class System extends Fa_System
             return $cache->get('usable_systems');
         }
         $data = self::find()->asArray()->where('`status` = 1')->all();
-        $cache->set('all_systems', $data, 86400);
+        $data = ArrayHelper::map($data, 'id', 'name');
+        $cache->set('usable_systems', $data, 86400);
         return $data;
     }
 }
