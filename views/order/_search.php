@@ -50,7 +50,7 @@ use app\models\Order;
     </div>
     <div class="row">
         <div class="col-lg-2">
-            <?= $form->field($model, 'system')->dropDownList(Yii::$app->params['order_systems'],['prompt'=>'选择系统'])->label(false); ?>
+            <?= $form->field($model, 'system')->dropDownList(\app\models\System::getUsableSystems(),['prompt'=>'选择系统'])->label(false); ?>
         </div>
 
         <div class="col-lg-2">

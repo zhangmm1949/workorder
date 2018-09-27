@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'system',
                 'label' => '所属系统',
                 'value' => function($data){
-                    $systemes = Yii::$app->params['order_systems'];
+                    $systemes = \app\models\System::getAllSystems();
                     return $systemes[$data->system];
                 }
             ],
