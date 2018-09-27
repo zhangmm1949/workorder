@@ -9,16 +9,45 @@
 namespace app\models;
 
 use app\base_models\System as Fa_System;
+use Yii;
 
 class System extends Fa_System
 {
-    public static function getAllSystems()
+    public $cache;
+
+    public function init()
     {
-        return self::find()->asArray()->all();
+        parent::init();
+        $this->cache = Yii::$app->cache;
     }
 
+    /**
+     * 获取全部系统
+     * @return array|mixed|\yii\db\ActiveRecord[]
+     */
+    public static function getAllSystems()
+    {
+        $cache = Yii::$app->cache;
+        if ($cache->get('all_systems')){
+            return $cache->get('all_systems');
+        }
+        $data = self::find()->asArray()->all();
+        $cache->set('all_systems', $data, 86400);
+        return $data;
+    }
+
+    /**
+     * 获取可用系统
+     * @return array|\yii\db\ActiveRecord[]
+     */
     public static function getUsableSystems()
     {
-        return self::find()->asArray()->where('`status` = 1')->all();
+        $cache = Yii::$app->cache;
+        if ($cache->get('usable_systems')){
+            return $cache->get('usable_systems');
+        }
+        $data = self::find()->asArray()->where('`status` = 1')->all();
+        $cache->set('all_systems', $data, 86400);
+        return $data;
     }
 }
