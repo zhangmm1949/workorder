@@ -173,4 +173,9 @@ class SiteController extends Controller
         $sys = System::getAllSystems();
         var_dump($sys);
     }
+
+    public function actionHang()
+    {
+        return $this->render('hang');
+    }
 }
