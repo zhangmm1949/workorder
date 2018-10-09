@@ -32,12 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Yii::$app->params['user_department'][$data->department_id];
                 }
             ],
-             [
-                 'attribute' => 'status',
-                 'value' => function($data){
+            [
+                'attribute' => 'status',
+                'value' => function($data){
                     return $data->status == 1 ? '可用' : '不可用';
-                 }
-             ],
+                }
+            ],
 //             'created_at',
 
             ['class' => 'yii\grid\ActionColumn'],
