@@ -26,8 +26,18 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'password',
             'email:email',
              'tel',
-             'department_id',
-             'status',
+            [
+                'attribute' => 'department_id',
+                'value' => function($data){
+                    return Yii::$app->params['user_department'][$data->department_id];
+                }
+            ],
+             [
+                 'attribute' => 'status',
+                 'value' => function($data){
+                    return $data->status == 1 ? '可用' : '不可用';
+                 }
+             ],
 //             'created_at',
 
             ['class' => 'yii\grid\ActionColumn'],
