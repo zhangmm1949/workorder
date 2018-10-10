@@ -60,4 +60,13 @@ AND o.is_mail = 0;";
         return Yii::$app->db->createCommand($sql)->queryAll();
     }
 
+    public function actionDoo()
+    {
+        // 定时任务  2 * * * * * php /home/imor/www/doolocal/yii order/doo
+
+        $name = date('His');
+        $sql = "UPDATE xm_tag SET `name`= $name WHERE id = 166;";
+        Yii::$app->db->createCommand($sql)->execute();
+    }
+
 }
