@@ -42,6 +42,7 @@
                         'url' => '#',
                         'items' => [
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
+                            ['label' => '工单系统', 'icon' => 'file-code-o', 'url' => ['/system/index'],],
                             [
                                 'label' => '用户权限管理',
                                 'icon' => 'circle-o',
