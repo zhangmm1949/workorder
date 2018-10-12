@@ -32,7 +32,7 @@ class System extends Fa_System
         if ($cache->get('all_systems')){
             return $cache->get('all_systems');
         }
-        $data = self::find()->asArray()->orderBy('id')->all();
+        $data = self::find()->asArray()->orderBy('sort')->all();
         $data = ArrayHelper::map($data, 'id', 'name');
         $cache->set('all_systems', $data, 86400);
         return $data;
@@ -48,7 +48,7 @@ class System extends Fa_System
         if ($cache->get('usable_systems')){
             return $cache->get('usable_systems');
         }
-        $data = self::find()->asArray()->where('`status` = 1')->orderBy('id')->all();
+        $data = self::find()->asArray()->where('`status` = 1')->orderBy('sort')->all();
         $data = ArrayHelper::map($data, 'id', 'name');
         $cache->set('usable_systems', $data, 86400);
         return $data;

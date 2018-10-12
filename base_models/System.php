@@ -10,6 +10,7 @@ use Yii;
  * @property int $id ID
  * @property string $name 名称
  * @property int $status 状态(1可用 2停用）
+ * @property int $sort 排序
  */
 class System extends \yii\db\ActiveRecord
 {
@@ -27,7 +28,7 @@ class System extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'integer'],
+            [['status', 'sort'], 'integer'],
             [['name'], 'string', 'max' => 50],
         ];
     }
@@ -39,8 +40,9 @@ class System extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'status' => 'Status',
+            'name' => '名称',
+            'status' => '状态',
+            'sort' => '排序',
         ];
     }
 }
