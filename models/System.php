@@ -23,6 +23,22 @@ class System extends Fa_System
     }
 
     /**
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)){
+            $cache = Yii::$app->cache;
+            $cache->set('all_systems', []);
+            $cache->set('usable_systems', []);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
      * 获取全部系统
      * @return array|mixed|\yii\db\ActiveRecord[]
      */

@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = 'Update';
                 <?= $form
                     ->field($model, 'systems')
                     ->label('关联系统')
-                    ->checkboxList(System::getAllSystems()) ?>
+                    ->checkboxList(System::getUsableSystems()) ?>
             </div>
         </div>
 

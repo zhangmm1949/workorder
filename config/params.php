@@ -8,7 +8,7 @@ return [
     'gii.allowedIPs' => $local_config['gii.allowedIPs'],
 
     // 工单模块配置：
-    # 所属系统
+    # 所属系统 (改查数据库 此配置信息废弃 20181024 zmm)
     'order_systems' => [
         1  => 'BUY系统',
         2  => 'DMS系统',
