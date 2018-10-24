@@ -54,4 +54,11 @@ class HelloController extends Controller
         }
         \Yii::$app->mailer->sendMultiple($messages);
     }
+
+    public function actionTest()
+    {
+        $sql = 'select * from xm_user;';
+        $back = \Yii::$app->db->createCommand($sql)->queryAll();
+        var_dump($back);
+    }
 }
