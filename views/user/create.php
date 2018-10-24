@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\System;
 
 
 /* @var $this yii\web\View */
@@ -54,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form
                 ->field($model, 'user_systems')
                 ->label('关联系统')
-                ->checkboxList(Yii::$app->params['order_systems']) ?>
+                ->checkboxList(System::getAllSystems()) ?>
         </div>
     </div>
 
