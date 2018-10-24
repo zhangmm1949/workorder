@@ -21,7 +21,7 @@ class User extends Fa_User implements IdentityInterface
 
     public  $systems;
     private $isAdmin;
-    public  $admin_ids = [1, 47, 49, 52, 88];// 张萌萌 杨恩 彭太升 管东岳 周原
+    public  $admin_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];// 张萌萌 杨恩 彭太升 管东岳 周原
     private $isSuperAdmin;
     public  $superAdmin = [1];
 

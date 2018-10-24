@@ -74,6 +74,7 @@ class Order extends FaOrder
         if (parent::beforeSave($insert)){
             if ($this->isNewRecord){
                 $this->order_sn = $this->generateOrderSn(); //生成订单sn
+                $this->remark = is_null($this->remark) ? '' : $this->remark;
             }
             return true;
         }else{
