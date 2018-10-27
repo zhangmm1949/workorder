@@ -30,7 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'status',
+            [
+                'attribute' => 'status',
+                'value' => function($data){
+                    return $data->status == 1 ? '可用' : '不可用';
+                }
+            ],
             'sort',
         ],
     ]) ?>
