@@ -7,16 +7,14 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\BlogSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Blogs';
+$this->title = '文章列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="blog-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Blog', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新建', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -28,12 +26,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'title',
             'category_id',
-            'content:ntext',
+//            'content:ntext',
             'create_at',
             //'update_at',
-            //'publish_at',
+            [
+                'attribute' => 'publish_at',
+                'label' => '发布时间',
+                'format' => ['date', 'php:Y-m-d H:i'],
+            ],
             //'tag',
-            //'display',
+            [
+                'attribute' => 'display',
+                'label' => '是否可见',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
