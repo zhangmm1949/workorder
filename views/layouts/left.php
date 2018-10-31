@@ -36,6 +36,7 @@
                     ['label' => '工单管理', 'icon' => 'dashboard', 'url' => ['/order/index']],
                     //['label' => '投标管理', 'icon' => 'dashboard', 'url' => ['/bid/index']],
                     ['label' => '测试模块', 'url' => ['/test/index']],
+                    ['label' => '文章管理', 'url' => ['/blog/index']],
                     [
                         'label' => '系统管理',
                         'icon' => 'share',
