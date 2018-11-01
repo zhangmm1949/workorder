@@ -11,5 +11,6 @@ namespace app\models;
 
 class Blog extends \app\base_models\Blog
 {
+    public $publishAt;
 
 }
