@@ -21,7 +21,7 @@ use kartik\datetime\DateTimePicker;
     <?= $form->field($model, 'publishAt')->widget(
         DateTimePicker::class,([
         'name' => 'publishAt',
-        'value' => empty($model->publish_at) ? '' : $model->publish_at,
+        'value' => empty($model->publishAt) ? '' : $model->publishAt,
         'type' => DateTimePicker::TYPE_INPUT,
         'options' => ['placeholder' => '发布时间'],
         'pluginOptions' => [
