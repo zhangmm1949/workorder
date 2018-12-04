@@ -170,12 +170,16 @@ class SiteController extends Controller
 
     public function actionDoo()
     {
+        var_dump($_SESSION);die();
         $sys = System::getAllSystems();
         var_dump($sys);
     }
 
     public function actionHang()
     {
-        return $this->render('hang');
+        $_SESSION['hang'] = '1000';
+//        unset($_SESSION['hang']);
     }
+
+
 }
