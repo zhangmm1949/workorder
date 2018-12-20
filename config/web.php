@@ -6,6 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'WorkOrder',
     'language'=>'zh-CN', //Ubuntu虚拟机系统语言为英语 为了使应用中显示为中文，设置应用的语言为中文
+    'timeZone' => 'Asia/Shanghai', # 设置时区
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [

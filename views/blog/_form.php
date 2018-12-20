@@ -18,6 +18,8 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'category_id')->textInput() ?>
 
+    <?php var_dump(date('Y-m-d H:i:s', $model->update_at))?>
+
     <?= $form->field($model, 'publishAt')->widget(
         DateTimePicker::class,([
         'name' => 'publishAt',
