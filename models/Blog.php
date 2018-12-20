@@ -11,7 +11,7 @@ namespace app\models;
 
 class Blog extends \app\base_models\Blog
 {
-    public $publishAt;
+    protected $publishAt;
 
     /**
      * {@inheritdoc}
@@ -39,6 +39,14 @@ class Blog extends \app\base_models\Blog
             return true;
         }
         return false;
+    }
+
+    public function getPublishAt()
+    {
+        if (is_null($this->publishAt)){
+            $this->publishAt = date('Y-m-d H:i:s', $this->publish_at);
+        }
+        return $this->publishAt;
     }
 
 

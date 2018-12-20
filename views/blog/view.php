@@ -35,13 +35,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'content',
                 'format' => 'raw'
             ],
-            'create_at',
             [
                 'attribute' => 'create_at',
                 'value' => $model->create_at == 0 ? 0 : date('Y-m-d H:i', $model->create_at),
             ],
-            'update_at',
-            'publish_at',
+            [
+                'attribute' => 'update_at',
+                'value' => $model->update_at == 0 ? 0 : date('Y-m-d H:i', $model->update_at),
+            ],
+            [
+                'attribute' => 'publish_at',
+                'value' => $model->publish_at == 0 ? 0 : date('Y-m-d H:i', $model->publish_at),
+            ],
             'tag',
             'display',
         ],
