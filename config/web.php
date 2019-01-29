@@ -83,6 +83,10 @@ $config = [
             'class' => 'yii\rbac\DbManager', //权限控制类
             'defaultRoles' => ['guest'],
         ],
+
+        'test' => [
+            'class' => 'app\models\UserSystem',
+        ],
     ],
 
     'modules' => [

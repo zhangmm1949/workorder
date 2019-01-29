@@ -34,6 +34,8 @@ tests/_support/_generated
 
 /web/upload/
 
+/runtime
+
 # 本地配置
 /config/local_config.php
 
