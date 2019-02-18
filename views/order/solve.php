@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = '处理工单';
                 'attribute' => 'system',
                 'label' => '所属系统',
                 'value' => function($data){
-                    $systemes = Yii::$app->params['order_systems'];
+                    $systemes = \app\models\System::getUsableSystems();
                     return $systemes[$data->system];
                 }
             ],
