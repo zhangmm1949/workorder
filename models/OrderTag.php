@@ -66,6 +66,6 @@ class OrderTag extends FaOrderTag
      */
     public static function getTenTags()
     {
-        return self::findBySql("SELECT `tag`, COUNT(1) AS `num` FROM `xm_order_tag` GROUP BY `tag` ORDER BY `num` LIMIT 10;")->asArray()->all();
+        return self::findBySql("SELECT `tag`, COUNT(1) AS `num` FROM `xm_order_tag` GROUP BY `tag` ORDER BY `num` DESC LIMIT 10;")->asArray()->all();
     }
 }
