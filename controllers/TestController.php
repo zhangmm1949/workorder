@@ -18,8 +18,7 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-        var_dump(\Yii::$app->test->getSystemIdsByUserId(1));
-        var_dump(\Yii::$app->params['adminEmail']);
+        phpinfo();
     }
 
     public function actionInvoice()
@@ -40,5 +39,15 @@ class TestController extends Controller
     private function getInvoice($money_arr, $total)
     {
 
+    }
+
+    public function actionRedis()
+    {
+        $redis = \Yii::$app->redis;
+
+        $key = 'username';
+        var_dump($redis->set($key, 'zhangsan'));
+        var_dump($redis->ttl($key));
+        var_dump($redis->get('name'));
     }
 }
