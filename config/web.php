@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/local_config.php';
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -82,6 +83,14 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager', //权限控制类
             'defaultRoles' => ['guest'],
+        ],
+
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => $local_config['redis_hostname'],
+            'port' => $local_config['redis_port'],
+            'database' => $local_config['redis_database'],
+            'password' => $local_config['redis_password'],
         ],
 
         'test' => [
