@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/local_config.php';
+//require __DIR__ . '/local_config.php';
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -22,6 +22,13 @@ $config = [
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
+            /*'class' => 'yii\redis\Cache',
+            'redis' => [
+                'hostname' => $local_config['redis_hostname'],
+                'port' => $local_config['redis_port'],
+                'database' => $local_config['redis_database'],
+                'password' => $local_config['redis_password'],
+             ],*/
         ],
         'user' => [
             'identityClass' => 'app\models\User',

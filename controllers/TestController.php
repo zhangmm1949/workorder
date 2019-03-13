@@ -15,6 +15,7 @@ use app\models\UserSystem;
 class TestController extends Controller
 {
     public $enableCsrfValidation = false;
+    public $layout = false;
 
     public function actionIndex()
     {
@@ -49,5 +50,11 @@ class TestController extends Controller
         var_dump($redis->set($key, 'zhangsan'));
         var_dump($redis->ttl($key));
         var_dump($redis->get('name'));
+    }
+
+    public function actionCache()
+    {
+        $cache = \Yii::$app->cache;
+        var_dump($cache);
     }
 }
