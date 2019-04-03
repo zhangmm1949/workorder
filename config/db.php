@@ -1,5 +1,4 @@
 <?php
-$local_config = require __DIR__ . '/local_config.php';
 
 return [
     'class' => 'yii\db\Connection',

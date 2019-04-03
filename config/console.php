@@ -1,8 +1,8 @@
 <?php
 
+$local_config = require  __DIR__ . '/local_config.php'; // yii 命令行入口文件（/../yii.php）不加载local_config.php 所以在这里要引入
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
-$local_config = require  __DIR__ . '/local_config.php';
 
 $config = [
     'id' => 'basic-console',
