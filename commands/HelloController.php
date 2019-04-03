@@ -7,8 +7,10 @@
 
 namespace app\commands;
 
+use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
+use app\models\common\Csv;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -44,7 +46,7 @@ class HelloController extends Controller
 
     public function actionSendMails()
     {
-        $users = ['704369798@qq.com','704369798@qq.com','704369798@qq.com'];
+        $users = ['704369798@qq.com'];
         $messages = [];
         foreach ($users as $k => $user) {
             $messages[] = \Yii::$app->mailer->compose()
@@ -52,13 +54,22 @@ class HelloController extends Controller
                 ->setSubject('测试主题' . $k)
                 ->setHtmlBody('测试内容' . $k);
         }
-        \Yii::$app->mailer->sendMultiple($messages);
+        Yii::$app->mailer->sendMultiple($messages);
     }
 
     public function actionTest()
     {
         $sql = 'select * from xm_user;';
-        $back = \Yii::$app->db->createCommand($sql)->queryAll();
+        $back = Yii::$app->db->createCommand($sql)->queryAll();
         var_dump($back);
+    }
+
+    public function actionReadCsv()
+    {
+        $file = Yii::$app->basePath;
+        echo dir(__DIR__);die;
+
+        $data = Csv::ParseFile($file);
+        var_dump($data);
     }
 }

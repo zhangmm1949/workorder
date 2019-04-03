@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 
+use Yii;
 use yii\web\Controller;
 use app\models\UserSystem;
 
@@ -25,7 +26,7 @@ class TestController extends Controller
     public function actionInvoice()
     {
 //        $this->layout = false;
-        $str = trim(\Yii::$app->request->post('invoice_money'));
+        $str = trim(Yii::$app->request->post('invoice_money'));
         $arr = array_filter(explode(' ', $str));
 
 
@@ -44,17 +45,31 @@ class TestController extends Controller
 
     public function actionRedis()
     {
-        $redis = \Yii::$app->redis;
+        $redis = Yii::$app->redis;
 
         $key = 'username';
         var_dump($redis->set($key, 'zhangsan'));
         var_dump($redis->ttl($key));
-        var_dump($redis->get('name'));
+        var_dump($redis->get($key));
     }
 
     public function actionCache()
     {
         $cache = \Yii::$app->cache;
         var_dump($cache);
+    }
+
+    public function actionSendMails()
+    {
+        $users = ['704369798@qq.com'];
+        $messages = [];
+        foreach ($users as $k => $user) {
+            $messages[] = Yii::$app->mailer->compose()
+                ->setTo($user)
+                ->setSubject('测试主题' . $k)
+                ->setHtmlBody('测试内容' . $k);
+        }
+        $ret = Yii::$app->mailer->sendMultiple($messages);
+        var_dump($ret);
     }
 }
