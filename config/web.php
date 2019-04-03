@@ -1,5 +1,5 @@
 <?php
-//require __DIR__ . '/local_config.php';
+//require __DIR__ . '/local_config.php'; 入口文件中已经引入了local_config文件，这里就不需要了，直接使用即可
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
