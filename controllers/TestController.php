@@ -47,10 +47,18 @@ class TestController extends Controller
     {
         $redis = Yii::$app->redis;
 
-        $key = 'username';
-        var_dump($redis->set($key, 'zhangsan'));
-        var_dump($redis->ttl($key));
-        var_dump($redis->get($key));
+        $key1 = 'key1';
+        $key2 = 'key2';
+        $value1 = 'value1';
+        $value2 = 'value2';
+//        $value = 1;
+        var_dump($redis->hmset('hash', $key1, $value1, $key2, $value2));
+//        var_dump($redis->ttl($key));
+        var_dump($redis->hset('hash', $key1, 'asas'));
+        var_dump($redis->hgetall('hash'));
+        var_dump($redis->hmget('hash', $key1));
+        var_dump($redis->hkeys('hash'));
+        var_dump($redis->hvals('hash'));
     }
 
     public function actionCache()

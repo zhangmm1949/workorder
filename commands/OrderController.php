@@ -81,7 +81,7 @@ FROM xm_order o
 LEFT JOIN xm_system s ON s.id = o.system
 LEFT JOIN xm_user u ON u.id = o.present_user
 WHERE 1
-AND o.present_time > UNIX_TIMESTAMP(20190401);";
+AND o.present_time > UNIX_TIMESTAMP(20190415);";
 
         $ret = Yii::$app->db->createCommand($sql)->queryAll();
 //        var_dump($ret);
