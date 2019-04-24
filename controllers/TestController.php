@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Yii;
+use yii\db\Exception;
 use yii\web\Controller;
 use app\models\UserSystem;
 
@@ -80,4 +81,50 @@ class TestController extends Controller
         $ret = Yii::$app->mailer->sendMultiple($messages);
         var_dump($ret);
     }
+
+    public function actionTrans()
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try{
+            $sql = "UPDATE test SET goods_count = 9 WHERE mi_id = 59614250 AND add_month = 201805;";
+            $ret = Yii::$app->db->createCommand($sql)->execute();
+
+//            var_dump($ret);
+
+            /*$sql = "UPDATE test SET goods_count = 90 WHERE mi_ids = 1468289480 AND add_month = 201805;";
+            $ret = Yii::$app->db->createCommand($sql)->execute();
+            var_dump($ret);
+            exit('error');*/
+
+//            $transaction->commit();
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+            $transaction->rollBack();
+        }
+    }
+
+    public function actionTrans2()
+    {
+        //$transaction = Yii::$app->db->beginTransaction();
+
+        try{
+            $sql = "UPDATE test SET goods_count = 999 WHERE mi_id = 1468289480 AND add_month = 201805;";
+            $ret = Yii::$app->db->createCommand($sql)->execute();
+            /*$sql = "UPDATE test SET goods_count = 90 WHERE mi_ids = 1468289480 AND add_month = 201805;";
+            $ret = Yii::$app->db->createCommand($sql)->execute();
+            var_dump($ret);
+            exit('error');*/
+
+//            $transaction->commit();
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+//            $transaction->rollBack();
+        }
+
+
+    }
+
 }
