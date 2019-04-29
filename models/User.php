@@ -102,7 +102,7 @@ class User extends Fa_User implements IdentityInterface
         return $this->id;
     }
 
-    public function getUserName()
+    public function getUsername()
     {
         return $this->user_name;
     }
@@ -159,6 +159,11 @@ class User extends Fa_User implements IdentityInterface
     public function getIsSuperAdmin()
     {
         return $this->isSuperAdmin = in_array($this->id, $this->superAdmin);
+    }
+
+    public function getIsGuest()
+    {
+        return $this->isGuest = true;
     }
 
 }
