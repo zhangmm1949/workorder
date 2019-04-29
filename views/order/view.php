@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (!$model->is_solved){
             echo Html::a('处理', ['solve', 'id' => $model->id], ['class' => 'btn btn-danger']);
         } ?>
-        <?= Html::a('PDF', ['pdf', 'id' => $model->id], ['class' => 'btn btn-danger']) ?>
     </p>
 
     <?= DetailView::widget([
