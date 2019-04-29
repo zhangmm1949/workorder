@@ -87,15 +87,9 @@ class TestController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
 
         try{
-            $sql = "UPDATE test SET goods_count = 1 WHERE mi_id = 59614250 AND add_month = 201805;";
+            $sql = "UPDATE test SET goods_count = 2 WHERE mi_id = 16294658 AND add_month = 201805;";
             $ret = Yii::$app->db->createCommand($sql)->execute();
 
-            var_dump($ret);
-
-            $sql = "UPDATE test SET goods_count = 2 WHERE mi_ids = 59614250 AND add_month = 201805;";
-            $ret = Yii::$app->db->createCommand($sql)->execute();
-            var_dump($ret);
-//            exit('error');
             sleep(10);
 
             $transaction->commit();
@@ -111,13 +105,9 @@ class TestController extends Controller
         $transaction = Yii::$app->db->beginTransaction();
 
         try{
-            $sql = "UPDATE test SET goods_count = 3 WHERE mi_id = 59614250 AND add_month = 201805;";
-            $ret = Yii::$app->db->createCommand($sql)->execute();
-            /*$sql = "UPDATE test SET goods_count = 90 WHERE mi_ids = 1468289480 AND add_month = 201805;";
+            $sql = "UPDATE test SET goods_count = 3 WHERE mi_id = 16294658 AND add_month = 201805;";
             $ret = Yii::$app->db->createCommand($sql)->execute();
             var_dump($ret);
-            exit('error');*/
-            sleep(20);
 
             $transaction->commit();
 
@@ -127,6 +117,14 @@ class TestController extends Controller
         }
 
 
+    }
+
+    public function actionRead()
+    {
+       /* $sql = "INSERT test SET mi_id = 123, goods_count = 21, add_month = 201805;";
+        $ret = Yii::$app->db->createCommand($sql)->execute();
+        var_dump($ret);*/
+        var_dump($_SESSION);
     }
 
 }
