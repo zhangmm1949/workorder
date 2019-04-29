@@ -30,6 +30,11 @@ $config = [
                 'password' => $local_config['redis_password'],
              ],
         ],
+
+        /*'session' => [
+            'class' => 'yii\redis\Session',
+        ],*/
+
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,

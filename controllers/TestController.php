@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use Yii;
+use yii\db\Exception;
 use yii\web\Controller;
 use app\models\UserSystem;
 
@@ -47,10 +48,18 @@ class TestController extends Controller
     {
         $redis = Yii::$app->redis;
 
-        $key = 'username';
-        var_dump($redis->set($key, 'zhangsan'));
-        var_dump($redis->ttl($key));
-        var_dump($redis->get($key));
+        $key1 = 'key1';
+        $key2 = 'key2';
+        $value1 = 'value1';
+        $value2 = 'value2';
+//        $value = 1;
+        var_dump($redis->hmset('hash', $key1, $value1, $key2, $value2));
+//        var_dump($redis->ttl($key));
+        var_dump($redis->hset('hash', $key1, 'asas'));
+        var_dump($redis->hgetall('hash'));
+        var_dump($redis->hmget('hash', $key1));
+        var_dump($redis->hkeys('hash'));
+        var_dump($redis->hvals('hash'));
     }
 
     public function actionCache()
@@ -72,4 +81,50 @@ class TestController extends Controller
         $ret = Yii::$app->mailer->sendMultiple($messages);
         var_dump($ret);
     }
+
+    public function actionTrans()
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try{
+            $sql = "UPDATE test SET goods_count = 2 WHERE mi_id = 16294658 AND add_month = 201805;";
+            $ret = Yii::$app->db->createCommand($sql)->execute();
+
+            sleep(10);
+
+            $transaction->commit();
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+            $transaction->rollBack();
+        }
+    }
+
+    public function actionTrans2()
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try{
+            $sql = "UPDATE test SET goods_count = 3 WHERE mi_id = 16294658 AND add_month = 201805;";
+            $ret = Yii::$app->db->createCommand($sql)->execute();
+            var_dump($ret);
+
+            $transaction->commit();
+
+        }catch (Exception $e){
+            echo $e->getMessage();
+//            $transaction->rollBack();
+        }
+
+
+    }
+
+    public function actionRead()
+    {
+       /* $sql = "INSERT test SET mi_id = 123, goods_count = 21, add_month = 201805;";
+        $ret = Yii::$app->db->createCommand($sql)->execute();
+        var_dump($ret);*/
+        var_dump($_SESSION);
+    }
+
 }
