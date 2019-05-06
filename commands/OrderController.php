@@ -76,12 +76,13 @@ AND o.is_mail = 0;";
     public function actionOrderExport()
     {
         $sql = "SELECT o.order_sn, u.user_name, IF(o.`status` = 20, '已完成', IF(o.`status`=10, '处理中', '待处理')) AS order_status, FROM_UNIXTIME(o.present_time) add_time, FROM_UNIXTIME(o.update_time) update_time, 
-s.`name` AS system, CASE o.classify WHEN 1 THEN '系统Bug' WHEN 2 THEN '系统Bug' WHEN 3 THEN '新需求' WHEN 4 THEN '导入导出/帮助类' WHEN 5 THEN '遗留/需排期' ELSE '待确定' END AS 问题分类, o.title, o.content, o.remark
+s.`name` AS system, CASE o.classify WHEN 1 THEN '用户操作问题' WHEN 2 THEN '系统Bug' WHEN 3 THEN '新需求' WHEN 4 THEN '导入导出/帮助类' WHEN 5 THEN '遗留/需排期' ELSE '待确定' END AS 问题分类, o.title, o.content, o.remark
 FROM xm_order o
 LEFT JOIN xm_system s ON s.id = o.system
 LEFT JOIN xm_user u ON u.id = o.present_user
 WHERE 1
-AND o.present_time > UNIX_TIMESTAMP(20190415);";
+AND o.present_time > UNIX_TIMESTAMP('20190422')
+AND o.present_time < UNIX_TIMESTAMP('20190506');";
 
         $ret = Yii::$app->db->createCommand($sql)->queryAll();
 //        var_dump($ret);
@@ -100,6 +101,7 @@ AND o.present_time > UNIX_TIMESTAMP(20190415);";
         ];
 
         $file_name = 'data' . date('mdHi') . '.csv';
+        echo date('Ymd H:i:s', time());die;
         $dir       = Yii::$app->basePath . '/runtime/data/';
 
         if (!empty($ret)) {
