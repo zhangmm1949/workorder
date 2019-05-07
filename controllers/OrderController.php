@@ -138,7 +138,7 @@ class OrderController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()){
             $model->trigger(Order::EVENT_AFTER_SOLVE); // 绑定事件
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('solve', ['model' => $model]);
         }
