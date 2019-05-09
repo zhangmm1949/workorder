@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\Query;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -254,5 +255,17 @@ EOF;
 
 
 
+    }
+
+    public function actionTest()
+    {
+        $present_users = [3,6,12];
+        $info = (new Query())->from('xm_order')->where(['present_user' => $present_users])->indexBy('present_user')->all();
+
+        $sql = (new Query())->from('xm_order')->where(['present_user' => $present_users])->indexBy('present_user')->createCommand()->getRawSql();
+
+        echo $sql;
+
+        var_dump($info);die;
     }
 }
