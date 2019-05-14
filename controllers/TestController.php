@@ -13,6 +13,8 @@ use Yii;
 use yii\db\Exception;
 use yii\web\Controller;
 use app\models\UserSystem;
+use app\models\Test;
+use app\models\Test2;
 
 class TestController extends Controller
 {
@@ -126,5 +128,22 @@ class TestController extends Controller
         var_dump($ret);*/
         var_dump($_SESSION);
     }
+
+    public function actionTest()
+    {
+        var_dump(Test::$name);
+
+        var_dump(Test::getName2());
+
+        // $this->actionName();
+
+        var_dump(Test::getName());
+
+        var_dump(Test::getName2());
+
+        var_dump(Test::$name);
+
+    }
+
 
 }
