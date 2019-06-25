@@ -68,8 +68,8 @@ AND o.is_mail = 0;';
      */
     public function actionOrderExport()
     {
-        $start = '20190524';
-        $end = '20190602';
+        $start = '20190617';
+        $end = '20190623';
 
         $sql = "SELECT o.order_sn, u.user_name, IF(o.`status` = 20, '已完成', IF(o.`status`=10, '处理中', '待处理')) AS order_status, FROM_UNIXTIME(o.present_time) add_time, FROM_UNIXTIME(o.update_time) update_time, 
 s.`name` AS system, CASE o.classify WHEN 1 THEN '用户操作问题' WHEN 2 THEN '系统Bug' WHEN 3 THEN '新需求' WHEN 4 THEN '导入导出/帮助类' WHEN 5 THEN '遗留/需排期' ELSE '待确定' END AS 问题分类, o.title, o.content, o.remark
@@ -77,6 +77,7 @@ FROM xm_order o
 LEFT JOIN xm_system s ON s.id = o.system
 LEFT JOIN xm_user u ON u.id = o.present_user
 WHERE 1
+AND o.is_del = 0
 AND (o.present_time > UNIX_TIMESTAMP($start) AND o.present_time < UNIX_TIMESTAMP($end))
 OR (o.present_time > UNIX_TIMESTAMP($start) AND o.present_time < UNIX_TIMESTAMP($end))
 OR (o.present_time > UNIX_TIMESTAMP($start) AND o.present_time < UNIX_TIMESTAMP($end))
@@ -106,7 +107,6 @@ OR (o.present_time > UNIX_TIMESTAMP($start) AND o.present_time < UNIX_TIMESTAMP(
             foreach ($ret as $k => $v) {
                 $ret[$k]['content'] = strip_tags($v['content']);
             }
-
 
             ExcelHelper::export2DArrayByCSV($ret, $header, $file_name, $dir, true, $append = true);
             echo 'done';
