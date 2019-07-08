@@ -19,6 +19,7 @@ class RegisterForm extends Model
     public $re_password;
     public $created_at;
     public $user_systems;
+    public $department_id = 1; # 默认自注册用户为 业务/产品
 
     public function rules()
     {
@@ -43,6 +44,8 @@ class RegisterForm extends Model
             ['created_at', 'default', 'value' => time()],
 
             [['user_systems'], 'required', 'message'=>'关联系统不能为空', 'on'=>'user_create'], //on 表示只有在user_create场景下验证
+            [['department_id'], 'required', 'message' => '部门不可为空', 'on'=>'user_create'],
+            [['department_id'], 'in', 'range' => [0,1], 'on'=>'user_create'],
         ];
     }
 
@@ -62,6 +65,7 @@ class RegisterForm extends Model
         $user->user_name = $this->user_name;
         $user->email = $this->email;
         $user->created_at = $this->created_at;
+        $user->department_id = $this->department_id;
         if ($this->user_systems){
             $user->systems = $this->user_systems;
         }

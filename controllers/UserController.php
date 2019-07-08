@@ -79,6 +79,7 @@ class UserController extends Controller
     {
         $model = new RegisterForm();
         $model->setScenario('user_create'); // 验证场景
+//        var_dump(Yii::$app->request->post());die;
 
         if ($model->load(Yii::$app->request->post()) && $model->register()) {
             return $this->redirect(['index']);

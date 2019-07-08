@@ -53,6 +53,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-3">
             <?= $form
+                ->field($model, 'department_id')
+                ->label(false)
+                ->dropDownList([0=>'研发/运维', 1=>'产品/业务'], ['prompt' => '请选择部门']) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <?= $form
                 ->field($model, 'user_systems')
                 ->label('关联系统')
                 ->checkboxList(System::getUsableSystems()) ?>
