@@ -44,7 +44,7 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find()->orderBy('status ASC, present_time DESC')->where(['is_del'=>0]);
+        $query = Order::find()->orderBy('status ASC, present_time DESC');
 
         if (!Yii::$app->user->identity->isAdmin){
             $query -> andFilterWhere(['=', 'present_user', Yii::$app->user->id]);
@@ -95,6 +95,8 @@ class OrderSearch extends Order
             'xm_order.status' => $this->status,
             'xm_order.classify' => $this->classify,
         ]);
+
+        $query->andWhere(['is_del'=>0]); # 已删除订单不显示
 
         $query->andFilterWhere(['like', 'title', $this->title]);
 
