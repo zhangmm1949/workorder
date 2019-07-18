@@ -60,6 +60,7 @@ use app\models\Order;
             <?php  echo $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'], ['prompt'=>'问题归类'])->label(false) ?>
         </div>
         <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('导出', ['export?start_at=' . $model->start_at . '&end_at=' . $model->end_at], ['class' => 'btn btn-primary']) ?>
         <?php  //Html::resetButton('重置', ['class' => 'btn btn-default']) ?>
         <?= Html::a('新建工单', ['create'], ['class' => 'btn btn-success' ,'style'=>['margin-right'=>'4%', 'float'=>'right']]) ?>
     </div>

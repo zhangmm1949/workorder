@@ -68,8 +68,8 @@ AND o.is_mail = 0;';
      */
     public function actionOrderExport()
     {
-        $start = '20190701';
-        $end = '20190707';
+        $start = '20190708';
+        $end = '20190715';
 
         $sql = "SELECT o.order_sn, u.user_name, IF(o.`status` = 20, '已完成', IF(o.`status`=10, '处理中', '待处理')) AS order_status, FROM_UNIXTIME(o.present_time) add_time, FROM_UNIXTIME(o.update_time) update_time, 
 s.`name` AS system, CASE o.classify WHEN 1 THEN '用户操作问题' WHEN 2 THEN '系统Bug' WHEN 3 THEN '新需求' WHEN 4 THEN '导入导出/帮助类' WHEN 5 THEN '遗留/需排期' ELSE '待确定' END AS 问题分类, o.title, o.content, o.remark

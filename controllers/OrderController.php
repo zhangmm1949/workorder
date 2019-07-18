@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\common\PdfHelper;
 use Yii;
 use app\models\Order;
 use app\models\OrderSearch;
@@ -11,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
+use app\models\common\ExcelHelper;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -64,6 +64,57 @@ class OrderController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionExport()
+    {
+        // 如果没有规定开始结束日期则时间范围默认为上一周
+        $start_day = !empty(Yii::$app->request->get('start_at')) ? Yii::$app->request->get('start_at') : date('Ymd', strtotime('-' . (6+date('w')) . ' days'));
+        $end_day = !empty(Yii::$app->request->get('end_at')) ? Yii::$app->request->get('end_at') : date('Ymd', strtotime('-' . (date('w')-1) . ' days'));
+
+        $sql = "SELECT o.order_sn, u.user_name, IF(o.`status` = 20, '已完成', IF(o.`status`=10, '处理中', '待处理')) AS order_status, FROM_UNIXTIME(o.present_time) add_time, FROM_UNIXTIME(o.update_time) update_time, 
+s.`name` AS system, CASE o.classify WHEN 1 THEN '用户操作问题' WHEN 2 THEN '系统Bug' WHEN 3 THEN '新需求' WHEN 4 THEN '导入导出/帮助类' WHEN 5 THEN '遗留/需排期' ELSE '待确定' END AS 问题分类, o.title, o.content, o.remark
+FROM xm_order o
+LEFT JOIN xm_system s ON s.id = o.system
+LEFT JOIN xm_user u ON u.id = o.present_user
+WHERE 1
+AND o.is_del = 0
+AND (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
+OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
+OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
+;";
+
+        $ret = Yii::$app->db->createCommand($sql)->queryAll();
+        //        var_dump($ret);
+
+        $header = [
+            ['field' => 'order_sn',    'title' => 'order_sn', 'type' => 'string'],
+            ['field' => 'user_name',    'title' => '创建人', 'type' => 'string'],
+            ['field' => 'order_status',     'title' => '状态', 'type' => 'string'],
+            ['field' => 'add_time',     'title' => '创建时间', 'type' => 'string'],
+            ['field' => 'update_time',     'title' => '最后更新时间', 'type' => 'string'],
+            ['field' => 'system',     'title' => '系统', 'type' => 'string'],
+            ['field' => '问题分类',     'title' => '问题分类', 'type' => 'string'],
+            ['field' => 'title',     'title' => '标题', 'type' => 'string'],
+            ['field' => 'content',     'title' => '内容', 'type' => 'string'],
+            ['field' => 'remark',     'title' => '原因&处理', 'type' => 'string'],
+        ];
+
+        $file_name = '工单' . date('Ymd') . '.csv';
+        $dir = null; # 直接在页面下载
+
+        if (!empty($ret)) {
+            foreach ($ret as $k => $v) {
+                $ret[$k]['content'] = strip_tags($v['content']);
+            }
+
+            ExcelHelper::export2DArrayByCSV($ret, $header, $file_name, $dir, true, $append = true);
+            exit(); // 不打断点会报 headers already sent 错误
+        } else {
+            echo $sql . "<br/>";
+            var_dump($ret);
+            die();
+        }
     }
 
     /**

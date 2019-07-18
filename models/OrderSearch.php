@@ -39,10 +39,11 @@ class OrderSearch extends Order
      * Creates data provider instance with search query applied
      *
      * @param array $params
+     * @param bool $export
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $export=false)
     {
         $query = Order::find()->orderBy('status ASC, present_time DESC');
 
@@ -99,6 +100,9 @@ class OrderSearch extends Order
         $query->andWhere(['is_del'=>0]); # 已删除订单不显示
 
         $query->andFilterWhere(['like', 'title', $this->title]);
+        if ($export==true){
+            $query->asArray();
+        }
 
         return $dataProvider;
     }
