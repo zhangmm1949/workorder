@@ -25,3 +25,32 @@ function implode_with_quote($glue, $array, $quote = '"', $options = 0) {
     }
     return implode($glue, $result);
 }
+
+/**
+ * 格式化输出 （xdebug效果）
+ * @param $data
+ * @param string $type
+ */
+function vd($data, $type = '')
+{
+    echo '<pre>';
+    if (empty($data)) {
+        var_dump($data);
+    } else {
+        if (!empty($type) && function_exists($type)) {
+            $type($data);
+        } else {
+            if (is_array($data)) {
+                print_r($data);
+            } else {
+                var_dump($data);
+            }
+        }
+    }
+}
+
+function vde($data, $type = '')
+{
+    vd($data, $type);
+    exit;
+}

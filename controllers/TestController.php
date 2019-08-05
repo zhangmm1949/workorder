@@ -145,5 +145,16 @@ class TestController extends Controller
 
     }
 
+    public function actionServer()
+    {
+        vd($_SERVER);
+    }
+
+    public function actionNum()
+    {
+        
+    }
+
+
 
 }
