@@ -72,4 +72,10 @@ class HelloController extends Controller
         $data = Csv::ParseFile($file);
         var_dump($data);
     }
+
+    public function actionSapi()
+    {
+        var_dump($_SERVER);die;
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
 use app\models\Order;
 use app\models\OrderSearch;
@@ -229,13 +230,23 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 
     public function actionTest()
     {
-        $present_users = [3,6,12];
+        /*$present_users = [3,6,12];
         $info = (new Query())->from('xm_order')->where(['present_user' => $present_users])->indexBy('present_user')->all();
 
         $sql = (new Query())->from('xm_order')->where(['present_user' => $present_users])->indexBy('present_user')->createCommand()->getRawSql();
 
-        echo $sql;
+        echo $sql;*/
 
-        var_dump($info);die;
+        if (PHP_SAPI != 'cli' && isset(Yii::$app->user)) {
+            if (isset(Yii::$app->user->id)) {
+                $user_id = Yii::$app->user->id;
+            }
+
+            if (isset(Yii::$app->user->identity)) {
+                $user_name = Yii::$app->user->identity->name;
+            }
+        }
+
+        var_dump($user_name);
     }
 }

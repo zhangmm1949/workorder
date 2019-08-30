@@ -133,15 +133,9 @@ class TestController extends Controller
     {
         var_dump(Test::$name);
 
-        var_dump(Test::getName2());
-
-        // $this->actionName();
-
         var_dump(Test::getName());
 
-        var_dump(Test::getName2());
-
-        var_dump(Test::$name);
+        // $this->actionName();
 
     }
 
@@ -150,9 +144,34 @@ class TestController extends Controller
         vd($_SERVER);
     }
 
-    public function actionNum()
+    public function actionSapi()
     {
-        
+        $action ='';
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,5);
+        if (!empty($backtrace) && is_array($backtrace)) {
+            vd($backtrace);
+            foreach ($backtrace as $key => $item) {
+                echo 1;
+                if ($item['function'] == 'call_user_func_array') {
+                    break;
+                }
+
+                if ($key < 1) {
+                    continue;
+                }
+
+                if ($key == 1) {
+                    $file = $item['file'];
+                    $line = $item['line'];
+                }
+                echo $action;
+
+                $action = '->' . $item['function'] . $action;
+            }
+        }
+
+        $action = trim($action, '->');
+        var_dump($action);
     }
 
 
