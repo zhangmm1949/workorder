@@ -70,6 +70,9 @@ return [
 
     //UEditor 通用配置（个别需求可在单独配置）
     'UEditor_clientOptions' => [
+
+        # 文件上传位置等信息 在用到UEditor的Controller 中配置
+
         //最大输入字数
         'maximumWords' => '100000',
         //已输入/可输入字数提示

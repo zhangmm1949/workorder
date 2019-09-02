@@ -48,6 +48,16 @@ class OrderController extends Controller
         return [
             'upload' => [
                 'class' => 'kucha\ueditor\UEditorAction',
+                'config' => [
+                    // ueditor 的图片访问路径前缀 （如 http://www.baidu.com）
+//                  'imageUrlPrefix' => 'zmm.doo.com:8080'
+
+                    // ueditor 的图片存储路径（示例中的路径会导致无法访问，因为通过url不可访问根目录上层的文件）
+//                    "imagePathFormat"         => "/../runtime/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}",
+
+                    // ueditor 图片上传的根目录(也可以通过这种方式更改图片上传的路径)
+//                    'imageRoot' => Yii::getAlias('@webroot') . '/../runtime'
+                ]
             ]
         ];
     }
