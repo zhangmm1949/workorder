@@ -9,6 +9,8 @@
 namespace app\controllers;
 
 
+use app\models\Blog;
+use app\models\common\Log;
 use Yii;
 use yii\db\Exception;
 use yii\web\Controller;
@@ -141,37 +143,16 @@ class TestController extends Controller
 
     public function actionServer()
     {
-        vd($_SERVER);
+        $basePath = Yii::getAlias('@webroot');
+        $baseUrl = Yii::getAlias('@web');
+//        echo $basePath . '|';
+        echo $baseUrl;
     }
 
     public function actionSapi()
     {
-        $action ='';
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,5);
-        if (!empty($backtrace) && is_array($backtrace)) {
-            vd($backtrace);
-            foreach ($backtrace as $key => $item) {
-                echo 1;
-                if ($item['function'] == 'call_user_func_array') {
-                    break;
-                }
-
-                if ($key < 1) {
-                    continue;
-                }
-
-                if ($key == 1) {
-                    $file = $item['file'];
-                    $line = $item['line'];
-                }
-                echo $action;
-
-                $action = '->' . $item['function'] . $action;
-            }
-        }
-
-        $action = trim($action, '->');
-        var_dump($action);
+        $action = Log::log('aa','log','ok','','');
+        vd($action);
     }
 
 
