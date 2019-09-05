@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form
                 ->field($model, 'department_id')
                 ->label(false)
-                ->dropDownList([0=>'研发/运维', 1=>'产品/业务'], ['prompt' => '请选择部门']) ?>
+                ->dropDownList([Yii::$app->params['user_department']]) ?>
         </div>
     </div>
 

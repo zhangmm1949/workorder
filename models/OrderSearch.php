@@ -37,6 +37,8 @@ class OrderSearch extends Order
 
     /**
      * Creates data provider instance with search query applied
+     * ！！！ 用户部门决定操作权限，关联系统决定可见范围。 ！！！
+     * 可见工单范围应以给用户分配的系统来限定，不应限定到个人。A 用户创建的工单，对 B 用户亦有参考价值
      *
      * @param array $params
      * @param bool $export
@@ -47,11 +49,12 @@ class OrderSearch extends Order
     {
         $query = Order::find()->orderBy('status ASC, present_time DESC');
 
-        if (!Yii::$app->user->identity->isAdmin){
+        /*if (!Yii::$app->user->identity->isAdmin){
             $query -> andFilterWhere(['=', 'present_user', Yii::$app->user->id]);
         }
 
-        $query->joinWith(['presenter']);
+        $query->joinWith(['presenter']);*/
+        $query -> andFilterWhere(['in', 'system', [UserSystem::getSystemIdsByUserId(Yii::$app->user->id)]]);
 
         // add conditions that should always apply here
 

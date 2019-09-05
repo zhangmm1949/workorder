@@ -17,9 +17,9 @@ $this->title = $name;
         <div class="error-content">
             <h3><?= $name ?></h3>
 
-            <p>
+            <h2>
                 <?= nl2br(Html::encode($message)) ?>
-            </p>
+            </h2>
 
             <p>
                 The above error occurred while the Web server was processing your request.
@@ -28,7 +28,7 @@ $this->title = $name;
                 form.
             </p>
 
-            <form class='search-form'>
+            <!--<form class='search-form'>
                 <div class='input-group'>
                     <input type="text" name="search" class='form-control' placeholder="Search"/>
 
@@ -37,7 +37,7 @@ $this->title = $name;
                         </button>
                     </div>
                 </div>
-            </form>
+            </form>-->
         </div>
     </div>
 
