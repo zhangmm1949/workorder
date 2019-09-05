@@ -40,7 +40,10 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => '工单管理', 'url' => ['/order/index']],
-            ['label' => '用户管理', 'url' => ['/user/index']],
+            ['label' => '用户管理', 'url' => '#','items' => [
+                ['label' => '用户列表', 'url' => ['/user/index']],
+                ['label' => '修改密码', 'url' => ['/user/revise-password?id=' . Yii::$app->user->id]],
+            ]],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
@@ -53,7 +56,6 @@ AppAsset::register($this);
                 . Html::endForm()
                 . '</li>'
             ),
-            ['label' => '修改密码', 'url' => ['/user/revise-password?id=' . Yii::$app->user->id]],
         ],
     ]);
     NavBar::end();
