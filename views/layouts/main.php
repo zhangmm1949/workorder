@@ -52,7 +52,8 @@ AppAsset::register($this);
                 )
                 . Html::endForm()
                 . '</li>'
-            )
+            ),
+            ['label' => '修改密码', 'url' => ['/user/revise-password?id=' . Yii::$app->user->id]],
         ],
     ]);
     NavBar::end();

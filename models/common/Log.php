@@ -48,12 +48,12 @@ class Log
         $response = empty($response) ? '' : (is_string($response) ? mb_substr($response,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($response, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
 
 //        $url = self::getUrl();
-        $url = PHP_SAPI == 'cli' ? 'cli' : Yii::$app->request->url();
+        $url = PHP_SAPI == 'cli' ? 'cli' : Yii::$app->request->url;
 
         $action = '';
         $line = 0;
         $file = '';
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5); # 方法调用只追溯五层
         if (!empty($backtrace) && is_array($backtrace)) {
             foreach ($backtrace as $key => $item) {
                 if ($item['function'] == 'call_user_func_array') {
