@@ -253,7 +253,7 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
             }
 
             if (isset(Yii::$app->user->identity)) {
-                $user_name = Yii::$app->user->identity->name;
+                $user_name = Yii::$app->user->identity->username;
             }
         }
 

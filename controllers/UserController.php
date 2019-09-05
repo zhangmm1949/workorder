@@ -9,7 +9,6 @@ use Yii;
 use app\models\User;
 use app\models\UserSearch;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -149,11 +148,8 @@ class UserController extends Controller
      */
     public function actionRevisePassword($id)
     {
-        if (Yii::$app->user->id <> intval($id)){
-            throw new ForbiddenHttpException('不可修改其他人密码');
-        }
-
         $model = new PasswordForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->revise()) {
             return $this->redirect(['view', 'id' => $id]);
         } else {
