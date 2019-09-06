@@ -19,7 +19,7 @@ class RegisterForm extends Model
     public $re_password;
     public $created_at;
     public $user_systems;
-    public $department_id = 1; # 默认自注册用户为 业务/产品
+    public $department_id = 1; # 默认自注册用户为 业务组
 
     public function rules()
     {

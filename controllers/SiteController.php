@@ -68,10 +68,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $tags = OrderTag::getTenTags();
+//        $tags = OrderTag::getTenTags();
 
         return $this->render('index',[
-            'tags' => $tags,
+//            'tags' => $tags,
         ]);
     }
 
