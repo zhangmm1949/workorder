@@ -54,7 +54,7 @@ class OrderSearch extends Order
         }
 
         $query->joinWith(['presenter']);*/
-        $query -> andFilterWhere(['in', 'system', [UserSystem::getSystemIdsByUserId(Yii::$app->user->id)]]);
+        $query -> andFilterWhere(['in', 'system', UserSystem::getSystemIdsByUserId(Yii::$app->user->id)]);
 
         // add conditions that should always apply here
 

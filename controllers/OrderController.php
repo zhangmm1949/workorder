@@ -10,7 +10,6 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\db\Query;
 use app\models\common\ExcelHelper;
 
 /**

@@ -18,7 +18,7 @@ use app\models\System;
     <?php if (Yii::$app->user->identity->isAdmin ): ?>
         <?= $form->field($model, 'present_user')->dropDownList(User::getUserList(1), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
     <?php else: ?>
-        <?= $form->field($model, 'present_user')->hiddenInput(['value'=>Yii::$app->user->id])->label(false) ?>
+        <?= $form->field($model, 'present_user')->hiddenInput(['value'=>$model->present_user])->label(false) ?>
     <?php endif; ?>
 
     <?= $form->field($model, 'system')->dropDownList(System::getAllSystems(),['prompt'=>'请选择系统', 'style'=>'width:20%']) ?>
@@ -33,7 +33,7 @@ use app\models\System;
 
     <?= $form->field($model, 'status')->dropDownList($model->is_solved  ? Yii::$app->params['order_status'] : array_diff(Yii::$app->params['order_status'],['已完成']), ['style'=>'width:20%'])?>
 
-    <?php if (Yii::$app->user->identity->isAdmin && $model->is_solved): ?>
+    <?php if ($model->is_solved): ?>
 
     <?= $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'],['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
 
