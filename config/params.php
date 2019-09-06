@@ -80,11 +80,9 @@ return [
             [
                 'fullscreen', 'source', 'undo', 'redo', '|',
                 'fontsize',
-                'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'removeformat',
-                'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|',
-                'forecolor', 'backcolor', '|',
-                'lineheight', '|',
-                'indent', '|', 'insertcode', '|', 'simpleupload', 'insertimage','attachment'
+                'bold', 'italic', 'underline',
+                'removeformat', 'formatmatch',
+                 '|', 'insertcode', '|', 'attachment'
             ],
         ],
         //鼠标右键菜单功能
