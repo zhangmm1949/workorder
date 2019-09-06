@@ -130,12 +130,16 @@ class UserController extends Controller
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param $id
+     * @return User|null
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     protected function findModel($id)
     {
+        if (!Yii::$app->user->identity->isAdmin){
+            throw new ForbiddenHttpException('只有管理组成员才可以操作用户信息');
+        }
         if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {

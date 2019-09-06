@@ -10,6 +10,7 @@ namespace app\models;
 
 use app\base_models\UserSystem as Fa_Class;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 class UserSystem extends Fa_Class
 {
@@ -74,6 +75,20 @@ class UserSystem extends Fa_Class
     {
         $user_id = intval($user_id);
         $data = array_column(self::find()->asArray()->select('system_id')->where(['user_id'=>$user_id])->all(), 'system_id');
+        return $data;
+    }
+
+    /**
+     * @param int $user_id
+     * @return mixed
+     * @throws \yii\db\Exception
+     */
+    public static function getUserSystems(int $user_id)
+    {
+        $sql = "select `id`, `name` from xm_system s inner join xm_user_system us on us.system_id = s.id where us.user_id=:user_id;";
+        $ret = Yii::$app->db->createCommand($sql)->bindValue(':user_id', $user_id)->queryAll();
+        $data = ArrayHelper::map($ret, 'id', 'name');
+
         return $data;
     }
 }

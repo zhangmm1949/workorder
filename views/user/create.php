@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form
                 ->field($model, 'user_systems')
                 ->label('关联系统')
-                ->checkboxList(System::getUsableSystems()) ?>
+                ->checkboxList(\app\models\UserSystem::getUserSystems(Yii::$app->user->id)) ?>
         </div>
     </div>
 
