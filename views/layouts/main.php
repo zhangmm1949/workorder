@@ -41,6 +41,7 @@ AppAsset::register($this);
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => '工单管理', 'url' => ['/order/index']],
             ['label' => '用户管理', 'url' => '#','items' => [
+                ['label' => '新建用户', 'url' => ['/user/create']],
                 ['label' => '用户列表', 'url' => ['/user/index']],
                 ['label' => '修改密码', 'url' => ['/user/revise-password?id=' . Yii::$app->user->id]],
             ]],

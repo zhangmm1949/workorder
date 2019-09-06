@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form
                 ->field($model, 'department_id')
                 ->label(false)
-                ->dropDownList([Yii::$app->params['user_department']]) ?>
+                ->dropDownList(Yii::$app->params['user_department']) ?>
         </div>
     </div>
 
