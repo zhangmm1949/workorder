@@ -178,4 +178,10 @@ class UserController extends Controller
         ];
         return Yii::$app->db->createCommand()->batchInsert(UserSystem::tableName(),['user_id', 'system_id'], $rows)->getRawSql();
     }
+
+    public function actionGetUserIdsBySystem(int $system_id)
+    {
+        $data = UserSystem::getUsersBySystem($system_id);
+        return json_encode(array_keys($data), JSON_UNESCAPED_UNICODE);
+    }
 }

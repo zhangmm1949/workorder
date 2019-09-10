@@ -83,11 +83,20 @@ class UserSystem extends Fa_Class
      * @return mixed
      * @throws \yii\db\Exception
      */
-    public static function getUserSystems(int $user_id)
+    public static function getSystemsByUser(int $user_id)
     {
         $sql = "select `id`, `name` from xm_system s inner join xm_user_system us on us.system_id = s.id where us.user_id=:user_id;";
         $ret = Yii::$app->db->createCommand($sql)->bindValue(':user_id', $user_id)->queryAll();
         $data = ArrayHelper::map($ret, 'id', 'name');
+
+        return $data;
+    }
+
+    public static function getUsersBySystem(int $system_id)
+    {
+        $sql = "select `id`, `user_name` from xm_user u inner join xm_user_system us on us.user_id = u.id where u.department_id = 1 and us.system_id=:system_id;";
+        $ret = Yii::$app->db->createCommand($sql)->bindValue(':system_id', $system_id)->queryAll();
+        $data = ArrayHelper::map($ret, 'id', 'user_name');
 
         return $data;
     }
