@@ -147,7 +147,7 @@ class User extends Fa_User implements IdentityInterface
     public static function getUserList($dept_id=0)
     {
         $dept_id = $dept_id ? intval($dept_id) : 0;
-        $data = self::find()->asArray()->where(['department_id'=>$dept_id, 'status'=>1])->all();
+        $data = self::find()->asArray()->where(['department_id'=>$dept_id, 'status'=>1])->orderBy('user_name')->all();
         return ArrayHelper::map($data, 'id', 'user_name');
     }
 
