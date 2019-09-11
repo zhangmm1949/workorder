@@ -93,22 +93,6 @@ class Order extends FaOrder
     }
 
     /**
-     * 获取可以解决当前系统问题的用户列表
-     * @param $sys_id int 系统ID
-     * @return array
-     */
-    public static function getSolverList($sys_id)
-    {
-        $user_ids = array_column(UserSystem::find()->asArray()->where(['system_id'=>intval($sys_id)])->all(), 'user_id');
-        $users = User::find()->asArray()
-            ->where(['IN', 'id', $user_ids])
-//            ->andWhere(['department_id'=>0]) # 不再限制跟进解决人必须为管理组成员（zmm 20190906）
-            ->all();
-
-        return ArrayHelper::map($users, 'id', 'user_name');
-    }
-
-    /**
      * @param $tags string 表单提交的tags
      * @return string
      */

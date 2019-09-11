@@ -7,8 +7,8 @@
  */
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\Order;
 use yii\widgets\DetailView;
+use app\models\UserSystem;
 
     /* @var $this yii\web\View */
 /* @var $model app\models\Order */
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = '处理工单';
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'solve_user')->dropDownList(Order::getSolverList($model->system), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
+        <?= $form->field($model, 'solve_user')->dropDownList(UserSystem::getUsersBySystem($model->system), ['prompt'=>'请选择', 'style'=>'width:20%']) ?>
 
         <?= $form->field($model, 'classify')->dropDownList(Yii::$app->params['order_classify'],['prompt'=>'请选择归类', 'style'=>'width:20%']) ?>
 
