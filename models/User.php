@@ -159,7 +159,7 @@ class User extends Fa_User implements IdentityInterface
             $dept_id = intval($dept_id);
             $search->andWhere(['department_id'=>$dept_id]);
         }
-        $data = $search->asArray()->orderBy('user_name')->all();
+        $data = $search->asArray()->orderBy('CONVERT(`user_name` USING gbk)')->all();
         return ArrayHelper::map($data, 'id', 'user_name');
     }
 
