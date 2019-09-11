@@ -144,10 +144,22 @@ class User extends Fa_User implements IdentityInterface
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
-    public static function getUserList($dept_id=0)
+    /**
+     * @param bool $all 是否取全部用户 如果是false 则值取status=1的
+     * @param string $dept_id 是否取所有部门的用户
+     * @return array
+     */
+    public static function getUserList($all=true, $dept_id='all')
     {
-        $dept_id = $dept_id ? intval($dept_id) : 0;
-        $data = self::find()->asArray()->where(['department_id'=>$dept_id, 'status'=>1])->orderBy('user_name')->all();
+        $search = self::find()->where('1=1');
+        if (!$all){
+            $search->andWhere(['status'=>1]);
+        }
+        if ($dept_id<>'all'){
+            $dept_id = intval($dept_id);
+            $search->andWhere(['department_id'=>$dept_id]);
+        }
+        $data = $search->asArray()->orderBy('user_name')->all();
         return ArrayHelper::map($data, 'id', 'user_name');
     }
 
