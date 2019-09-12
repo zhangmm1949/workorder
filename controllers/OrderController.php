@@ -78,6 +78,17 @@ class OrderController extends Controller
 
     public function actionExport()
     {
+        $system_group = [
+            'BUY系统'	=>'B2B组',
+            'DMS系统'	=>'B2B组',
+            '直供平台'	=>'B2B组',
+            '订单中心'	=>'订单中心',
+            'POS系统'	=>'门店组',
+            '其他'		=>'其他',
+            '发票系统'	=>'订单中心',
+            'XDATA'		=>'XDATA',
+            '海外商城'	=>'海外商城'
+        ];
         // 如果没有规定开始结束日期则时间范围默认为上一周
         $start_day = !empty(Yii::$app->request->get('start_at')) ? str_replace('-','', Yii::$app->request->get('start_at')) : date('Ymd', strtotime('-' . (6+date('w')) . ' days'));
         $end_day = !empty(Yii::$app->request->get('end_at')) ? str_replace('-', '', Yii::$app->request->get('end_at')) : date('Ymd', strtotime('-' . (date('w')-1) . ' days'));
@@ -116,6 +127,7 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
         if (!empty($ret)) {
             foreach ($ret as $k => $v) {
                 $ret[$k]['content'] = strip_tags($v['content']);
+                @$ret[$k]['system'] = $system_group[$v['system']];
             }
 
             ExcelHelper::export2DArrayByCSV($ret, $header, $file_name, $dir, true, $append = true);
