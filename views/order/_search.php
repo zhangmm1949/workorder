@@ -44,9 +44,9 @@ use app\models\Order;
                 ?>
             </div>
         </div>
-        <div class="col-lg-2">
-            <p style="color: orangered"><b>如果开始、结束时间均不为空，则搜索结果为:时间范围内新增、更新、解决的工单合集</b></p>
-        </div>
+        <!--<div class="col-lg-2">
+            <p style="color: orangered"><b>如果开始、结束时间均不为空，且工单状态不选择，则搜索结果为:时间范围内新增、更新、解决的工单合集</b></p>
+        </div>-->
     </div>
     <div class="row">
         <div class="col-lg-2">
