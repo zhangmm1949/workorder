@@ -75,6 +75,7 @@ class OrderSearch extends Order
             $query->andFilterWhere(['<=', 'present_time', $end_time]);
         }
 
+        // 如果开始结束时间均不为空 则取时间范围内所有状态（发起、处理、完结）的工单
         /*if ($this->start_at && $this->end_at){
             $start_time = strtotime($this->start_at);
             $end_time = $this->end_at . ' 23:59:59';
