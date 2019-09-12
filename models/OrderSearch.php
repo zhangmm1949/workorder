@@ -100,6 +100,7 @@ class OrderSearch extends Order
         if ($export==true){
             $query->asArray();
         }
+//        echo $query->createCommand()->getRawSql();
 
         return $dataProvider;
     }
