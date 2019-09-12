@@ -43,10 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',
-                'template' => '{view} {update}{update-status}',
+                'template' => '{view} {update} {update-status}',#此处括号之间的空格可使页面图标稍稍隔开
                 'buttons' => [
                     'update-status' => function($url, $model, $key){
-                        return Yii::$app->user->identity->isAdmin ? Html::a('<span class="glyphicon glyphicon-trash"></span>',$url, ['title'=>'更改用户状态', 'data-method'=>'post', 'data-confirm'=>Yii::t('yii', '确定要修改用户状态吗？')]) : '';
+                        return Yii::$app->user->identity->isAdmin ? Html::a('<span class="glyphicon glyphicon-refresh"></span>',$url, ['title'=>'更改用户状态', 'data-method'=>'post', 'data-confirm'=>Yii::t('yii', '确定要修改用户状态吗？')]) : '';
                     }
                 ],
                 'headerOptions' => ['width' => '10%'],
