@@ -100,13 +100,13 @@ LEFT JOIN xm_system s ON s.id = o.system
 LEFT JOIN xm_user u ON u.id = o.present_user
 WHERE 1
 AND o.is_del = 0
-AND (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
+AND ((o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
 OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
-OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
+OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day)))
 ;";
 
         $ret = Yii::$app->db->createCommand($sql)->queryAll();
-        //        var_dump($ret);
+//        echo Yii::$app->db->createCommand($sql)->getRawSql();
 
         $header = [
             ['field' => 'order_sn',    'title' => 'order_sn', 'type' => 'string'],
