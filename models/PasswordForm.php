@@ -55,7 +55,6 @@ class PasswordForm extends Model
         }
 
         $user->setPassword($this->new_password);
-        $user->systems = UserSystem::getSystemIdsByUserId($user->id);
 
         // save(false)，不调用User的rules再做校验
         return $user->save(false);

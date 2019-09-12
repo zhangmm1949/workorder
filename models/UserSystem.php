@@ -39,11 +39,15 @@ class UserSystem extends Fa_Class
                         $user_system->save();
                     }
                 */
-                self::insertUserSystems($user->id, $user->systems);
+                if (!empty($user->systems)){
+                    self::insertUserSystems($user->id, $user->systems);
+                }
                 break;
             case 'update' :
-                self::deleteAll(['user_id'=>$user->id]);
-                self::insertUserSystems($user->id, $user->systems);
+                if (!empty($user->systems)){
+                    self::deleteAll(['user_id'=>$user->id]);
+                    self::insertUserSystems($user->id, $user->systems);
+                }
                 break;
             case 'delete' :
                 self::deleteAll(['user_id'=>$user->id]);
@@ -62,7 +66,6 @@ class UserSystem extends Fa_Class
      * @throws \yii\db\Exception
      */
     private static function insertUserSystems($user_id, $systems){
-        if (!$systems) return true; //注册时systems为空
         $rows = [];
         foreach ($systems as $key => $value){
             $rows[$key]['user_id'] = $user_id;

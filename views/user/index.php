@@ -40,7 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 //             'created_at',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => '操作',
+                'template' => '{view} {update}{update-status}',
+                'buttons' => [
+                    'update-status' => function($url, $model, $key){
+                        return Yii::$app->user->identity->isAdmin ? Html::a('<span class="glyphicon glyphicon-trash"></span>',$url, ['title'=>'更改用户状态', 'data-method'=>'post', 'data-confirm'=>Yii::t('yii', '确定要修改用户状态吗？')]) : '';
+                    }
+                ],
+                'headerOptions' => ['width' => '10%'],
+
+            ],
         ],
     ]); ?>
 </div>

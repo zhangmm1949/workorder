@@ -49,15 +49,6 @@ class OrderSearch extends Order
     {
         $query = Order::find()->orderBy('status ASC, present_time DESC');
 
-        /*if (!Yii::$app->user->identity->isAdmin){
-            $query -> andFilterWhere(['=', 'present_user', Yii::$app->user->id]);
-        }
-
-        $query->joinWith(['presenter']);*/
-        $query -> andFilterWhere(['in', 'system', UserSystem::getSystemIdsByUserId(Yii::$app->user->id)]);
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -69,7 +60,7 @@ class OrderSearch extends Order
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-//             $query->where('0=1');
+             $query->where('0=1');
             return $dataProvider;
         }
 
@@ -103,6 +94,9 @@ class OrderSearch extends Order
         $query->andWhere(['is_del'=>0]); # 已删除订单不显示
 
         $query->andFilterWhere(['like', 'title', $this->title]);
+
+        //只允许搜索自己可见系统内的工单
+        $query -> andWhere(['in', 'system', UserSystem::getSystemIdsByUserId(Yii::$app->user->id)]);
         if ($export==true){
             $query->asArray();
         }

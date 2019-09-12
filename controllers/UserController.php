@@ -102,7 +102,7 @@ class UserController extends Controller
         $model->systems = UserSystem::getSystemIdsByUserId($model->id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -111,7 +111,7 @@ class UserController extends Controller
     }
 
     /**
-     * Deletes an existing User model.
+     * Deletes an existing User model. （ 不允许删除用户 zmm 2019-09-12）
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param $id
      * @return \yii\web\Response
@@ -120,10 +120,18 @@ class UserController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDelete($id)
+    /*public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }*/
+
+    public function actionUpdateStatus($id)
+    {
+        $model = $this->findModel($id);
+        $model->status = $model->status == 1 ? 0 : 1;
+        $model->save(false);
         return $this->redirect(['index']);
     }
 
@@ -160,7 +168,7 @@ class UserController extends Controller
         $model = new PasswordForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->revise()) {
-            return $this->redirect(['view', 'id' => $id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('password', [
                 'model' => $model,
