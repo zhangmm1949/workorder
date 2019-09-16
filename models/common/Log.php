@@ -9,14 +9,14 @@
 namespace app\models\common;
 
 use Yii;
-use app\models\User;
+use yii\base\Exception;
 
 class Log
 {
     /**
      * redis 列表key
      */
-    const LOG_REDIS_KEY = 'log_list_key';
+    const LOG_REDIS_KEY = 'xm_log_list';
 
     /**
      * 日志表
@@ -29,6 +29,7 @@ class Log
     private static $max_lenth  = 20000;
 
     /**
+     * 记录日志到 redis
      * @param string $level
      * @param $index
      * @param $msg
@@ -37,39 +38,50 @@ class Log
      */
     private static function record($level='log', $index, $msg, $request, $response)
     {
-        $ip = self::getUserIp();
-        $user_id = Yii::$app->user->id ? Yii::$app->user->id : 0;
-        $user_name = $user_id ? User::findOne($user_id)->user_name : 'Guest';
+        try{
+            $ip = self::getUserIp();
+            $user_id = Yii::$app->user->id ? Yii::$app->user->id : 0;
+            $user_name = $user_id ? Yii::$app->user->identity->user_name : 'Guest';
 
-        // 数据保持原样，不进行Unicode编码  $request 和 $request 有最大长度限制
-        $index = is_string($index) ? $index : json_encode($index, JSON_UNESCAPED_UNICODE);
-        $msg = is_string($msg) ? $msg : json_encode($msg, JSON_UNESCAPED_UNICODE);
-        $request = empty($request) ? '' : (is_string($request) ? mb_substr($request,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($request, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
-        $response = empty($response) ? '' : (is_string($response) ? mb_substr($response,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($response, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
+            // 数据保持原样，不进行Unicode编码  $request 和 $request 有最大长度限制
+            $index = is_string($index) ? $index : json_encode($index, JSON_UNESCAPED_UNICODE);
+            $msg = is_string($msg) ? $msg : json_encode($msg, JSON_UNESCAPED_UNICODE);
+            $request = empty($request) ? '' : (is_string($request) ? mb_substr($request,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($request, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
+            $response = empty($response) ? '' : (is_string($response) ? mb_substr($response,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($response, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
 
 //        $url = self::getUrl();
-        $url = PHP_SAPI == 'cli' ? 'cli' : Yii::$app->request->url;
+            $url = PHP_SAPI == 'cli' ? 'cli' : Yii::$app->request->url;
 
-        $action = '';
-        $line = 0;
-        $file = '';
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5); # 方法调用只追溯五层
-        if (!empty($backtrace) && is_array($backtrace)) {
-            foreach ($backtrace as $key => $item) {
-                if ($item['function'] == 'call_user_func_array') {
-                    break;
+            $action = '';
+            $line = 0;
+            $file = '';
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5); # 方法调用只追溯五层
+            if (!empty($backtrace) && is_array($backtrace)) {
+                foreach ($backtrace as $key => $item) {
+                    if ($item['function'] == 'call_user_func_array') {
+                        break;
+                    }
+                    if ($key < 1) {
+                        continue;
+                    }
+                    if ($key == 1) {
+                        $file = $item['file'];
+                        $line = $item['line'];
+                    }
+                    $action = '->' . $item['function'] . $action;
                 }
-                if ($key < 1) {
-                    continue;
-                }
-                if ($key == 1) {
-                    $file = $item['file'];
-                    $line = $item['line'];
-                }
-                $action = '->' . $item['function'] . $action;
             }
+            $actions = trim($action, '->');
+
+            $create_time = 10000*microtime(true);
+
+            $data = compact('user_id', 'user_name', 'msg', 'request', 'response', 'level', 'ip', 'file', 'line', 'actions', 'url', 'create_time');
+
+            Yii::$app->redis->rpush(self::LOG_REDIS_KEY, json_encode($data, JSON_UNESCAPED_UNICODE));
+        }catch (Exception $e){
+            echo $e->getMessage();
         }
-        $action = trim($action, '->');
+
 
     }
 
@@ -155,6 +167,18 @@ class Log
      * @param string $response 响应体
      */
     public static function log($level = 'log', $index = '', $msg = '', $request = '', $response = '')
+    {
+        self::record($level, $index, $msg, $request, $response);
+    }
+
+    /**
+     * @param string $level
+     * @param string $index
+     * @param string $msg
+     * @param string $request
+     * @param string $response
+     */
+    public static function debug($level = 'debug', $index = '', $msg = '', $request = '', $response = '')
     {
         self::record($level, $index, $msg, $request, $response);
     }
