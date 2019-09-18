@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 	        [
                 'attribute' => 'solve_user',
-                'label' => '负责人',
+                'label' => '处理人',
                 'value' => function($data){
                     return isset($data->solver->user_name) ? Html::tag('b', $data->solver->user_name, ['style'=>"color: black"]) : '--';
                 },
