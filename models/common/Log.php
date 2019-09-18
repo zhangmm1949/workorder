@@ -159,28 +159,26 @@ class Log
 
     /**
      * 记录日志
-     * 说明：通用记录日志的方法
-     * @param string $level    日志等级
      * @param string $index    自定义索引
      * @param string $msg      消息体
      * @param string $request  请求体
      * @param string $response 响应体
      */
-    public static function log($level = 'log', $index = '', $msg = '', $request = '', $response = '')
+    public static function log($index = '', $msg = '', $request = '', $response = '')
     {
-        self::record($level, $index, $msg, $request, $response);
+        self::record($level = 'log', $index, $msg, $request, $response);
     }
 
     /**
-     * @param string $level
+     *
      * @param string $index
      * @param string $msg
      * @param string $request
      * @param string $response
      */
-    public static function debug($level = 'debug', $index = '', $msg = '', $request = '', $response = '')
+    public static function debug($index = '', $msg = '', $request = '', $response = '')
     {
-        self::record($level, $index, $msg, $request, $response);
+        self::record($level = 'debug', $index, $msg, $request, $response);
     }
 
 }
