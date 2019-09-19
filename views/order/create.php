@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin(); ?>
 
     <?php if (Yii::$app->user->identity->isAdmin): ?>
-        <?= $form->field($model, 'present_user')->dropDownList(User::getUserList(false), ['prompt' => '请选择', 'style' => 'width:20%', 'id'=>'present_user']) ?>
+        <?= $form->field($model, 'present_user')->dropDownList(User::getUserList(false,1), ['prompt' => '请选择', 'style' => 'width:20%', 'id'=>'present_user']) ?>
     <?php else: ?>
         <?= $form->field($model, 'present_user')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
     <?php endif; ?>
