@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\common\Log;
 use app\models\User;
 use Yii;
 use app\models\Order;
@@ -106,7 +107,7 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 ;";
 
         $ret = Yii::$app->db->createCommand($sql)->queryAll();
-//        echo Yii::$app->db->createCommand($sql)->getRawSql();
+        Log::log('order-export-sql','ok','',$sql);
 
         $header = [
             ['field' => 'order_sn',    'title' => 'order_sn', 'type' => 'string'],

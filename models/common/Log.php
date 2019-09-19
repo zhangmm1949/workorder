@@ -86,7 +86,7 @@ class Log
     }
 
     # 写入数据库
-    private static function writeLog()
+    public static function writeLog()
     {
 
     }
