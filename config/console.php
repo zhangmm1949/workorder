@@ -18,6 +18,13 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => $local_config['redis_hostname'],
+            'port' => $local_config['redis_port'],
+            'database' => $local_config['redis_database'],
+            'password' => $local_config['redis_password'],
+        ],
         'log' => [
             'targets' => [
                 [

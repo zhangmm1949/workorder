@@ -75,7 +75,7 @@ class Log
 
             $create_time = 10000*microtime(true);
 
-            $data = compact('user_id', 'user_name', 'msg', 'request', 'response', 'level', 'ip', 'file', 'line', 'actions', 'url', 'create_time');
+            $data = compact('user_id', 'user_name', 'index', 'msg', 'request', 'response', 'level', 'ip', 'file', 'line', 'actions', 'url', 'create_time');
 
             Yii::$app->redis->rpush(self::LOG_REDIS_KEY, json_encode($data, JSON_UNESCAPED_UNICODE));
         }catch (Exception $e){
@@ -88,7 +88,10 @@ class Log
     # 写入数据库
     public static function writeLog()
     {
-
+        $log_num = Yii::$app->redis->llen(self::LOG_REDIS_KEY);
+        if ($log_num <= 1000){
+            echo '暂不需要处理日志';exit();
+        }
     }
 
     /**

@@ -10,9 +10,7 @@ namespace app\commands;
 
 
 use app\models\RegisterForm;
-use yii\base\Exception;
 use yii\console\Controller;
-use Yii;
 
 class ToolController extends Controller
 {
