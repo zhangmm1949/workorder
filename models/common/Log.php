@@ -89,8 +89,9 @@ class Log
     public static function writeLog()
     {
         $log_num = Yii::$app->redis->llen(self::LOG_REDIS_KEY);
-        if ($log_num <= 1000){
-            echo '暂不需要处理日志';exit();
+        if ($log_num < 1000){
+            echo 'log num: ' . $log_num . ',暂不需要写入数据库。';
+            exit();
         }
     }
 
