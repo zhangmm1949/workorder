@@ -7,8 +7,9 @@ use Yii;
 /**
  * This is the model class for table "xm_order_tag".
  *
- * @property int $order_id 工单号
- * @property string $tag 单个标签
+ * @property int $order_id 工单ID
+ * @property string $tag 标签
+ * @property int $add_time 添加时间
  */
 class OrderTag extends \yii\db\ActiveRecord
 {
@@ -27,8 +28,8 @@ class OrderTag extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'tag'], 'required'],
-            [['order_id'], 'integer'],
-            [['tag'], 'string', 'max' => 20],
+            [['order_id', 'add_time'], 'integer'],
+            [['tag'], 'string', 'max' => 50],
             [['order_id', 'tag'], 'unique', 'targetAttribute' => ['order_id', 'tag']],
         ];
     }
@@ -39,8 +40,9 @@ class OrderTag extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'order_id' => '工单号',
-            'tag' => '单个标签',
+            'order_id' => '工单ID',
+            'tag' => '标签',
+            'add_time' => '添加时间',
         ];
     }
 }
