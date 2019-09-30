@@ -36,7 +36,7 @@ class Log
      * @param $request
      * @param $response
      */
-    private static function record($level='log', $index, $msg, $request, $response)
+    private static function record($level='log', string $index, string $msg, $request, $response)
     {
         try{
             $ip = self::getUserIp();
@@ -44,8 +44,7 @@ class Log
             $user_name = $user_id ? Yii::$app->user->identity->user_name : 'Guest';
 
             // 数据保持原样，不进行Unicode编码  $request 和 $request 有最大长度限制
-            $index = is_string($index) ? $index : json_encode($index, JSON_UNESCAPED_UNICODE);
-            $msg = is_string($msg) ? $msg : json_encode($msg, JSON_UNESCAPED_UNICODE);
+
             $request = empty($request) ? '' : (is_string($request) ? mb_substr($request,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($request, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
             $response = empty($response) ? '' : (is_string($response) ? mb_substr($response,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($response, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
 
@@ -88,10 +87,24 @@ class Log
     # 写入数据库
     public static function writeLog()
     {
-        $log_num = Yii::$app->redis->llen(self::LOG_REDIS_KEY);
-        if ($log_num < 1000){
-            echo 'log num: ' . $log_num . ',暂不需要写入数据库。';
+        $redis = Yii::$app->redis;
+        $log_count = $redis->llen(self::LOG_REDIS_KEY);
+        /*if ($log_count < 1000){
+            echo 'log 数量为: ' . $log_count . ',暂不需要写入数据库。';
             exit();
+        }*/
+
+        # 每次写1000条 需要 ceil（$log_num/1000）次
+        $num = ceil($log_count / 1000);
+        for ($i=1; $i <= $num; $i++){
+            $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 1000);
+            foreach ($data as $key => $item){
+                $item = json_decode($item, true);
+                $data[]['ip'] = empty($item['ip']) ? '' : $item['ip'];
+
+            }
+
+
         }
     }
 
@@ -168,7 +181,7 @@ class Log
      * @param string $request  请求体
      * @param string $response 响应体
      */
-    public static function log($index = '', $msg = '', $request = '', $response = '')
+    public static function log(string $index = '', string  $msg = '', $request = '', $response = '')
     {
         self::record($level = 'log', $index, $msg, $request, $response);
     }
@@ -180,7 +193,7 @@ class Log
      * @param string $request
      * @param string $response
      */
-    public static function debug($index = '', $msg = '', $request = '', $response = '')
+    public static function debug(string $index = '', string $msg = '', $request = '', $response = '')
     {
         self::record($level = 'debug', $index, $msg, $request, $response);
     }
