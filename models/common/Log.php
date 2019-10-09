@@ -9,7 +9,6 @@
 namespace app\models\common;
 
 use Yii;
-use yii\base\Exception;
 
 class Log
 {
@@ -40,8 +39,8 @@ class Log
     {
         try{
             $ip = self::getUserIp();
-            $user_id = Yii::$app->user->id ? Yii::$app->user->id : 0;
-            $user_name = $user_id ? Yii::$app->user->identity->user_name : 'Guest';
+            $user_id = PHP_SAPI == 'cli' ? 0 : (Yii::$app->user->id ? Yii::$app->user->id : 0);
+            $user_name = $user_id == 'cli' ? 'cli' : ($user_id == 0 ? 'Guest' : Yii::$app->user->identity->user_name);
 
             // 数据保持原样，不进行Unicode编码  $request 和 $request 有最大长度限制
 
@@ -77,7 +76,7 @@ class Log
             $data = compact('user_id', 'user_name', 'index', 'msg', 'request', 'response', 'level', 'ip', 'file', 'line', 'actions', 'url', 'create_time');
 
             Yii::$app->redis->rpush(self::LOG_REDIS_KEY, json_encode($data, JSON_UNESCAPED_UNICODE));
-        }catch (Exception $e){
+        }catch (\Exception $e){
             echo $e->getMessage();
         }
 
@@ -87,6 +86,7 @@ class Log
     # 写入数据库
     public static function writeLog()
     {
+        $file = Yii::$app->basePath . '/runtime/logs/log.log';
         $redis = Yii::$app->redis;
         $log_count = $redis->llen(self::LOG_REDIS_KEY);
         /*if ($log_count < 1000){
@@ -95,17 +95,22 @@ class Log
         }*/
 
         # 每次写1000条 需要 ceil（$log_num/1000）次
-        $num = ceil($log_count / 1000);
-        for ($i=1; $i <= $num; $i++){
-            $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 1000);
-            foreach ($data as $key => $item){
-                $item = json_decode($item, true);
-                $data[]['ip'] = empty($item['ip']) ? '' : $item['ip'];
+        try{
+            $num = ceil($log_count / 1000);
+            for ($i=1; $i <= $num; $i++){
+                $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 1000);
+                $count = Yii::$app->db->createCommand()->batchInsert(self::TABLE_NAME, array_keys($data[0]), $data)->execute();
+                $str = '已成功存入数据库' . $count . ' 条日志';
+                file_put_contents($file, $str, FILE_APPEND);
 
+                # 删除已写入数据库的日志
+                $redis->ltrim(self::LOG_REDIS_KEY, $count, -1);
             }
-
-
+        }catch (\Exception $e){
+            $str = $e->getMessage();;
+            file_put_contents($file, $str, FILE_APPEND);
         }
+
     }
 
     /**
@@ -196,6 +201,11 @@ class Log
     public static function debug(string $index = '', string $msg = '', $request = '', $response = '')
     {
         self::record($level = 'debug', $index, $msg, $request, $response);
+    }
+
+    public static function error(string $index = '', string $msg = '', $request = '', $response = '')
+    {
+        self::record($level = 'error', $index, $msg, $request, $response);
     }
 
 }

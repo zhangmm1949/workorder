@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use app\models\common\Log;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
@@ -59,9 +60,12 @@ class HelloController extends Controller
 
     public function actionTest()
     {
-        $sql = 'select * from xm_user;';
+        $sql = 'select * from xm_user limit 10;';
         $back = Yii::$app->db->createCommand($sql)->queryAll();
-        var_dump($back);
+        Log::log('hello-test', 'ok', $sql, $back);
+        if(!empty($back)){
+            echo  1;
+        };
     }
 
     public function actionReadCsv()
