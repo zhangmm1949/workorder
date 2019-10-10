@@ -89,25 +89,34 @@ class Log
         $file = Yii::$app->basePath . '/runtime/logs/log.log';
         $redis = Yii::$app->redis;
         $log_count = $redis->llen(self::LOG_REDIS_KEY);
-        /*if ($log_count < 1000){
-            echo 'log 数量为: ' . $log_count . ',暂不需要写入数据库。';
+        if ($log_count < 1000){
+            $str = date('Y-m-d H:i:s') . ' -- log 数量为: ' . $log_count . ',暂不需要写入数据库。' . PHP_EOL;
+            file_put_contents($file, $str, FILE_APPEND);
             exit();
-        }*/
+        }
 
         # 每次写1000条 需要 ceil（$log_num/1000）次
         try{
             $num = ceil($log_count / 1000);
             for ($i=1; $i <= $num; $i++){
                 $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 1000);
-                $count = Yii::$app->db->createCommand()->batchInsert(self::TABLE_NAME, array_keys($data[0]), $data)->execute();
-                $str = '已成功存入数据库' . $count . ' 条日志';
+                $batch = [];
+                foreach ($data as $k=>$v){
+                    $batch[] = json_decode($v, true);
+                }
+//                var_dump($batch);die;
+                $count = Yii::$app->db->createCommand()->batchInsert(self::TABLE_NAME, array_keys($batch[0]), $batch)->execute();
+
+                $str = date('Y-m-d H:i:s') . ' -- 已成功存入数据库' . $count . ' 条日志' . PHP_EOL;
+                echo $str;
                 file_put_contents($file, $str, FILE_APPEND);
 
                 # 删除已写入数据库的日志
                 $redis->ltrim(self::LOG_REDIS_KEY, $count, -1);
             }
         }catch (\Exception $e){
-            $str = $e->getMessage();;
+            $str = $e->getMessage();
+            echo $str . PHP_EOL;
             file_put_contents($file, $str, FILE_APPEND);
         }
 

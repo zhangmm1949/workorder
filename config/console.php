@@ -6,7 +6,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic-console',
-    'timeZone' => 'Asia/Urumqi', # 设置时区
+    'timeZone' => 'Asia/Shanghai', # 设置时区
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
