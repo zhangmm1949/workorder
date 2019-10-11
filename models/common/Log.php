@@ -25,7 +25,7 @@ class Log
     /**
      * @var int
      */
-    private static $max_lenth  = 20000;
+    private static $max_length = 20000;
 
     /**
      * 记录日志到 redis
@@ -44,8 +44,8 @@ class Log
 
             // 数据保持原样，不进行Unicode编码  $request 和 $request 有最大长度限制
 
-            $request = empty($request) ? '' : (is_string($request) ? mb_substr($request,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($request, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
-            $response = empty($response) ? '' : (is_string($response) ? mb_substr($response,0,self::$max_lenth,'utf-8') : mb_substr(json_encode($response, JSON_UNESCAPED_UNICODE),0,self::$max_lenth,'utf-8'));
+            $request = empty($request) ? '' : (is_string($request) ? mb_substr($request,0,self::$max_length,'utf-8') : mb_substr(json_encode($request, JSON_UNESCAPED_UNICODE),0,self::$max_length,'utf-8'));
+            $response = empty($response) ? '' : (is_string($response) ? mb_substr($response,0,self::$max_length,'utf-8') : mb_substr(json_encode($response, JSON_UNESCAPED_UNICODE),0,self::$max_length,'utf-8'));
 
 //        $url = self::getUrl();
             $url = PHP_SAPI == 'cli' ? 'cli' : Yii::$app->request->url;
@@ -89,17 +89,17 @@ class Log
         $file = Yii::$app->basePath . '/runtime/logs/log.log';
         $redis = Yii::$app->redis;
         $log_count = $redis->llen(self::LOG_REDIS_KEY);
-        if ($log_count < 1000){
+        if ($log_count < 10){
             $str = date('Y-m-d H:i:s') . ' -- log 数量为: ' . $log_count . ',暂不需要写入数据库。' . PHP_EOL;
             file_put_contents($file, $str, FILE_APPEND);
             exit();
         }
 
-        # 每次写1000条 需要 ceil（$log_num/1000）次
+        # 每次写1000条 需要 ceil（$log_num/1000）次 （暂时改为10条方便测试）
         try{
-            $num = ceil($log_count / 1000);
+            $num = ceil($log_count / 10);
             for ($i=1; $i <= $num; $i++){
-                $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 1000);
+                $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 10);
                 $batch = [];
                 foreach ($data as $k=>$v){
                     $batch[] = json_decode($v, true);
