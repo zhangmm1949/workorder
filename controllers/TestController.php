@@ -153,12 +153,7 @@ class TestController extends Controller
     {
         $sql = "delete from test where id >=5;";
         $ret1 = Yii::$app->db->createCommand($sql)->execute();
-        if ($ret1 >0){
-            $sql = "ALTER TABLE test AUTO_INCREMENT = 5;";
-            $ret2 = Yii::$app->db->createCommand($sql)->execute();
-            var_dump($ret2);die;
-        }
-        echo '~~~';
+        echo $ret1;
 
     }
 

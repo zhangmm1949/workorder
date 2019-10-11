@@ -21,4 +21,12 @@ class LogController extends Controller
     {
         Log::writeLog();
     }
+
+    /**
+     * 定时任务 删除30天前的日志
+     */
+    public function actionDeleteLog()
+    {
+        Log::deleteLog();
+    }
 }

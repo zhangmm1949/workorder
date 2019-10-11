@@ -122,12 +122,13 @@ class Log
         }
     }
 
-    # 定时删除数据库的日志（日志默认保留10天）
+    # 定时删除数据库的日志（日志默认保留30天）
     public static function deleteLog()
     {
-        $date = (time() - 10*86400) * 10000;
+        $date = (time() - 30*86400) * 10000;
         $sql = 'DELETE FROM xm_log WHERE `create_time` < ' . $date;
-        Yii::$app->db->createCommand($sql)->execute();
+        $ret = Yii::$app->db->createCommand($sql)->execute();
+        echo '已删除' . $ret . ' 条日志' . PHP_EOL;
     }
 
     /**
