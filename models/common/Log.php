@@ -106,20 +106,28 @@ class Log
                 }
 //                var_dump($batch);die;
                 $count = Yii::$app->db->createCommand()->batchInsert(self::TABLE_NAME, array_keys($batch[0]), $batch)->execute();
+                if ($count>0){
+                    $str = date('Y-m-d H:i:s') . ' -- 已成功存入数据库' . $count . ' 条日志' . PHP_EOL;
+                    echo $str;
+                    file_put_contents($file, $str, FILE_APPEND);
 
-                $str = date('Y-m-d H:i:s') . ' -- 已成功存入数据库' . $count . ' 条日志' . PHP_EOL;
-                echo $str;
-                file_put_contents($file, $str, FILE_APPEND);
-
-                # 删除已写入数据库的日志
-                $redis->ltrim(self::LOG_REDIS_KEY, $count, -1);
+                    # 删除已写入数据库的日志
+                    $redis->ltrim(self::LOG_REDIS_KEY, $count, -1);
+                }
             }
         }catch (\Exception $e){
             $str = $e->getMessage();
             echo $str . PHP_EOL;
             file_put_contents($file, $str, FILE_APPEND);
         }
+    }
 
+    # 定时删除数据库的日志（日志默认保留10天）
+    public static function deleteLog()
+    {
+        $date = (time() - 10*86400) * 10000;
+        $sql = 'DELETE FROM xm_log WHERE `create_time` < ' . $date;
+        Yii::$app->db->createCommand($sql)->execute();
     }
 
     /**
