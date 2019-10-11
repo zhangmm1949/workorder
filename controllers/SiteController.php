@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\common\Log;
 use app\models\OrderTag;
 use app\models\RegisterForm;
 use app\models\System;
@@ -87,6 +88,7 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+        Log::log('user_login', 'data', Yii::$app->request->post(),'');
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
@@ -140,6 +142,7 @@ class SiteController extends Controller
         $this->layout = 'main-login';
 
         $model = new RegisterForm();
+        Log::log('user_register', 'data', Yii::$app->request->post());
         if ($model->load(Yii::$app->request->post()) && $model->register()){
             return $this->redirect(['site/index']);
         }

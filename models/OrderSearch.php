@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\models\common\Log;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
@@ -101,7 +102,9 @@ class OrderSearch extends Order
         if ($export==true){
             $query->asArray();
         }
-//        echo $query->createCommand()->getRawSql();
+
+        $sql = $query->createCommand()->getRawSql();
+        Log::log('order_list', 'sql', $sql);
 
         return $dataProvider;
     }
