@@ -83,13 +83,16 @@ class Log
 
     }
 
-    # 写入数据库
+    /**
+     * 日志从redis写入数据库
+     */
     public static function writeLog()
     {
+        $line = 100;
         $file = Yii::$app->basePath . '/runtime/logs/log.log';
         $redis = Yii::$app->redis;
         $log_count = $redis->llen(self::LOG_REDIS_KEY);
-        if ($log_count < 10){
+        if ($log_count < $line){
             $str = date('Y-m-d H:i:s') . ' -- log 数量为: ' . $log_count . ',暂不需要写入数据库。' . PHP_EOL;
             file_put_contents($file, $str, FILE_APPEND);
             exit();
@@ -97,9 +100,9 @@ class Log
 
         # 每次写1000条 需要 ceil（$log_num/1000）次 （暂时改为10条方便测试）
         try{
-            $num = ceil($log_count / 10);
+            $num = ceil($log_count / $line);
             for ($i=1; $i <= $num; $i++){
-                $data = $redis->lrange(self::LOG_REDIS_KEY, 0, 10);
+                $data = $redis->lrange(self::LOG_REDIS_KEY, 0, $line);
                 $batch = [];
                 foreach ($data as $k=>$v){
                     $batch[] = json_decode($v, true);
