@@ -9,6 +9,7 @@
 namespace app\models;
 
 
+use app\models\common\Log;
 use yii\base\Model;
 
 class RegisterForm extends Model
@@ -73,9 +74,10 @@ class RegisterForm extends Model
         $user->setPassword($this->password);
         // 生成 "remember me" 认证key
         $user->generateAuthKey();
-
+        $ret = $user->save(false);
+        Log::log('user_register','ok', $this, $ret);
         // save(false)，不调用User的rules再做校验
-        return $user->save(false);
+        return $ret;
     }
 
 }
