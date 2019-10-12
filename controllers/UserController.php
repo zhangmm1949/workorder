@@ -99,7 +99,7 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model->systems = UserSystem::getSystemIdsByUserId($model->id);
+        $model->systems = array_keys(UserSystem::getSystemsByUser($model->id));
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -179,12 +179,8 @@ class UserController extends Controller
     }
 
     public function actionTest(){
-        $rows = [
-            0 =>['user_id' => 75,'system_id' => 1],
-            1 =>['user_id' => 75,'system_id' => 3],
-            2 =>['user_id' => 75,'system_id' => 7],
-        ];
-        return Yii::$app->db->createCommand()->batchInsert(UserSystem::tableName(),['user_id', 'system_id'], $rows)->getRawSql();
+        $sys = UserSystem::getSystemsByUser(1);
+        var_dump($sys);
     }
 
     public function actionGetUserIdsBySystem(int $system_id)

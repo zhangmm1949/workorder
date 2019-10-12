@@ -88,7 +88,7 @@ class Log
      */
     public static function writeLog()
     {
-        $line = 100;
+        $line = 10;
         $file = Yii::$app->basePath . '/runtime/logs/log.log';
         $redis = Yii::$app->redis;
         $log_count = $redis->llen(self::LOG_REDIS_KEY);
@@ -99,6 +99,7 @@ class Log
         }
 
         # 每次写1000条 需要 ceil（$log_num/1000）次 （暂时改为10条方便测试）
+        $begin = new DateTime();
         try{
             $num = ceil($log_count / $line);
             for ($i=1; $i <= $num; $i++){
@@ -123,6 +124,10 @@ class Log
             echo $str . PHP_EOL;
             file_put_contents($file, $str, FILE_APPEND);
         }
+        $end = new DateTime();
+        $str = $end->diff($begin)->format('共耗时 %H小时 %i分钟 %s秒' . PHP_EOL);
+        echo $str;
+        file_put_contents($file, $str, FILE_APPEND);
     }
 
     # 定时删除数据库的日志（日志默认保留30天）

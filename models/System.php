@@ -66,7 +66,7 @@ class System extends Fa_System
         }
         $data = self::find()->asArray()->where('`status` = 1')->orderBy('sort')->all();
         $data = ArrayHelper::map($data, 'id', 'name');
-        $cache->set('usable_systems', $data, 86400);
+        $cache->set('usable_systems', $data, 0);
         return $data;
     }
 }

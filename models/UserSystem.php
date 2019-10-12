@@ -9,6 +9,7 @@
 namespace app\models;
 
 use app\base_models\UserSystem as Fa_Class;
+use app\models\common\Log;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -71,14 +72,12 @@ class UserSystem extends Fa_Class
             $rows[$key]['user_id'] = $user_id;
             $rows[$key]['system_id'] = intval($value);
         }
-        return Yii::$app->db->createCommand()->batchInsert(UserSystem::tableName(),['user_id', 'system_id'], $rows)->execute();
-    }
-
-    public static function getSystemIdsByUserId($user_id)
-    {
-        $user_id = intval($user_id);
-        $data = array_column(self::find()->asArray()->select('system_id')->where(['user_id'=>$user_id])->all(), 'system_id');
-        return $data;
+        $ret = Yii::$app->db->createCommand()->batchInsert(UserSystem::tableName(),['user_id', 'system_id'], $rows)->execute();
+        if ($ret > 0){
+            $key = $key = $user_id . '-user-systems';
+            Yii::$app->redis->del($key);
+        }
+        return $ret;
     }
 
     /**
@@ -88,9 +87,17 @@ class UserSystem extends Fa_Class
      */
     public static function getSystemsByUser(int $user_id)
     {
-        $sql = "select `id`, `name` from xm_system s inner join xm_user_system us on us.system_id = s.id where us.user_id=:user_id;";
-        $ret = Yii::$app->db->createCommand($sql)->bindValue(':user_id', $user_id)->queryAll();
-        $data = ArrayHelper::map($ret, 'id', 'name');
+        $redis = Yii::$app->redis;
+        $key = $user_id . '-user-systems';
+        $data = json_decode($redis->get($key), true);
+        Log::log('get-user-systems', 'ok', $user_id, $data);
+        if (is_null($data)){
+            $sql = "select `id`, `name` from xm_system s inner join xm_user_system us on us.system_id = s.id where us.user_id=:user_id;";
+            $ret = Yii::$app->db->createCommand($sql)->bindValue(':user_id', $user_id)->queryAll();
+            $data = ArrayHelper::map($ret, 'id', 'name');
+            $redis->set($key, json_encode($data, JSON_UNESCAPED_UNICODE));
+            Log::log('set-user-systems', 'ok', $user_id, $data);
+        }
 
         return $data;
     }

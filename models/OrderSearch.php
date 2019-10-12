@@ -98,7 +98,7 @@ class OrderSearch extends Order
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         //只允许搜索自己可见系统内的工单
-        $query -> andWhere(['in', 'system', UserSystem::getSystemIdsByUserId(Yii::$app->user->id)]);
+        $query -> andWhere(['in', 'system', array_keys(UserSystem::getSystemsByUser(Yii::$app->user->id))]);
         if ($export==true){
             $query->asArray();
         }
