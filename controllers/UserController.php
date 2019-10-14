@@ -188,4 +188,15 @@ class UserController extends Controller
         $data = UserSystem::getUsersBySystem($system_id);
         return json_encode(array_keys($data), JSON_UNESCAPED_UNICODE);
     }
+
+    public function actionResetPassword()
+    {
+        $user_id = Yii::$app->request->get('id');
+        $user = $this->findModel($user_id);
+        $new_pass_str = '123456';
+        $user->setPassword($new_pass_str);
+        $user->generateAuthKey();
+        $ret = $user->save(false);
+        var_dump($ret);
+    }
 }
