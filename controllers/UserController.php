@@ -189,14 +189,23 @@ class UserController extends Controller
         return json_encode(array_keys($data), JSON_UNESCAPED_UNICODE);
     }
 
+    /**
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionResetPassword()
     {
+        if (!Yii::$app->user->identity->isSuperAdmin){
+            throw new ForbiddenHttpException('您没有权限进行重置密码的操作');
+        }
         $user_id = Yii::$app->request->get('id');
         $user = $this->findModel($user_id);
         $new_pass_str = '123456';
         $user->setPassword($new_pass_str);
         $user->generateAuthKey();
-        $ret = $user->save(false);
-        var_dump($ret);
+        if ($user->save(false)){
+            return $this->redirect('index');
+        };
     }
 }

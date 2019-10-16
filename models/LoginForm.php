@@ -47,8 +47,11 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, '用户名或密码错误');
+            if (!$user) {
+                $this->addError($attribute, '用户不存在或不可用 请联系管理员检查');
+            }
+            if (!$user->validatePassword($this->password)){
+                $this->addError($attribute, '密码错误');
             }
         }
     }
