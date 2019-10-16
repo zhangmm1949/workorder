@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Yii::$app->user->identity->isAdmin ? Html::a('<span class="glyphicon glyphicon-refresh"></span>',$url, ['title'=>'更改用户状态', 'data-method'=>'post', 'data-confirm'=>Yii::t('yii', '确定要修改用户状态吗？')]) : '';
                     },
                     'reset-password' => function($url, $model, $key){
-                        return Yii::$app->user->identity->isSuperAdmin ? Html::a('<span class="glyphicon glyphicon-refresh"></span>',$url, ['title'=>'重置用户密码', 'data-method'=>'post', 'data-confirm'=>Yii::t('yii', '确定要重置用户密码吗？')]) : '';
+                        return Yii::$app->user->identity->isSuperAdmin ? Html::a('<span class="glyphicon glyphicon-repeat"></span>',$url, ['title'=>'重置用户密码', 'data-method'=>'post', 'data-confirm'=>Yii::t('yii', '确定要重置用户密码吗？')]) : '';
                     },
                 ],
                 'headerOptions' => ['width' => '10%'],
