@@ -1,5 +1,4 @@
 <?php
-
 namespace app\models;
 
 use Yii;
@@ -49,8 +48,7 @@ class LoginForm extends Model
 
             if (!$user) {
                 $this->addError($attribute, '用户不存在或不可用 请联系管理员检查');
-            }
-            if (!$user->validatePassword($this->password)){
+            } elseif (!$user->validatePassword($this->password)) {
                 $this->addError($attribute, '密码错误');
             }
         }
@@ -63,7 +61,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
         }
         return false;
     }
