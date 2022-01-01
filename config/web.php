@@ -21,14 +21,14 @@ $config = [
             'cookieValidationKey' => 'asd$%^$DFDSFasdffASDh2353@×&',
         ],
         'cache' => [
-//            'class' => 'yii\caching\FileCache',
-            'class' => 'yii\redis\Cache',
+            'class' => 'yii\caching\FileCache',
+            /*'class' => 'yii\redis\Cache',
             'redis' => [
                 'hostname' => $local_config['redis_hostname'],
                 'port' => $local_config['redis_port'],
                 'database' => $local_config['redis_database'],
                 'password' => $local_config['redis_password'],
-             ],
+             ],*/
         ],
         'redis' => [
             'class' => 'yii\redis\Connection',
