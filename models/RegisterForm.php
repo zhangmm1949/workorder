@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: zhangmm
- * Date: 2017/11/18
- * Time: 18:16
- */
-
 namespace app\models;
-
 
 use yii\base\Model;
 
@@ -19,7 +11,7 @@ class RegisterForm extends Model
     public $re_password;
     public $created_at;
     public $user_systems;
-    public $department_id = 1; # 默认自注册用户为 业务组
+    public $department_id = 1; // 默认自注册用户为 业务组
 
     public function rules()
     {
@@ -32,20 +24,20 @@ class RegisterForm extends Model
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required', 'message' => '邮箱不能为空'],
             ['email', 'email'],
-            ['email', 'string', 'max'=>60],
-            ['email', 'unique', 'targetClass'=>'app\models\User', 'message' => '此邮箱已被注册'],
+            ['email', 'string', 'max' => 60],
+            ['email', 'unique', 'targetClass' => 'app\models\User', 'message' => '此邮箱已被注册'],
 
             ['password', 'required', 'message' => '密码不能为空'],
             ['password', 'string', 'min' => 6, 'message' => '密码长度不能低于6位'],
             ['password', 'string', 'max' => 20, 'message' => '密码长度不超过20位'],
 
-            ['re_password', 'compare', 'compareAttribute'=>'password','message'=>'两次密码不一致'],
+            ['re_password', 'compare', 'compareAttribute' => 'password', 'message' => '两次密码不一致'],
 
             ['created_at', 'default', 'value' => time()],
 
-            [['user_systems'], 'required', 'message'=>'关联系统不能为空', 'on'=>'user_create'], //on 表示只有在user_create场景下验证
-            [['department_id'], 'required', 'message' => '部门不可为空', 'on'=>'user_create'],
-            [['department_id'], 'in', 'range' => [0,1], 'on'=>'user_create'],
+            [['user_systems'], 'required', 'message' => '关联系统不能为空', 'on' => 'user_create'], //on 表示只有在user_create场景下验证
+            [['department_id'], 'required', 'message' => '部门不可为空', 'on' => 'user_create'],
+            [['department_id'], 'in', 'range' => [0, 1], 'on' => 'user_create'],
         ];
     }
 
@@ -61,21 +53,20 @@ class RegisterForm extends Model
             return null;
         }
         // 实现数据入库操作
-        $user = new User();
-        $user->user_name = $this->user_name;
-        $user->email = $this->email;
-        $user->created_at = $this->created_at;
+        $user                = new User();
+        $user->user_name     = $this->user_name;
+        $user->email         = $this->email;
+        $user->created_at    = $this->created_at;
         $user->department_id = $this->department_id;
-        if ($this->user_systems){
+        if ($this->user_systems) {
             $user->systems = $this->user_systems;
         }
 
         $user->setPassword($this->password);
-        // 生成 "remember me" 认证key
+        // 生成认证key
         $user->generateAuthKey();
 
         // save(false)，不调用User的rules再做校验
         return $user->save(false);
     }
-
 }

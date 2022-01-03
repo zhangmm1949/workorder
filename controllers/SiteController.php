@@ -1,17 +1,16 @@
 <?php
-
 namespace app\controllers;
 
+use app\models\ContactForm;
+use app\models\LoginForm;
 use app\models\OrderTag;
 use app\models\RegisterForm;
 use app\models\System;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -26,18 +25,18 @@ class SiteController extends Controller
                 'rules' => [
                     [
                         'actions' => ['login', 'register'],
-                        'allow' => true,
-                        'roles' => ['?'],
+                        'allow'   => true,
+                        'roles'   => ['?'],
                     ],
                     [
                         'actions' => [],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class'   => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -55,7 +54,7 @@ class SiteController extends Controller
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class'           => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
@@ -70,7 +69,7 @@ class SiteController extends Controller
     {
 //        $tags = OrderTag::getTenTags();
 
-        return $this->render('index',[
+        return $this->render('index', [
 //            'tags' => $tags,
         ]);
     }
@@ -140,46 +139,38 @@ class SiteController extends Controller
         $this->layout = 'main-login';
 
         $model = new RegisterForm();
-        if ($model->load(Yii::$app->request->post()) && $model->register()){
+        if ($model->load(Yii::$app->request->post()) && $model->register()) {
             return $this->redirect(['site/index']);
         }
 
-        return $this->render('register',['model' => $model]);
-
+        return $this->render('register', ['model' => $model]);
     }
 
     public function actionTest()
     {
         $insert = 'test';
-        $file = 'sql.php';
+        $file   = 'sql.php';
 
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
         header('Content-Description: File Transfer');
         header('Content-Encoding: UTF-8');
-        header("Content-Type: application/txt; charset=UTF-8");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
+        header('Content-Type: application/txt; charset=UTF-8');
+        header('Content-Type: application/force-download');
+        header('Content-Type: application/octet-stream');
+        header('Content-Type: application/download');
         header("Content-Disposition: attachment;filename={$file}");
-        header("Content-Transfer-Encoding: binary ");
+        header('Content-Transfer-Encoding: binary ');
 
         echo $insert;
     }
 
     public function actionDoo()
     {
-        var_dump($_SESSION);die();
+        var_dump($_SESSION);
+        die();
         $sys = System::getAllSystems();
         var_dump($sys);
     }
-
-    public function actionHang()
-    {
-        $_SESSION['hang'] = '1000';
-//        unset($_SESSION['hang']);
-    }
-
-
 }

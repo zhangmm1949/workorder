@@ -1,17 +1,15 @@
 <?php
-
 namespace app\controllers;
 
-use app\models\common\Log;
-use app\models\User;
-use Yii;
+use app\models\common\ExcelHelper;
 use app\models\Order;
 use app\models\OrderSearch;
-use yii\web\Controller;
+use app\models\User;
+use Yii;
 use yii\filters\AccessControl;
-use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\common\ExcelHelper;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -29,13 +27,13 @@ class OrderController extends Controller
                 'rules' => [
                     [
                         'actions' => [],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class'   => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -47,7 +45,7 @@ class OrderController extends Controller
     {
         return [
             'upload' => [
-                'class' => 'kucha\ueditor\UEditorAction',
+                'class'  => 'kucha\ueditor\UEditorAction',
                 'config' => [
                     // ueditor 的图片访问路径前缀 （如 http://www.baidu.com）
 //                  'imageUrlPrefix' => 'zmm.doo.com:8080'
@@ -68,11 +66,11 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new OrderSearch();
+        $searchModel  = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -80,19 +78,19 @@ class OrderController extends Controller
     public function actionExport()
     {
         $system_group = [
-            'BUY系统'	=>'B2B组',
-            'DMS系统'	=>'B2B组',
-            '直供平台'	=>'B2B组',
-            '订单中心'	=>'订单中心',
-            'POS系统'	=>'门店组',
-            '其他'		=>'其他',
-            '发票系统'	=>'订单中心',
-            'XDATA'		=>'XDATA',
-            '海外商城'	=>'海外商城'
+            'BUY系统' => 'B2B组',
+            'DMS系统' => 'B2B组',
+            '直供平台'  => 'B2B组',
+            '订单中心'  => '订单中心',
+            'POS系统' => '门店组',
+            '其他'    => '其他',
+            '发票系统'  => '订单中心',
+            'XDATA' => 'XDATA',
+            '海外商城'  => '海外商城'
         ];
         // 如果没有规定开始结束日期则时间范围默认为上一周
-        $start_day = !empty(Yii::$app->request->get('start_at')) ? str_replace('-','', Yii::$app->request->get('start_at')) : date('Ymd', strtotime('-' . (6+date('w')) . ' days'));
-        $end_day = !empty(Yii::$app->request->get('end_at')) ? str_replace('-', '', Yii::$app->request->get('end_at')) : date('Ymd', strtotime('-' . (date('w')-1) . ' days'));
+        $start_day = !empty(Yii::$app->request->get('start_at')) ? str_replace('-', '', Yii::$app->request->get('start_at')) : date('Ymd', strtotime('-' . (6 + date('w')) . ' days'));
+        $end_day   = !empty(Yii::$app->request->get('end_at')) ? str_replace('-', '', Yii::$app->request->get('end_at')) : date('Ymd', strtotime('-' . (date('w') - 1) . ' days'));
 
         $sql = "SELECT o.order_sn, u.user_name, IF(o.`status` = 20, '已完成', IF(o.`status`=10, '处理中', '待处理')) AS order_status, FROM_UNIXTIME(o.present_time) add_time, FROM_UNIXTIME(o.update_time) update_time, 
 s.`name` AS system, CASE o.classify WHEN 1 THEN '用户操作问题' WHEN 2 THEN '系统Bug' WHEN 3 THEN '新需求' WHEN 4 THEN '导入导出/帮助类' WHEN 5 THEN '遗留/需排期' ELSE '待确定' END AS 问题分类, o.title, o.content, o.remark
@@ -107,23 +105,22 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 ;";
 
         $ret = Yii::$app->db->createCommand($sql)->queryAll();
-        Log::log('order-export-sql','ok','',$sql);
 
         $header = [
-            ['field' => 'order_sn',    'title' => 'order_sn', 'type' => 'string'],
-            ['field' => 'user_name',    'title' => '创建人', 'type' => 'string'],
-            ['field' => 'order_status',     'title' => '状态', 'type' => 'string'],
-            ['field' => 'add_time',     'title' => '创建时间', 'type' => 'string'],
-            ['field' => 'update_time',     'title' => '最后更新时间', 'type' => 'string'],
-            ['field' => 'system',     'title' => '系统', 'type' => 'string'],
-            ['field' => '问题分类',     'title' => '问题分类', 'type' => 'string'],
-            ['field' => 'title',     'title' => '标题', 'type' => 'string'],
-            ['field' => 'content',     'title' => '内容', 'type' => 'string'],
-            ['field' => 'remark',     'title' => '原因&处理', 'type' => 'string'],
+            ['field' => 'order_sn', 'title' => 'order_sn', 'type' => 'string'],
+            ['field' => 'user_name', 'title' => '创建人', 'type' => 'string'],
+            ['field' => 'order_status', 'title' => '状态', 'type' => 'string'],
+            ['field' => 'add_time', 'title' => '创建时间', 'type' => 'string'],
+            ['field' => 'update_time', 'title' => '最后更新时间', 'type' => 'string'],
+            ['field' => 'system', 'title' => '系统', 'type' => 'string'],
+            ['field' => '问题分类', 'title' => '问题分类', 'type' => 'string'],
+            ['field' => 'title', 'title' => '标题', 'type' => 'string'],
+            ['field' => 'content', 'title' => '内容', 'type' => 'string'],
+            ['field' => 'remark', 'title' => '原因&处理', 'type' => 'string'],
         ];
 
         $file_name = '工单' . date('Ymd') . '.csv';
-        $dir = null; # 直接在页面下载
+        $dir       = null; // 直接在页面下载
 
         if (!empty($ret)) {
             foreach ($ret as $k => $v) {
@@ -133,11 +130,10 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 
             ExcelHelper::export2DArrayByCSV($ret, $header, $file_name, $dir, true, $append = true);
             exit(); // 不打断点会报 headers already sent 错误
-        } else {
-            echo $sql . "<br/>";
-            var_dump($ret);
-            die();
         }
+        echo $sql . '<br/>';
+        var_dump($ret);
+        die();
     }
 
     /**
@@ -163,11 +159,10 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
-        } else {
-            return $this->render('create', [
+        }
+        return $this->render('create', [
                 'model' => $model,
             ]);
-        }
     }
 
     /**
@@ -182,11 +177,10 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
+        }
+        return $this->render('update', [
                 'model' => $model,
             ]);
-        }
     }
 
     /**
@@ -194,11 +188,11 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
      */
     public function actionReply()
     {
-        $mail= Yii::$app->mailer->compose();
+        $mail = Yii::$app->mailer->compose();
         $mail->setTo('704369798@qq.com'); //要发送给那个人的邮箱
-        $mail->setSubject("DooTest"); //邮件主题
+        $mail->setSubject('DooTest'); //邮件主题
 //        $mail->setTextBody('测试text'); //发布纯文字文本 //无法发送
-        $mail->setHtmlBody("测试html"); //发送的消息内容
+        $mail->setHtmlBody('测试html'); //发送的消息内容
         var_dump($mail->send());
     }
 
@@ -211,12 +205,11 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
 
         $model->scenario = 'solve'; //验证场景
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()){
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->trigger(Order::EVENT_AFTER_SOLVE); // 绑定事件
             return $this->redirect(['index']);
-        } else {
-            return $this->render('solve', ['model' => $model]);
         }
+        return $this->render('solve', ['model' => $model]);
     }
 
     /**
@@ -227,7 +220,7 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
      */
     public function actionDelete($id)
     {
-        $model = $this->findModel($id);
+        $model         = $this->findModel($id);
         $model->is_del = 1;
         $model->save();
 
@@ -245,9 +238,8 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
     {
         if (($model = Order::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     public function actionTest()
