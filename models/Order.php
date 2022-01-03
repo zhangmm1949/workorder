@@ -55,8 +55,6 @@ class Order extends FaOrder
                 'attributes' => [
                     //自动添加‘发起时间’ 多个字段则 ['present_time','update_time']
                     ActiveRecord::EVENT_BEFORE_INSERT => ['present_time'],
-
-                    //自动更新‘更新时间’ EVENT_AFTER_UPDATE 为什么不生效?
                     ActiveRecord::EVENT_BEFORE_UPDATE => ['update_time'],
                 ],
             ],
