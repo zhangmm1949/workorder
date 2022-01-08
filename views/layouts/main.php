@@ -45,6 +45,9 @@ AppAsset::register($this);
                 ['label' => '用户列表', 'url' => ['/user/index']],
                 ['label' => '修改密码', 'url' => ['/user/revise-password?id=' . Yii::$app->user->id]],
             ]],
+            Yii::$app->user->identity->isSuperAdmin ? (
+            ['label' => '系统管理', 'url' => '/system/index']
+            ) : '',
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
