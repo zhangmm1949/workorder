@@ -103,7 +103,12 @@ class UserSystem extends Fa_Class
      */
     public static function getUsersBySystem(int $system_id)
     {
-        $sql = "select `id`, `user_name` from xm_user u inner join xm_user_system us on us.user_id = u.id where u.status = 1 and us.system_id=:system_id order by convert(u.`user_name` using gbk);";
+        $sql = "select `id`, `user_name` 
+from xm_user u 
+inner join xm_user_system us on us.user_id = u.id 
+where u.status = 1 
+and us.system_id=:system_id 
+order by convert(u.`user_name` using gbk);";
         $ret = Yii::$app->db->createCommand($sql)->bindValue(':system_id', $system_id)->queryAll();
         $data = ArrayHelper::map($ret, 'id', 'user_name');
 

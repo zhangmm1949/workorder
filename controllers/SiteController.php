@@ -136,8 +136,6 @@ class SiteController extends Controller
 
     public function actionRegister()
     {
-        $this->layout = 'main-login';
-
         $model = new RegisterForm();
         if ($model->load(Yii::$app->request->post()) && $model->register()) {
             return $this->redirect(['site/index']);

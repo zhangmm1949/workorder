@@ -59,9 +59,8 @@ class OrderTag extends FaOrderTag
         foreach ($tag_arr as $k => $v){
             $rows[$k]['order_id'] = $order_id;
             $rows[$k]['tag'] = $v;
-            $rows[$k]['add_time'] = time();
         }
-        return Yii::$app->db->createCommand()->batchInsert(OrderTag::tableName(), ['order_id', 'tag', 'add_time'], $rows)->execute();
+        return Yii::$app->db->createCommand()->batchInsert(OrderTag::tableName(), ['order_id', 'tag'], $rows)->execute();
     }
 
     /**
