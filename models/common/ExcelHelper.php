@@ -7,6 +7,7 @@
  */
 
 namespace app\models\common;
+
 use Yii;
 
 class ExcelHelper
@@ -15,7 +16,7 @@ class ExcelHelper
 
     /**
      * 输出下载header头到浏览器
-     * @param       string      $filename       文件名
+     * @param string $filename 文件名
      */
     public static function setHeader($filename)
     {
@@ -40,18 +41,21 @@ class ExcelHelper
         echo pack("ssssss", 0x809, 0x8, 0x0, 0x10, 0x0, 0x0);
         return;
     }
+
     public static function xlsEOF()
     {
         echo pack("ss", 0x0A, 0x00);
         return;
     }
+
     public static function xlsWriteNumber($row, $col, $value)
     {
         echo pack("sssss", 0x203, 14, $row, $col, 0x0);
         echo pack("d", $value);
         return;
     }
-    public static function xlsWriteLabel($row, $col, $value )
+
+    public static function xlsWriteLabel($row, $col, $value)
     {
         $length = strlen($value);
         echo pack("ssssss", 0x204, 8 + $length, $row, $col, 0x0, $length);
@@ -64,56 +68,47 @@ class ExcelHelper
      */
     public static function setDefaultWidth($defaultColWidth = 8)
     {
-        $record   = 0x0055;   // Record identifier
-        $length   = 0x0002;   // Number of bytes to follow
+        $record = 0x0055;   // Record identifier
+        $length = 0x0002;   // Number of bytes to follow
 
         $header = pack("vv", $record, $length);
         $data = pack("v", $defaultColWidth);
-        echo $header.$data;
+        echo $header . $data;
         return;
     }
 
     /**
      * 通过低版本导出excel
      *
-     * @param       array       $arr        数据数组
-     * @param       array       $map        映射数组
-     * @param       string      $filename   导出文件名
-     * @param       int         $col_width  列宽度
-     * @param       string      $dir        如果不为null，表示导出到某个文件夹而非直接输出到浏览器用于zip打包
+     * @param array $arr 数据数组
+     * @param array $map 映射数组
+     * @param string $filename 导出文件名
+     * @param int $col_width 列宽度
+     * @param string $dir 如果不为null，表示导出到某个文件夹而非直接输出到浏览器用于zip打包
      * @return      void
      */
     public static function export2DArray($arr, $map, $filename, $col_width = 8, $dir = null)
     {
-        if ($dir === null)
-        {
+        if ($dir === null) {
             @ob_end_clean();
             self::setHeader($filename);
-        }
-        else
-        {
+        } else {
             ob_start();
         }
         self::xlsBOF();
         self::setDefaultWidth($col_width);
-        foreach($map as $map_key => $map_val)
-        {
-            self::xlsWriteLabel(0, $map_key,  mb_convert_encoding($map_val['title'], 'gbk', 'utf-8'));
+        foreach ($map as $map_key => $map_val) {
+            self::xlsWriteLabel(0, $map_key, mb_convert_encoding($map_val['title'], 'gbk', 'utf-8'));
 //            self::xlsWriteLabel(0, $map_key, self::backCorrectString($map_val['title']));
         }
 
-        foreach ($arr as $row_key => $row_val)
-        {
+        foreach ($arr as $row_key => $row_val) {
             $row_key += 1;
-            foreach ($row_val as $col_key => $col_val)
-            {
-                foreach($map as $map_key => $map_val)
-                {
+            foreach ($row_val as $col_key => $col_val) {
+                foreach ($map as $map_key => $map_val) {
                     $type_field = isset($map_val['type']) ? $map_val['type'] : '';
-                    if($map_val['field'] == $col_key)
-                    {
-                        switch($type_field)
-                        {
+                    if ($map_val['field'] == $col_key) {
+                        switch ($type_field) {
                             case 'number':
                             case 'money':
                                 self::xlsWriteNumber($row_key, $map_key, $col_val);
@@ -133,9 +128,8 @@ class ExcelHelper
 
         self::xlsEOF();
 
-        if ($dir !== null)
-        {
-            return self::putObToFile($dir.$filename);
+        if ($dir !== null) {
+            return self::putObToFile($dir . $filename);
         }
     }
 
@@ -179,22 +173,19 @@ HEREDOC;
 
     /**
      * 用XML格式到处excel
-     * @param       array           $arr        要导出的数据数组
-     * @param       array           $map        表头数组
-     * @param       string          $filename   文件名 UTF8编码
-     * @param       int             $col_width  单元格长度，暂时无效。office长度，三种到处长度都不同
-     * @param       string          $dir        输出目录，如果不为null，则不输出到网页而生成到本地
+     * @param array $arr 要导出的数据数组
+     * @param array $map 表头数组
+     * @param string $filename 文件名 UTF8编码
+     * @param int $col_width 单元格长度，暂时无效。office长度，三种到处长度都不同
+     * @param string $dir 输出目录，如果不为null，则不输出到网页而生成到本地
      * @return      void
      */
     public static function export2DArrayByXML($arr, $map, $filename, $col_width = 100, $dir = null)
     {
         @ob_end_clean();
-        if (is_null($dir))
-        {
+        if (is_null($dir)) {
             self::setHeader($filename);
-        }
-        else
-        {
+        } else {
             ob_start();
         }
         self::xmlSetStyle();
@@ -203,32 +194,28 @@ HEREDOC;
 
         // 输出表头
         echo '<ss:Row>';
-        foreach ($map as $k => $v)
-        {
-            echo "<ss:Cell><Data ss:Type=\"String\">".$v['title']."</Data></ss:Cell>";
+        foreach ($map as $k => $v) {
+            echo "<ss:Cell><Data ss:Type=\"String\">" . $v['title'] . "</Data></ss:Cell>";
         }
         echo '</ss:Row>';
 
         // 输出数据
-        foreach ($arr as $row_key => $row_val)
-        {
+        foreach ($arr as $row_key => $row_val) {
             echo '<ss:Row>';
-            foreach($map as $map_key => $map_val)
-            {
+            foreach ($map as $map_key => $map_val) {
                 $col_val = isset($row_val[$map_val['field']]) ? $row_val[$map_val['field']] : '';
                 $type_field = isset($map_val['type']) ? $map_val['type'] : '';
-                switch($type_field)
-                {
+                switch ($type_field) {
                     case 'number':
-                        echo "<ss:Cell><Data ss:Type=\"Number\">".$col_val."</Data></ss:Cell>";
+                        echo "<ss:Cell><Data ss:Type=\"Number\">" . $col_val . "</Data></ss:Cell>";
                         break;
                     case 'money':
-                        echo "<ss:Cell><Data ss:Type=\"String\">".$col_val."</Data></ss:Cell>";
+                        echo "<ss:Cell><Data ss:Type=\"String\">" . $col_val . "</Data></ss:Cell>";
                         break;
                     case 'date':
                     case 'string':
                     default:
-                        echo "<ss:Cell><Data ss:Type=\"String\">".$col_val."</Data></ss:Cell>";
+                        echo "<ss:Cell><Data ss:Type=\"String\">" . $col_val . "</Data></ss:Cell>";
                         break;
                 }
             }
@@ -240,24 +227,21 @@ HEREDOC;
                 </Worksheet>
                 </Workbook>';
 
-        return is_null($dir) ? true : self::putObToFile($dir.$filename);
+        return is_null($dir) ? true : self::putObToFile($dir . $filename);
     }
 
     /**
      * 通过CSV输出excel
-     * @see         self::export2DArray
      * @return      void
+     * @see         self::export2DArray
      */
     public static function export2DArrayByCSV($data_list, $map, $file_name, $dir = null, $output_title = true, $append = false)
     {
-        if (is_null($dir))
-        {
+        if (is_null($dir)) {
             ob_end_clean();
             self::setHeader($file_name);
             echo "\xEF\xBB\xBF"; // UTF-8 BOM
-        }
-        else
-        {
+        } else {
             ob_start();
             echo "\xEF\xBB\xBF"; // UTF-8 BOM
         }
@@ -265,38 +249,25 @@ HEREDOC;
         // 输出表头
         $line_break = self::getLineBreak();
         $len = sizeof($map);
-        if ($output_title)
-        {
+        if ($output_title) {
             $k = 1;
-            foreach ($map as $field)
-            {
+            foreach ($map as $field) {
                 $str = $field['title'];
-//                $is_utf8    = self::isUtf8Encoding($str);
-//                $str = $is_utf8 ? iconv("UTF-8", "GBK//TRANSLIT//IGNORE", $str): $str;
                 echo $str;
-                //echo self::backCorrectString($field['title']);
-                if ($k !== $len)
-                {
+                if ($k !== $len) {
                     echo ",";
                 }
                 ++$k;
             }
             echo $line_break;
         }
-
         // 输出数据
-        foreach ($data_list as $v)
-        {
+        foreach ($data_list as $v) {
             $k = 1;
-            foreach ($map as $field)
-            {
-                $str = "\"". $v[$field['field']] . "\"";
-//                $is_utf8    = self::isUtf8Encoding($str);
-//                $str = $is_utf8 ? iconv("UTF-8", "GBK//TRANSLIT//IGNORE", $str): $str;
+            foreach ($map as $field) {
+                $str = "\"" . $v[$field['field']] . "\"";
                 echo $str;
-                //echo isset($v[$field['field']]) ? self::backCorrectString($v[$field['field']]) : '';
-                if ($k !== $len)
-                {
+                if ($k !== $len) {
                     echo ",";
                 }
                 ++$k;
@@ -304,45 +275,37 @@ HEREDOC;
             echo $line_break;
         }
 
-        return is_null($dir) ? true : self::putObToFile($dir.$file_name, $append);
+        return is_null($dir) ? true : self::putObToFile($dir . $file_name, $append);
     }
 
     /**
      * 通过CSV 循环输入数据最后输出excel
      *
-     * @author      yuhui
-     * @see         self::export2DArray
      * @return      void
+     * @see         self::export2DArray
+     * @author      yuhui
      */
     public static function export2DArrayByCSVLoop($data_list, $map, $file_name, $dir = null, $output_title = true, $append = false, $out = false)
     {
-        if (is_null($dir))
-        {
+        if (is_null($dir)) {
             @ob_end_clean();
-            if(!empty($file_name)){
+            if (!empty($file_name)) {
                 self::setHeader($file_name);
                 echo "\xEF\xBB\xBF"; // UTF-8 BOM
             }
-        }
-        else
-        {
+        } else {
             @ob_start();
         }
 
         // 输出表头
         $line_break = self::getLineBreak();
         $len = sizeof($map);
-        if ($output_title)
-        {
+        if ($output_title) {
             $k = 1;
-            foreach ($map as $field)
-            {
+            foreach ($map as $field) {
                 $str = $field['title'];
-//                $is_utf8    = self::isUtf8Encoding($str);
-//                $str = $is_utf8 ? iconv("UTF-8", "GBK//TRANSLIT//IGNORE", $str): $str;
                 echo $str;
-                if ($k !== $len)
-                {
+                if ($k !== $len) {
                     echo ",";
                 }
                 ++$k;
@@ -351,17 +314,12 @@ HEREDOC;
         }
 
         // 输出数据
-        foreach ($data_list as $v)
-        {
+        foreach ($data_list as $v) {
             $k = 1;
-            foreach ($map as $field)
-            {
-                $str = "\"". $v[$field['field']] ."\"";
-//                $is_utf8    = self::isUtf8Encoding($str);
-//                $str = $is_utf8 ? iconv("UTF-8", "GBK//TRANSLIT//IGNORE", $str): $str;
+            foreach ($map as $field) {
+                $str = "\"" . $v[$field['field']] . "\"";
                 echo $str;
-                if ($k !== $len)
-                {
+                if ($k !== $len) {
                     echo ",";
                 }
                 ++$k;
@@ -370,8 +328,8 @@ HEREDOC;
         }
 
         //不输出的时候只追加数据；
-        if($out){
-            return is_null($dir) ? true : self::putObToFile($dir.$file_name, $append);
+        if ($out) {
+            return is_null($dir) ? true : self::putObToFile($dir . $file_name, $append);
         }
     }
 
@@ -381,8 +339,7 @@ HEREDOC;
     protected static function putObToFile($file_path, $append = false)
     {
         $dir = dirname($file_path);
-        if (!file_exists($dir))
-        {
+        if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }
         $content = ob_get_contents();
@@ -392,11 +349,11 @@ HEREDOC;
 
     /**
      * 超过excel导出限制的用zip导出
-     * @param       array           $arr        数组数组
-     * @param       array           $map        数组字段映射数组
-     * @param       string          $filename   文件名，传入zip的文件名如book.zip
-     * @param       int             $col_width  列宽度，注意不同的方法生成传入的长度单位是不一样的
-     * @param       string          $func       调用本类中哪个静态方法生成excel
+     * @param array $arr 数组数组
+     * @param array $map 数组字段映射数组
+     * @param string $filename 文件名，传入zip的文件名如book.zip
+     * @param int $col_width 列宽度，注意不同的方法生成传入的长度单位是不一样的
+     * @param string $func 调用本类中哪个静态方法生成excel
      * @return      void
      */
     /*
@@ -456,7 +413,7 @@ HEREDOC;
      * `$fields`设置读取列字段的名称
      *
      * @param       $excelPath
-     * @param int    $sheet 设置excel读取第几个工作表，从0开始
+     * @param int $sheet 设置excel读取第几个工作表，从0开始
      * @param string $rowRange 读取的行范围，起始行与结束行以逗号分隔，若起始行与结束行为空则分别设置1或最大行数
      * ~~~
      * ~~~
@@ -485,13 +442,13 @@ HEREDOC;
      * ['A' => ['name', 'skipOnEmpty' => true, 'format' => '%s'], 'B" => ['age', 'format' => '%d']]
      * ~~~
      *
-     * @throws \PHPExcel_Reader_Exception
      * @return array
+     * @throws \PHPExcel_Reader_Exception
      * @author Hulifa
      */
     public static function readFile($excelPath, $sheet = 0, $rowRange = '1:', $colRange = 'A:', array $fields = [])
     {
-        require_once Yii::$app->basePath .'/extensions/PHPExcel/PHPExcel/IOFactory.php';
+        require_once Yii::$app->basePath . '/extensions/PHPExcel/PHPExcel/IOFactory.php';
 
         $excelReader = \PHPExcel_IOFactory::createReader('Excel2007');
         if (!$excelReader->canRead($excelPath)) {
@@ -522,9 +479,9 @@ HEREDOC;
         //循环读取每个单元格的内容。注意行从1开始，列从A开始
         for ($rowIndex = $startRow; $rowIndex <= $endRow; $rowIndex++) {
             for ($colIndex = $startCol; $colIndex != $endCol; $colIndex++) {
-                $addr = $colIndex.$rowIndex;
+                $addr = $colIndex . $rowIndex;
                 $cell = $currentSheet->getCell($addr)->getValue();
-                if($cell instanceof \PHPExcel_RichText) {
+                if ($cell instanceof \PHPExcel_RichText) {
                     //富文本转换字符串
                     $cell = $cell->__toString();
                 } elseif ($cell[0] == '=') {
@@ -553,7 +510,7 @@ HEREDOC;
      *
      * @param $rules
      * @param string $cellValue 单元格内容值
-     * @param array $rowData    单元格所在行的数据
+     * @param array $rowData 单元格所在行的数据
      * @return bool             是否skipOnEmpty
      * @author Hulifa
      */
@@ -607,19 +564,19 @@ HEREDOC;
                 break;
             case '%date' :
                 $len = strlen($cellValue);
-                if($len == 4){
+                if ($len == 4) {
                     return $cellValue;
                 }
-                if($len == 6){
-                    $year = substr($cellValue,0,4);
-                    $month = substr($cellValue,4,2);
-                    return $year.'-'.$month;
+                if ($len == 6) {
+                    $year = substr($cellValue, 0, 4);
+                    $month = substr($cellValue, 4, 2);
+                    return $year . '-' . $month;
                 }
-                if($len == 8){
-                    $year = substr($cellValue,0,4);
-                    $month = substr($cellValue,4,2);
-                    $day = substr($cellValue,6,2);
-                    return $year.'-'.$month.'-'.$day;
+                if ($len == 8) {
+                    $year = substr($cellValue, 0, 4);
+                    $month = substr($cellValue, 4, 2);
+                    $day = substr($cellValue, 6, 2);
+                    return $year . '-' . $month . '-' . $day;
                 }
                 return false;
             default:
@@ -648,7 +605,7 @@ HEREDOC;
     /**
      * 写入excel文件数据
      *
-     * @param array  $title
+     * @param array $title
      * ~~~
      * $title = ['套餐ID', 'SKU', '商品名称'];
      * ~~~
@@ -658,10 +615,10 @@ HEREDOC;
      * $title = ['套餐ID', ['SKU', 'format' => \PHPExcel_Cell_DataType::TYPE_NUMERIC], '商品名称'];
      * ~~~
      *
-     * @param array  $rows
-     * @param string $startCol  开始写入列
-     * @param int    $startRow  开始写入行
-     * @param array  $style     设置title字段样式
+     * @param array $rows
+     * @param string $startCol 开始写入列
+     * @param int $startRow 开始写入行
+     * @param array $style 设置title字段样式
      *
      * @return \PHPExcel
      * @throws \PHPExcel_Exception
@@ -669,11 +626,11 @@ HEREDOC;
      */
     public static function writeFile(array $title, array $rows, $startCol = 'A', $startRow = 1, array $style = [])
     {
-        require_once Yii::$app->basePath .'/extensions/PHPExcel/PHPExcel.php';
+        require_once Yii::$app->basePath . '/extensions/PHPExcel/PHPExcel.php';
         $objPHPExcel = new \PHPExcel();
 
         // Title style
-        $style = array_replace_recursive(['font' => ['bold' => true, 'size'  => 12], 'merge' => 1], $style);
+        $style = array_replace_recursive(['font' => ['bold' => true, 'size' => 12], 'merge' => 1], $style);
 
         // 表头合并行数
         $titleMerge = (int)$style['merge'];
@@ -755,13 +712,13 @@ HEREDOC;
      *
      * @param        $objPHPExcel
      * @param string $fileName 下载文件名称
-     * @param string $type     excel文件类型 `Excel5` or `Excel2007`
+     * @param string $type excel文件类型 `Excel5` or `Excel2007`
      * @throws \PHPExcel_Reader_Exception
      * @author Hulifa
      */
     public static function downloadFile($objPHPExcel, $fileName, $type = 'Excel5')
     {
-        require_once Yii::$app->basePath .'/extensions/PHPExcel/PHPExcel/IOFactory.php';
+        require_once Yii::$app->basePath . '/extensions/PHPExcel/PHPExcel/IOFactory.php';
 
         $type = in_array($type, ['Excel5', 'Excel2007'], true) ? $type : 'Excel2007';
 
@@ -779,10 +736,10 @@ HEREDOC;
         header('Cache-Control: max-age=1');
 
         // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
 
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, $type);
         $objWriter->save('php://output');
@@ -793,31 +750,29 @@ HEREDOC;
 
     /**
      * 判断用户客户端操作系统是否是windows的操作系统。
-     * @author yuhui
-     * @since  12-8-6 下午4:07
      * @return boolean
+     * @since  12-8-6 下午4:07
+     * @author yuhui
      */
     public static function isWindowsOs()
     {
         //获得用户操作系统
-        $system  = array(
-            'Windows 8'     =>'NT 6.2',
-            'Windows 7'     =>'NT 6.1',
-            'Windows Vista' =>'NT 6.0',
-            'Windows 2003'  =>'NT 5.2',
-            'Windows XP'    =>'NT 5.1',
-            'Windows 2000'  =>'NT 5',
-            'Windows ME'    => '4.9',
-            'Windows NT 4'  => 'NT 4',
-            'Windows 98'    => '98',
-            'Windows 95'    => '95',
-            'Windows 10'    => 'NT 10.0',
+        $system = array(
+            'Windows 8' => 'NT 6.2',
+            'Windows 7' => 'NT 6.1',
+            'Windows Vista' => 'NT 6.0',
+            'Windows 2003' => 'NT 5.2',
+            'Windows XP' => 'NT 5.1',
+            'Windows 2000' => 'NT 5',
+            'Windows ME' => '4.9',
+            'Windows NT 4' => 'NT 4',
+            'Windows 98' => '98',
+            'Windows 95' => '95',
+            'Windows 10' => 'NT 10.0',
         );
 
-        foreach ($system as $k => $v)
-        {
-            if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'],$v) !== false)
-            {
+        foreach ($system as $k => $v) {
+            if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], $v) !== false) {
                 return TRUE;
             }
         }
@@ -826,15 +781,14 @@ HEREDOC;
 
     /**
      * 判断字符是否是utf-8的编码。
+     * @param string $str 字符串
+     * @return boolean
      * @author yuhui
      * @since  12-10-31 下午5:09
-     * @param  string $str 字符串
-     * @return boolean
      */
     public static function isUtf8Encoding($str)
     {
-        if(!is_string($str))
-        {
+        if (!is_string($str)) {
             return FALSE;
         }
         return mb_detect_encoding($str, "UTF-8", TRUE);
@@ -842,25 +796,22 @@ HEREDOC;
 
     /**
      * 根据操作系统返回相应的字符串[window -> GBK, LINUX -> UTF-8]
+     * @param string $str
+     * @return string
      * @author Cash yu <yuhui@xiaomi.com>
      * @since  12-10-31 下午5:22
-     * @param  string $str
-     * @return string
      */
     public static function backCorrectString($str)
     {
         //判断是否是WINDOWS的系统
         $is_windows = self::isWindowsOs();
-        $is_utf8    = self::isUtf8Encoding($str);
+        $is_utf8 = self::isUtf8Encoding($str);
 
         //windows
-        if($is_windows)
-        {
-            return $is_utf8 ? iconv("UTF-8", "GBK//TRANSLIT//IGNORE", $str): $str;
-        }
-        //非windows
-        else
-        {
+        if ($is_windows) {
+            return $is_utf8 ? iconv("UTF-8", "GBK//TRANSLIT//IGNORE", $str) : $str;
+        } //非windows
+        else {
             return $is_utf8 ? $str : iconv("GBK", "UTF-8//TRANSLIT//IGNORE", $str);
         }
     }
@@ -875,8 +826,8 @@ HEREDOC;
     /**
      * mergeCells
      *
-     * @param  mixed $cellMerge
-     * @param  mixed $objPHPExcel
+     * @param mixed $cellMerge
+     * @param mixed $objPHPExcel
      *
      * @return void
      */
@@ -896,8 +847,8 @@ HEREDOC;
     public static function getExcelObject()
     {
         $objPHPExcel = new \PHPExcel();
-        $objPHPExcel->setActiveSheetIndex ()->getDefaultStyle ()->getAlignment ()->setHorizontal ( \PHPExcel_Style_Alignment::HORIZONTAL_CENTER ); // 左右居中
-        $objPHPExcel->setActiveSheetIndex ()->getDefaultStyle ()->getAlignment ()->setVertical ( \PHPExcel_Style_Alignment::VERTICAL_CENTER ); // 上下居中
+        $objPHPExcel->setActiveSheetIndex()->getDefaultStyle()->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER); // 左右居中
+        $objPHPExcel->setActiveSheetIndex()->getDefaultStyle()->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER); // 上下居中
         $objPHPExcel->getDefaultStyle()->getFont()->setName('宋体');
         $objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
 
@@ -919,8 +870,8 @@ HEREDOC;
     /**
      * setCellValueExplicit
      *
-     * @param  mixed $cellValue
-     * @param  mixed $objPHPExcel
+     * @param mixed $cellValue
+     * @param mixed $objPHPExcel
      *
      * @return void
      */
