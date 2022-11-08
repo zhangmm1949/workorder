@@ -30,13 +30,13 @@ $config = [
                 'password' => $local_config['redis_password'],
              ],*/
         ],
-        'redis' => [
-            'class' => 'yii\redis\Connection',
-            'hostname' => $local_config['redis_hostname'],
-            'port' => $local_config['redis_port'],
-            'database' => $local_config['redis_database'],
-            'password' => $local_config['redis_password'],
-        ],
+        // 'redis' => [
+        //     'class' => 'yii\redis\Connection',
+        //     'hostname' => $local_config['redis_hostname'],
+        //     'port' => $local_config['redis_port'],
+        //     'database' => $local_config['redis_database'],
+        //     'password' => $local_config['redis_password'],
+        // ],
 
         /*'session' => [
             'class' => 'yii\redis\Session',
