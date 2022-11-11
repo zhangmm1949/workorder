@@ -41,7 +41,7 @@ class BlogSearch extends Blog
      */
     public function search($params)
     {
-        $query = Blog::find();
+        $query = Blog::find()->orderBy('create_at DESC');
 
         // add conditions that should always apply here
 

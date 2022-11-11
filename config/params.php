@@ -66,7 +66,7 @@ return [
                 'fontsize',
                 'bold', 'italic', 'underline',
                 'removeformat', 'formatmatch',
-                 '|', 'insertcode', '|', 'attachment', 'insertimage'
+                 '|', 'insertcode', '|', 'insertimage', 'attachment'
             ],
         ],
         //鼠标右键菜单功能

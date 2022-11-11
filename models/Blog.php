@@ -49,5 +49,14 @@ class Blog extends \app\base_models\Blog
         return $this->publishAt;
     }
 
+    public static function getCategory()
+    {
+        return [
+            1 => '时事热点',
+            2 => '天下杂谈',
+            3 => '原创'
+        ];
+    }
+
 
 }

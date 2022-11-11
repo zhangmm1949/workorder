@@ -9,6 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 
 /**
  * BlogrController implements the CRUD actions for Blog model.
@@ -38,6 +39,25 @@ class BlogController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function actions()
+    {
+        return [
+            'upload' => [
+                'class'  => 'kucha\ueditor\UEditorAction',
+                'config' => []
+            ]
+        ];
+    }
+
+    public function beforeAction($action)
+    {
+        // 博客页面仅允许blogadmin一个用户使用
+        if (Yii::$app->user->identity->id !== 80){
+            throw new ForbiddenHttpException();
+        }
+        return parent::beforeAction($action);
     }
 
     /**

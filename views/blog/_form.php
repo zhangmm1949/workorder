@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Blog;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kucha\ueditor\UEditor;
@@ -16,11 +17,9 @@ use kartik\datetime\DateTimePicker;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'category_id')->textInput() ?>
+    <?= $form->field($model, 'category_id')->dropDownList(Blog::getCategory(), ['prompt' => '请选择分类', 'style' => 'width:20%', 'id' => 'category_id']) ?>
 
-    <?php var_dump(date('Y-m-d H:i:s', $model->update_at))?>
-
-    <?= $form->field($model, 'publishAt')->widget(
+    <!-- <?= $form->field($model, 'publishAt')->widget(
         DateTimePicker::class,([
         'name' => 'publishAt',
         'value' => empty($model->publishAt) ? '' : $model->publishAt,
@@ -34,7 +33,7 @@ use kartik\datetime\DateTimePicker;
         ]
     ])
     )->label('设置发布时间');
-    ?>
+    ?> -->
 
     <?= $form->field($model, 'content')->widget(UEditor::class,['clientOptions' => Yii::$app->params['UEditor_clientOptions']]) ?>
 
