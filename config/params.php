@@ -56,7 +56,7 @@ return [
         //编辑区域大小
         'initialFrameHeight' => '200',
         //图片上传大小限制 单位B
-        'imageMaxSize' => 2048000,
+        'imageMaxSize' => 204800000, // 单纯改动这里好像未生效  修改vendor\kucha\ueditor\config.php之后才生效
         //设置语言
         'lang' =>'zh-cn', //英文为 en
         //定制菜单
@@ -66,7 +66,7 @@ return [
                 'fontsize',
                 'bold', 'italic', 'underline',
                 'removeformat', 'formatmatch',
-                 '|', 'insertcode', '|', 'insertimage', 'attachment'
+                 '|', 'insertcode', '|', 'insertimage', 'insertvideo', 'attachment'
             ],
         ],
         //鼠标右键菜单功能
