@@ -18,9 +18,6 @@ class Order extends FaOrder
 {
     const EVENT_AFTER_SOLVE = 'event_after_solve';
 
-    private $remark_view;
-    private $is_solved;
-
     public function init()
     {
         parent::init();
@@ -138,12 +135,12 @@ class Order extends FaOrder
      */
     public function getRemark_view()
     {
-        return $this->remark_view = mb_strlen($this->remark) > 100 ? mb_substr($this->remark, 0, 100) . '…' : $this->remark;
+        return $remark_view = mb_strlen($this->remark) > 100 ? mb_substr($this->remark, 0, 100) . '…' : $this->remark;
     }
 
     public function getIs_solved()
     {
-        return $this->is_solved = $this->status == 20 ? true : false;
+        return $is_solved = $this->status == 20;
     }
 
     public function Sleep()

@@ -100,10 +100,8 @@ LEFT JOIN xm_system s ON s.id = o.system
 LEFT JOIN xm_user u ON u.id = o.present_user
 WHERE 1
 AND o.is_del = 0
-AND ((o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
-OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day))
-OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMESTAMP($end_day)))
-;";
+AND o.present_time >= UNIX_TIMESTAMP($start_day) 
+AND o.present_time < UNIX_TIMESTAMP($end_day);";
 
         $ret = Yii::$app->db->createCommand($sql)->queryAll();
 
@@ -123,18 +121,13 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
         $file_name = '工单' . date('Ymd') . '.csv';
         $dir       = null; // 直接在页面下载
 
-        if (!empty($ret)) {
-            foreach ($ret as $k => $v) {
-                $ret[$k]['content'] = strip_tags($v['content']);
-                @$ret[$k]['system'] = $system_group[$v['system']];
-            }
-
-            ExcelHelper::export2DArrayByCSV($ret, $header, $file_name, $dir, true, $append = true);
-            exit(); // 不打断点会报 headers already sent 错误
+        foreach ($ret as $k => $v) {
+            $ret[$k]['content'] = strip_tags($v['content']);
+            @$ret[$k]['system'] = $system_group[$v['system']];
         }
-        echo $sql . '<br/>';
-        var_dump($ret);
-        die();
+
+        ExcelHelper::export2DArrayByCSV($ret, $header, $file_name, $dir, true, $append = true);
+        exit(); // 不打断点会报 headers already sent 错误
     }
 
     /**

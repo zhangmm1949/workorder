@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label'=>'记录时间',
                 'attribute' => 'present_time',
-                'format' => ['date', 'php:Y-m-d H:i'],
+                'format' => ['date', 'php:Y/m/d'],
             ],
             [
                 'attribute' => 'title',
