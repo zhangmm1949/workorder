@@ -13,6 +13,7 @@ use Yii;
 
 class OrderTag extends FaOrderTag
 {
+    public $num;
 
     /**
      * 工单标签的增删改
@@ -61,15 +62,6 @@ class OrderTag extends FaOrderTag
             $rows[$k]['tag'] = $v;
         }
         return Yii::$app->db->createCommand()->batchInsert(OrderTag::tableName(), ['order_id', 'tag'], $rows)->execute();
-    }
-
-    /**
-     * 数量最多的前十个标签
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    public static function getTenTags()
-    {
-        return self::findBySql("SELECT `tag`, COUNT(1) AS `num` FROM `xm_order_tag` GROUP BY `tag` ORDER BY `num` DESC LIMIT 10;")->asArray()->all();
     }
 
     /**

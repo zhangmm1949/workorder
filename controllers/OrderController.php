@@ -4,6 +4,7 @@ namespace app\controllers;
 use app\models\common\ExcelHelper;
 use app\models\Order;
 use app\models\OrderSearch;
+use app\models\OrderTag;
 use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
@@ -262,5 +263,13 @@ OR (o.present_time > UNIX_TIMESTAMP($start_day) AND o.present_time < UNIX_TIMEST
         }
 
         var_dump($user_name);
+    }
+
+    public function actionTag()
+    {
+        $searchModel  = new OrderSearch();
+        $dataProvider = $searchModel->searchTag();
+
+        return $this->render('order_tag', ['model' => $dataProvider]);
     }
 }

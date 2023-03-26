@@ -105,4 +105,20 @@ class OrderSearch extends Order
 
         return $dataProvider;
     }
+
+    /**
+     * 查询数量最多的前10个标签
+     * @return ActiveDataProvider
+     */
+    public function searchTag()
+    {
+        $query = OrderTag::findBySql("SELECT tag, num FROM (SELECT tag, count(1) as num FROM xm_order_tag WHERE 1=1 GROUP BY tag) as a ORDER bY a.num DESC LIMIT 10");
+
+        return new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+    }
 }
