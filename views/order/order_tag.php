@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '标签',
                 'attribute' => 'tag',
-                'sort' => false
             ],
             [
                 'label'=>'数量',
